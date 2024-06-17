@@ -1,0 +1,92 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  font-family: 'Prompt', sans-serif;
+}
+
+.mono {
+  font-family: "Source Code Pro", monospace;
+  font-optical-sizing: auto;
+  font-style: normal;
+}
+
+.bg-green {
+  background-color: #02a96b;
+}
+
+.bg-gray {
+  background-color: #2f3337;
+}
+
+.border-green {
+  border-color: #02a96b;
+}
+
+.h-11\.25 {
+  height: 2.8125rem;
+}
+
+.h-15 {
+  height: 3.75rem;
+}
+
+.h-136 {
+  height: 34rem;
+}
+
+.w-17\.5 {
+  width: 4.375rem;
+}
+
+.w-62\.5 {
+  width: 15.625rem;
+}
+
+.min-w-150 {
+  min-width: 37.5rem;
+}
+
+.mr-6\.75 {
+  margin-right: 1.6875rem;
+}
+
+.mt-15 {
+  margin-top: 3.75rem;
+}
+
+.pl-6\.75 {
+  padding-left: 1.6875rem;
+}
+
+.pr-6\.75 {
+  padding-right: 1.6875rem;
+}
+
+.pl-17\.5 {
+  padding-left: 4.375rem;
+}
+
+.focus\:border-green:focus {
+  border-color: #02a96b;
+}
+
+.focus-within\:border-green:focus-within {
+  border-color: #02a96b;
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-color: transparent;
+  /* Optional: sets the background to transparent */
+  /* Add other styling properties here */
+}

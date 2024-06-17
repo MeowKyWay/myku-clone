@@ -1,0 +1,6 @@
+export enum InputType {
+    TEXTFIELD = "TEXTFIELD",
+    DROPDOWN = "DROPDOWN",
+    CHECKBOX = "CHECKBOX",
+    DATEPICKER = "DATEPICKER",
+}

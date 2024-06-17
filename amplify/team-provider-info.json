@@ -1,0 +1,39 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-react-dev-bcb5b-authRole",
+      "UnauthRoleArn": "arn:aws:iam::891377257682:role/amplify-react-dev-bcb5b-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::891377257682:role/amplify-react-dev-bcb5b-authRole",
+      "Region": "ap-southeast-1",
+      "DeploymentBucketName": "amplify-react-dev-bcb5b-deployment",
+      "UnauthRoleName": "amplify-react-dev-bcb5b-unauthRole",
+      "StackName": "amplify-react-dev-bcb5b",
+      "StackId": "arn:aws:cloudformation:ap-southeast-1:891377257682:stack/amplify-react-dev-bcb5b/b99176b0-1e5b-11ef-97d4-0ac28714a5bd",
+      "AmplifyAppId": "d1hr5hfnztpv1v",
+      "AuthTriggerTemplateURL": "https://s3.amazonaws.com/amplify-react-dev-bcb5b-deployment/amplify-cfn-templates/auth/auth-trigger-cloudformation-template.json"
+    },
+    "categories": {
+      "hosting": {
+        "S3AndCloudFront": {}
+      },
+      "auth": {
+        "reactb61250ee": {},
+        "react5215be15": {},
+        "userPoolGroups": {}
+      },
+      "api": {
+        "react": {}
+      },
+      "function": {
+        "reactenv": {
+          "deploymentBucketName": "amplify-react-dev-bcb5b-deployment",
+          "s3Key": "amplify-builds/reactenv-LambdaLayerVersion35e831ee-build.zip"
+        },
+        "test": {
+          "deploymentBucketName": "amplify-react-dev-bcb5b-deployment",
+          "s3Key": "amplify-builds/test-5250695a37344c516939-build.zip"
+        }
+      }
+    }
+  }
+}

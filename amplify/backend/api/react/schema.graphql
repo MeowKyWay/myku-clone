@@ -1,0 +1,51 @@
+# This "input" configures a global authorization rule to enable public access to
+# all models in this schema. Learn more about authorization rules here: https://docs.amplify.aws/cli/graphql/authorization-rules
+
+enum Status {
+  GRADUATE
+  RETIRED
+  CURRENT
+}
+
+type AuthorizationToken
+  @model
+  @aws_cognito_user_pools
+  @auth(
+    rules: [
+      { allow: groups, provider: userPools, groups: ["Admin"], operations: [read] }
+    ]
+  ) {
+    id: ID!
+    token: String!
+  }
+
+type Faculty
+  @model
+  @aws_api_key
+  @aws_cognito_user_pools
+  @auth(
+    rules: [
+      { allow: public, provider: apiKey, operations: [read] }
+      { allow: groups, provider: userPools, groups: ["Admin"] }
+    ]
+  ) {
+  id: ID!
+  name: String!
+  departments: [Department] @hasMany(indexName: "faculty", fields: ["id"])
+}
+
+type Department
+  @model
+  @aws_api_key
+  @aws_cognito_user_pools
+  @auth(
+    rules: [
+      { allow: public, provider: apiKey, operations: [read] }
+      { allow: groups, provider: userPools, groups: ["Admin"] }
+    ]
+  ) {
+  id: ID!
+  name: String!
+  facultyID: ID! @index(name: "faculty")
+  faculty: Faculty @belongsTo(fields: ["facultyID"])
+}
