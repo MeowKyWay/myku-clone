@@ -32,6 +32,11 @@
         "test": {
           "deploymentBucketName": "amplify-react-dev-bcb5b-deployment",
           "s3Key": "amplify-builds/test-5250695a37344c516939-build.zip"
+        },
+        "react5215be15PostConfirmation": {
+          "GROUP": "Student",
+          "deploymentBucketName": "amplify-react-dev-bcb5b-deployment",
+          "s3Key": "amplify-builds/react5215be15PostConfirmation-384d7961624c54437561-build.zip"
         }
       }
     }

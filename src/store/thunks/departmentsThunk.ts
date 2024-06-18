@@ -6,7 +6,8 @@ import { createDepartment, deleteDepartment, updateDepartment } from "../../grap
 
 const client = generateClient();
 
-export const fetchDepartments = createAsyncThunk<DepartmentType[]>("fetchDepartments",
+export const fetchDepartments = createAsyncThunk<DepartmentType[]>(
+    "fetchDepartments",
     async (): Promise<DepartmentType[]> => {
         const response = await client.graphql({
             query: listDepartmentsWithFaculty,
@@ -15,7 +16,8 @@ export const fetchDepartments = createAsyncThunk<DepartmentType[]>("fetchDepartm
     }
 )
 
-export const addDepartment = createAsyncThunk<DepartmentType, {name: string, facultyID: string}>("addDepartment",
+export const addDepartment = createAsyncThunk<DepartmentType, {name: string, facultyID: string}>(
+    "addDepartment",
     async ({name, facultyID}: {name: string, facultyID: string}): Promise<DepartmentType> => {
         const response = await client.graphql({
             query: createDepartment,
@@ -31,7 +33,8 @@ export const addDepartment = createAsyncThunk<DepartmentType, {name: string, fac
     }
 )
 
-export const removeDepartment = createAsyncThunk<string, string>("removeDepartment",
+export const removeDepartment = createAsyncThunk<string, string>(
+    "removeDepartment",
     async (id: string): Promise<string> => {
         const response = await client.graphql({
             query: deleteDepartment,
@@ -45,7 +48,8 @@ export const removeDepartment = createAsyncThunk<string, string>("removeDepartme
     }
 )
 
-export const putDepartment = createAsyncThunk<DepartmentType, {id: string, name: string, facultyID: string}>("putDepartment",
+export const putDepartment = createAsyncThunk<DepartmentType, {id: string, name: string, facultyID: string}>(
+    "putDepartment",
     async ({id, name, facultyID}: {id: string, name: string, facultyID: string}): Promise<DepartmentType> => {
         const response = await client.graphql({
             query: updateDepartment,

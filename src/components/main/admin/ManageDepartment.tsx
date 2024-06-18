@@ -21,27 +21,26 @@ function ManageDepartment() {
   const departments = useAppSelector(state => state.departments.data);
   const faculties = useAppSelector(state => state.faculties.data);
 
+  const departmentErrorMessage = useAppSelector(state => state.departments.error);
+  const facultyErrorMessage = useAppSelector(state => state.faculties.error);
+  const errorMessage = departmentErrorMessage || facultyErrorMessage;
+
   const { filter } = useParams();
 
   const updatingDepartment = useRef<DepartmentType>();
 
   const [name, setName] = useState("");
   const [faculty, setFaculty] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
 
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [showUpdateModal, setShowUpdateModal] = useState(false);
 
   useEffect(() => { //initial fetch
-    try {
-      if (!departments) { //Only fetch if not already fetched
-        dispatch(fetchDepartments());
-      }
-      if (!faculties) {
-        dispatch(fetchFaculties());
-      }
-    } catch (error) {
-      setErrorMessage((error as Error).message);
+    if (!departments) { //Only fetch if not already fetched
+      dispatch(fetchDepartments());
+    }
+    if (!faculties) {
+      dispatch(fetchFaculties());
     }
   }, [dispatch, departments, faculties])
 
@@ -53,40 +52,28 @@ function ManageDepartment() {
 
   const handleCreateDepartment = async () => {
     if (!confirm("Are you sure you want to create this department?")) return;
-    try {
-      await dispatch(addDepartment({
-        name: name,
-        facultyID: faculty,
-      }))
-    } catch (error) {
-      setErrorMessage((error as Error).message);
-    }
+    await dispatch(addDepartment({
+      name: name,
+      facultyID: faculty,
+    }));
 
     setShowCreateModal(false);
   }
 
   const handleUpdateDepartment = async () => {
     if (!confirm("Are you sure you want to update this department?")) return;
-    try {
-      await dispatch(putDepartment({
-        id: updatingDepartment.current?.id as string,
-        name: name,
-        facultyID: faculty,
-      }))
-    } catch (error) {
-      setErrorMessage((error as Error).message);
-    }
+    await dispatch(putDepartment({
+      id: updatingDepartment.current?.id as string,
+      name: name,
+      facultyID: faculty,
+    }));
 
     setShowUpdateModal(false);
   }
 
   const handleDeleteDepartment = async (id: string) => {
     if (!confirm("Are you sure you want to delete this department?")) return;
-    try {
-      await dispatch(removeDepartment(id));
-    } catch (error) {
-      setErrorMessage((error as Error).message);
-    }
+    await dispatch(removeDepartment(id));
   }
 
   const header = (

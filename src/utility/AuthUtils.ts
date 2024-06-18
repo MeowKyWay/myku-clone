@@ -1,5 +1,5 @@
 import { fetchAuthSession, fetchUserAttributes } from "aws-amplify/auth";
-import { UserType } from "../store/slices/userSlice";
+import { CurrentUserType } from "../store/slices/userSlice";
 import { getAuthorizationToken } from "../graphql/queries";
 import { generateClient } from "aws-amplify/api";
 
@@ -17,7 +17,7 @@ export default class AuthUtils {
         const currentUser = {
             groups: userGroup,
             attributes: userAttribute,
-        } as UserType
+        } as CurrentUserType
         return currentUser;
     }
 

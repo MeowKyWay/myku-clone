@@ -4,6 +4,8 @@ import { statesReducer } from "./slices/statesSlice";
 import { registerReducer } from "./slices/registerSlice";
 import { departmentsReducer } from "./slices/departmentsSlice";
 import { facultiesReducer } from "./slices/facultiesSlice";
+import { teachersReducer } from "./slices/teachersSlice";
+import { studentsReducer } from "./slices/studentsSlice";
 
 export const store = configureStore({
     reducer: {
@@ -12,6 +14,9 @@ export const store = configureStore({
         register: registerReducer,
         faculties: facultiesReducer,
         departments: departmentsReducer,
+
+        teachers: teachersReducer,
+        students: studentsReducer,
     },
 })
 

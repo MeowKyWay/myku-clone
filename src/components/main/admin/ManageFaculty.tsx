@@ -26,7 +26,8 @@ function ManageFaculty() {
   const updatingFaculty = useRef<FacultyType>();
 
   const [name, setName] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
+
+  const errorMessage = useAppSelector(state => state.faculties.error);
 
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [showUpdateModal, setShowUpdateModal] = useState(false);
@@ -44,40 +45,26 @@ function ManageFaculty() {
 
   const handleCreateFaculty = async () => {
     if (!confirm("Are you sure you want to create this faculty?")) return;
-    try {
-      await dispatch(addFaculty({
-        name: name
-      }))
-    } catch (error) {
-      setErrorMessage((error as Error).message);
-    }
+    await dispatch(addFaculty({
+      name: name
+    }));
 
     setShowCreateModal(false);
   };
 
   const handleUpdateFaculty = async () => {
     if (!confirm("Are you sure you want to update this faculty?")) return;
-    try {
-      await dispatch(putFaculty({
-        id: updatingFaculty.current?.id as string,
-        name: name
-      }))
-    } catch (error) {
-      setErrorMessage((error as Error).message);
-    }
+    await dispatch(putFaculty({
+      id: updatingFaculty.current?.id as string,
+      name: name
+    }))
 
     setShowUpdateModal(false);
   };
 
   const handleDeleteFaculty = async (id: string) => {
-    if (!confirm("Are you sure you want to delete this faculty?")) {
-      return;
-    }
-    try {
-      await dispatch(removeFaculty(id));
-    } catch (error) {
-      setErrorMessage((error as Error).message);
-    }
+    if (!confirm("Are you sure you want to delete this faculty?")) return;
+    await dispatch(removeFaculty(id));
   };
 
   const header = (

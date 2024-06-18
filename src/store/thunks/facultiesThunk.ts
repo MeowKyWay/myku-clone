@@ -6,7 +6,8 @@ import { listFaculties } from "../../graphql/queries";
 
 const client = generateClient();
 
-export const fetchFaculties = createAsyncThunk<FacultyType[]>("fetchFaculties",
+export const fetchFaculties = createAsyncThunk<FacultyType[]>(
+    "fetchFaculties",
     async (): Promise<FacultyType[]> => {
         const response = await client.graphql({
             query: listFaculties,
@@ -15,7 +16,8 @@ export const fetchFaculties = createAsyncThunk<FacultyType[]>("fetchFaculties",
     }
 )
 
-export const addFaculty = createAsyncThunk<FacultyType, { name: string }>("addFaculty",
+export const addFaculty = createAsyncThunk<FacultyType, { name: string }>(
+    "addFaculty",
     async ({ name }: { name: string }): Promise<FacultyType> => {
         const response = await client.graphql({
             query: createFaculty,
@@ -30,7 +32,8 @@ export const addFaculty = createAsyncThunk<FacultyType, { name: string }>("addFa
     }
 )
 
-export const removeFaculty = createAsyncThunk<string, string>("removeFaculty",
+export const removeFaculty = createAsyncThunk<string, string>(
+    "removeFaculty",
     async (id: string): Promise<string> => {
         const response = await client.graphql({
             query: deleteFaculty,
@@ -44,7 +47,8 @@ export const removeFaculty = createAsyncThunk<string, string>("removeFaculty",
     }
 )
 
-export const putFaculty = createAsyncThunk<FacultyType, { id: string, name: string }>("putFaculty",
+export const putFaculty = createAsyncThunk<FacultyType, { id: string, name: string }>(
+    "putFaculty",
     async ({ id, name }: { id: string, name: string }): Promise<FacultyType> => {
         const response = await client.graphql({
             query: updateFaculty,

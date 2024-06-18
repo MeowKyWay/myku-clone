@@ -8,13 +8,14 @@ interface InputModalFieldType {
     fields: ReactNode,
 }
 
-function InputModal({ children, fieldList, onCancle, onConfirm, confirmButtonType, confirmButtonLabel }: {
+function InputModal({ children, fieldList, onCancle, onConfirm, confirmButtonType, confirmButtonLabel, className }: {
     children: ReactNode,
     fieldList: InputModalFieldType[],
     onCancle: () => void,
     onConfirm: () => void,
     confirmButtonType: ButtonType,
     confirmButtonLabel: string,
+    className?: string
 }) {
 
     const renderField = fieldList.map((field, index) => {
@@ -28,7 +29,7 @@ function InputModal({ children, fieldList, onCancle, onConfirm, confirmButtonTyp
 
     return (
         <Modal>
-            <div className="flex flex-col bg-white rounded">
+            <div className={"flex flex-col bg-white rounded " + className}>
                 <div className="flex flex-col m-4">
                     <span className="font-bold mb-4">{children}</span>
                     {renderField}

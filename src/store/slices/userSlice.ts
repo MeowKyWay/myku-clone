@@ -7,7 +7,7 @@ export enum UserGroup {
     STUDENT = 'Student',
 }
 
-export interface UserType {
+export interface CurrentUserType {
     groups: UserGroup;
     attributes: FetchUserAttributesOutput;
 }
@@ -18,10 +18,10 @@ const userSlice = createSlice({
         currentUser: {
             groups: '' as UserGroup,
             attributes: {} as FetchUserAttributesOutput,
-        } as UserType,
+        } as CurrentUserType,
     },
     reducers: {
-        setUser(state, action: PayloadAction<UserType>) {
+        setUser(state, action: PayloadAction<CurrentUserType>) {
             let userGroup = action.payload.groups;
             switch (userGroup) {
                 case 'Admin':

@@ -37,7 +37,17 @@
   "auth": {
     "react5215be15": {
       "customAuth": false,
-      "dependsOn": [],
+      "dependsOn": [
+        {
+          "attributes": [
+            "Arn",
+            "Name"
+          ],
+          "category": "function",
+          "resourceName": "react5215be15PostConfirmation",
+          "triggerProvider": "Cognito"
+        }
+      ],
       "frontendAuthConfig": {
         "mfaConfiguration": "OFF",
         "mfaTypes": [
@@ -77,6 +87,11 @@
     }
   },
   "function": {
+    "react5215be15PostConfirmation": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "reactenv": {
       "build": true,
       "providerPlugin": "awscloudformation",
@@ -95,6 +110,30 @@
     }
   },
   "parameters": {
+    "AMPLIFY_function_react5215be15PostConfirmation_GROUP": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "react5215be15PostConfirmation"
+        }
+      ]
+    },
+    "AMPLIFY_function_react5215be15PostConfirmation_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "react5215be15PostConfirmation"
+        }
+      ]
+    },
+    "AMPLIFY_function_react5215be15PostConfirmation_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "react5215be15PostConfirmation"
+        }
+      ]
+    },
     "AMPLIFY_function_reactenv_deploymentBucketName": {
       "usedBy": [
         {
