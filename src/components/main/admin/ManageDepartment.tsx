@@ -1,154 +1,93 @@
-import { useCallback, useEffect, useRef, useState } from "react";
-import { generateClient } from "aws-amplify/api";
-import { DepartmentType, FacultyType } from "../../../types/DatabaseType";
+import { useEffect, useRef, useState } from "react";
 import Table from "../../Table";
 import Button from "../../Button";
 import { ButtonType } from "../../../types/ButtonType";
-import Modal from "../../Modal";
 import TextField from "../../TextField";
 import { TextFieldType } from "../../../types/TextFieldType";
-import {
-  createDepartment,
-  deleteDepartment,
-  updateDepartment,
-} from "../../../graphql/mutations";
 import Dropdown from "../../Dropdown";
-import { listFaculties } from "../../../graphql/queries";
 import InputModal from "../../InputModal";
 import { TbRefresh } from "react-icons/tb";
+import { useAppDispatch, useAppSelector } from "../../../hooks";
+import { addDepartment, fetchDepartments, putDepartment, removeDepartment } from "../../../store/thunks/departmentsThunk";
+import { fetchFaculties } from "../../../store/thunks/facultiesThunk";
+import { DepartmentType, FacultyType } from "../../../types/DatabaseType";
 import { useNavigate, useParams } from "react-router-dom";
-import { listDepartmentsWithFaculty } from "../../../custom_graphql/customQueries";
 
 function ManageDepartment() {
 
-  const client = useRef(generateClient({ authMode: "userPool" }));
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
+
+  const departments = useAppSelector(state => state.departments.data);
+  const faculties = useAppSelector(state => state.faculties.data);
 
   const { filter } = useParams();
 
+  const updatingDepartment = useRef<DepartmentType>();
+
   const [name, setName] = useState("");
   const [faculty, setFaculty] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [showUpdateModal, setShowUpdateModal] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
 
-  const [updatingDepartment, setUpdatingDepartment] = useState<DepartmentType>(
-    {} as DepartmentType
-  );
-
-  const [departments, setDepartments] = useState<DepartmentType[]>([]);
-  const [faculties, setFaculties] = useState<FacultyType[]>([]);
-
-  const fetchDepartments = useCallback(async () => {
-    //fetch faculty from db
+  useEffect(() => { //initial fetch
     try {
-      const fetch = await client.current.graphql({
-        query: listDepartmentsWithFaculty,
-        variables: {
-          filter: {
-            facultyID: {
-              eq: filter,
-            },
-          },
-        },
-      });
-      setDepartments(fetch.data.listDepartments.items as never[]);
-    } catch (error: unknown) {
-      console.log(error);
+      if (!departments) { //Only fetch if not already fetched
+        dispatch(fetchDepartments());
+      }
+      if (!faculties) {
+        dispatch(fetchFaculties());
+      }
+    } catch (error) {
+      setErrorMessage((error as Error).message);
     }
-  }, [filter]);
+  }, [dispatch, departments, faculties])
 
-  const fetchFaculties = async () => {
-    try {
-      const fetch = await client.current.graphql({
-        query: listFaculties,
-      });
-
-      setFaculties(fetch.data.listFaculties.items as never[]);
-    } catch (error: unknown) {
-      console.log(error);
-    }
-  };
+  useEffect(() => { //On close modal reset input state
+    if (showCreateModal || showUpdateModal) return;
+    setName("");
+    setFaculty("");
+  }, [showCreateModal, showUpdateModal])
 
   const handleCreateDepartment = async () => {
+    if (!confirm("Are you sure you want to create this department?")) return;
     try {
-      console.log(faculty);
-      await client.current.graphql({
-        query: createDepartment,
-        variables: {
-          input: {
-            name: name,
-            facultyID: faculty,
-          },
-        },
-      });
-      await fetchDepartments();
-      setErrorMessage("");
-    } catch (error: unknown) {
-      console.log(error);
-      if (error instanceof Error) {
-        setErrorMessage(error.message);
-      }
+      await dispatch(addDepartment({
+        name: name,
+        facultyID: faculty,
+      }))
+    } catch (error) {
+      setErrorMessage((error as Error).message);
     }
-    setName("");
-    setFaculty("");
-    setShowCreateModal(false);
-  };
 
-  const handleDeleteDepartment = async (id: string) => {
-    if (!confirm("Are you sure you want to delete this department?")) {
-      return;
-    }
-    try {
-      await client.current.graphql({
-        query: deleteDepartment,
-        variables: {
-          input: {
-            id: id,
-          },
-        },
-      });
-      await fetchDepartments();
-      setErrorMessage("");
-    } catch (error: unknown) {
-      if (error instanceof Error) {
-        setErrorMessage(error.message);
-      }
-    }
-  };
+    setShowCreateModal(false);
+  }
 
   const handleUpdateDepartment = async () => {
+    if (!confirm("Are you sure you want to update this department?")) return;
     try {
-      await client.current.graphql({
-        query: updateDepartment,
-        variables: {
-          input: {
-            id: updatingDepartment.id,
-            name: name,
-            facultyID: faculty,
-          },
-        },
-      });
-      await fetchDepartments();
-      setErrorMessage("");
-    } catch (error: unknown) {
-      if (error instanceof Error) {
-        setErrorMessage(error.message);
-      }
+      await dispatch(putDepartment({
+        id: updatingDepartment.current?.id as string,
+        name: name,
+        facultyID: faculty,
+      }))
+    } catch (error) {
+      setErrorMessage((error as Error).message);
     }
-    setName("");
-    setFaculty("");
+
     setShowUpdateModal(false);
-  };
+  }
 
-  useEffect(() => {
-    fetchDepartments();
-  }, [fetchDepartments]);
-
-  useEffect(() => {
-    fetchFaculties();
-  }, []);
+  const handleDeleteDepartment = async (id: string) => {
+    if (!confirm("Are you sure you want to delete this department?")) return;
+    try {
+      await dispatch(removeDepartment(id));
+    } catch (error) {
+      setErrorMessage((error as Error).message);
+    }
+  }
 
   const header = (
     <tr>
@@ -161,7 +100,8 @@ function ManageDepartment() {
     </tr>
   );
 
-  const body = departments.map((department, index) => {
+  const body = departments?.map((department, index) => {
+    if (department.faculty?.id !== filter && filter) return null;
     return (
       <tr className="text-sm h-8" key={index}>
         <td className="text-center">{index + 1}</td>
@@ -174,7 +114,8 @@ function ManageDepartment() {
             <Button
               onClick={() => {
                 setShowUpdateModal(true);
-                setUpdatingDepartment(department);
+                updatingDepartment.current = department;
+                setFaculty(department.faculty?.id as string);
                 setName(department.name);
               }}
               type={ButtonType.SECONDARY}
@@ -209,7 +150,7 @@ function ManageDepartment() {
       fields: (
         <Dropdown
           onChange={setFaculty}
-          list={faculties}
+          list={faculties as FacultyType[]}
           value={faculty}
           name="faculty"
           className="h-10 text-xs"
@@ -221,7 +162,7 @@ function ManageDepartment() {
   return (
     <div className="size-full flex flex-col items-center">
       {showCreateModal && (
-        <InputModal
+        <InputModal //Create Department Modal
           fieldList={modalFields}
           onCancle={() => setShowCreateModal(false)}
           onConfirm={handleCreateDepartment}
@@ -232,24 +173,22 @@ function ManageDepartment() {
         </InputModal>
       )}
       {showUpdateModal && (
-        <Modal>
-          <InputModal
-            fieldList={modalFields}
-            onCancle={() => setShowUpdateModal(false)}
-            onConfirm={handleUpdateDepartment}
-            confirmButtonType={ButtonType.SECONDARY}
-            confirmButtonLabel="แก้สาขา"
-          >
-            แก้ไขสาขา {updatingDepartment.name}
-          </InputModal>
-        </Modal>
+        <InputModal //Update Department Modal
+          fieldList={modalFields}
+          onCancle={() => setShowUpdateModal(false)}
+          onConfirm={handleUpdateDepartment}
+          confirmButtonType={ButtonType.SECONDARY}
+          confirmButtonLabel="แก้สาขา"
+        >
+          แก้ไขสาขา {updatingDepartment.current?.name}
+        </InputModal>
       )}
       <div className="w-11/12 h-20 flex flex-row items-center pl-10">
         <span className="text-xl w-80 font-bold">Manage Departments</span>
         <div className="flex flex-col h-full flex-1 pr-2 justify-end items-end">
           <div className="h-full flex-1 flex flex-row justify-end items-end gap-1">
             <Button
-              onClick={fetchDepartments}
+              onClick={() => dispatch(fetchDepartments())}
               type={ButtonType.TERTIARY}
               className="h-6 w-6 mb-1 px-0"
             >
@@ -259,7 +198,7 @@ function ManageDepartment() {
               onChange={(value) => {
                 navigate(`/std/admin/department/${value}`);
               }}
-              list={faculties}
+              list={faculties as FacultyType[]}
               value={filter}
               name="faculty"
               className="w-40 h-6 text-xs mb-1"
@@ -279,7 +218,7 @@ function ManageDepartment() {
       </div>
       <div className="w-11/12 flex-1 flex flex-col justify-start">
         <div className="w-full bg-gray-100">
-          <Table header={header} body={body} className="min-w-150" />
+          <Table header={header} body={body as JSX.Element[]} className="min-w-150" />
         </div>
       </div>
     </div>

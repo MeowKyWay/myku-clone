@@ -46,16 +46,19 @@ function Dropdown<T extends DropdownItem>({ children, onChange, list, value, cla
                 className={classes}
                 name={name}
                 disabled={disabled}
+                value={value}
             >
                 <option key={-1} value="">select</option>
-                {list.map((item, index) => {
+                {list && list.map((item, index) => {
                     return (
-                        (value === item.id)? <option key={index} value={item.id} selected>{item.name}</option>
-                        : <option key={index} value={item.id}>{item.name}</option>
+                        <option key={index} value={item.id}>{item.name}</option>
                     )
                 })}
             </select>
-            <RiExpandUpDownFill className="absolute right-2 h-full z-0" />
+            <div className="absolute right-2 h-full z-0">
+                <RiExpandUpDownFill className="h-full" />
+            </div>
+            
         </div>
     )
 

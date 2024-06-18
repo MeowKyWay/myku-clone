@@ -1,69 +1,72 @@
 import { Link, useLocation } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
-import { generateClient } from "aws-amplify/api";
-import { listFaculties } from "../../../graphql/queries";
 import { FacultyType } from "../../../types/DatabaseType";
 import Table from "../../Table";
 import Button from "../../Button";
 import { ButtonType } from "../../../types/ButtonType";
 import TextField from "../../TextField";
 import { TextFieldType } from "../../../types/TextFieldType";
-import {
-  createFaculty,
-  deleteFaculty,
-  updateFaculty,
-} from "../../../graphql/mutations";
 import InputModal from "../../InputModal";
 import { TbRefresh } from "react-icons/tb";
 import ClickableText from "../../ClickableText";
+import { useAppDispatch, useAppSelector } from "../../../hooks";
+import { addFaculty, fetchFaculties, putFaculty, removeFaculty } from "../../../store/thunks/facultiesThunk";
 
 function ManageFaculty() {
+
   const location = useLocation();
+  const dispatch = useAppDispatch();
 
-  const [name, setName] = useState("");
-  const [showCreateModal, setShowCreateModal] = useState(false);
-  const [showUpdateModal, setShowUpdateModal] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
-
-  const [updatingFaculty, setUpdatingFaculty] = useState<FacultyType>(
-    {} as FacultyType
-  );
-
-  if (location.pathname !== "/std/admin/faculty") {
+  if (location.pathname !== "/std/admin/faculty") {//in case of /std/admin/ (default path)
     window.history.pushState({}, "", "/std/admin/faculty");
   }
 
-  const client = useRef(generateClient());
-  const [faculties, setFaculties] = useState<FacultyType[]>([]);
+  const faculties = useAppSelector(state => state.faculties.data);
 
-  const fetch = async () => {
-    //fecth faculty from db
-    const fetchFaculties = await client.current.graphql({
-      query: listFaculties,
-    });
+  const updatingFaculty = useRef<FacultyType>();
 
-    setFaculties(fetchFaculties.data.listFaculties.items as never[]);
-  };
+  const [name, setName] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const [showCreateModal, setShowCreateModal] = useState(false);
+  const [showUpdateModal, setShowUpdateModal] = useState(false);
+
+  useEffect(() => { // initial fetch
+    if (!faculties) {
+      dispatch(fetchFaculties());
+    }
+  })
+
+  useEffect(() => { // on close modal reset input state
+    if (showCreateModal || showUpdateModal) return;
+    setName("");
+  }, [showCreateModal, showUpdateModal])
 
   const handleCreateFaculty = async () => {
+    if (!confirm("Are you sure you want to create this faculty?")) return;
     try {
-      await client.current.graphql({
-        query: createFaculty,
-        variables: {
-          input: {
-            name: name,
-          },
-        },
-      });
-      await fetch();
-      setErrorMessage("");
-    } catch (error: unknown) {
-      if (error instanceof Error) {
-        setErrorMessage(error.message);
-      }
+      await dispatch(addFaculty({
+        name: name
+      }))
+    } catch (error) {
+      setErrorMessage((error as Error).message);
     }
-    setName("");
+
     setShowCreateModal(false);
+  };
+
+  const handleUpdateFaculty = async () => {
+    if (!confirm("Are you sure you want to update this faculty?")) return;
+    try {
+      await dispatch(putFaculty({
+        id: updatingFaculty.current?.id as string,
+        name: name
+      }))
+    } catch (error) {
+      setErrorMessage((error as Error).message);
+    }
+
+    setShowUpdateModal(false);
   };
 
   const handleDeleteFaculty = async (id: string) => {
@@ -71,48 +74,11 @@ function ManageFaculty() {
       return;
     }
     try {
-      await client.current.graphql({
-        query: deleteFaculty,
-        variables: {
-          input: {
-            id: id,
-          },
-        },
-      });
-      await fetch();
-      setErrorMessage("");
-    } catch (error: unknown) {
-      if (error instanceof Error) {
-        setErrorMessage(error.message);
-      }
+      await dispatch(removeFaculty(id));
+    } catch (error) {
+      setErrorMessage((error as Error).message);
     }
   };
-
-  const handleUpdateFaculty = async () => {
-    try {
-      await client.current.graphql({
-        query: updateFaculty,
-        variables: {
-          input: {
-            id: updatingFaculty.id,
-            name: name,
-          },
-        },
-      });
-      await fetch();
-      setErrorMessage("");
-    } catch (error: unknown) {
-      if (error instanceof Error) {
-        setErrorMessage(error.message);
-      }
-    }
-    setName("");
-    setShowUpdateModal(false);
-  };
-
-  useEffect(() => {
-    fetch();
-  }, []);
 
   const header = (
     <tr>
@@ -124,7 +90,7 @@ function ManageFaculty() {
     </tr>
   );
 
-  const body = faculties.map((faculty, index) => {
+  const body = faculties?.map((faculty, index) => {
     return (
       <tr className="text-sm h-8" key={index}>
         <td className="text-center">{index + 1}</td>
@@ -140,7 +106,7 @@ function ManageFaculty() {
             <Button
               onClick={() => {
                 setShowUpdateModal(true);
-                setUpdatingFaculty(faculty);
+                updatingFaculty.current = faculty;
                 setName(faculty.name);
               }}
               type={ButtonType.SECONDARY}
@@ -175,7 +141,7 @@ function ManageFaculty() {
   return (
     <div className="size-full flex flex-col items-center">
       {showCreateModal && (
-        <InputModal
+        <InputModal // Create Faculty Modal
           fieldList={modalFields}
           onCancle={() => setShowCreateModal(false)}
           onConfirm={handleCreateFaculty}
@@ -186,14 +152,14 @@ function ManageFaculty() {
         </InputModal>
       )}
       {showUpdateModal && (
-        <InputModal
+        <InputModal // Update Faculty Modal
           fieldList={modalFields}
           onCancle={() => setShowUpdateModal(false)}
           onConfirm={handleUpdateFaculty}
           confirmButtonType={ButtonType.SECONDARY}
           confirmButtonLabel="แก้ไขคณะ"
         >
-          แก้ไขข้อมูลคณะ {updatingFaculty.name}
+          แก้ไขข้อมูลคณะ {updatingFaculty.current?.name}
         </InputModal>
       )}
       <div className="w-11/12 h-20 flex flex-row items-center pl-10">
@@ -201,7 +167,7 @@ function ManageFaculty() {
         <div className="flex flex-col h-full flex-1 pr-2 justify-end items-end">
           <div className="h-full flex-1 flex flex-row justify-end items-end gap-1">
             <Button
-              onClick={fetch}
+              onClick={() => dispatch(fetchFaculties())}
               type={ButtonType.TERTIARY}
               className="h-6 w-6 mb-1 px-0"
             >
@@ -222,7 +188,7 @@ function ManageFaculty() {
       </div>
       <div className="w-11/12 flex-1 flex flex-col justify-start">
         <div className="w-full bg-gray-100 overflow-hidden">
-          <Table header={header} body={body} className="min-w-150" />
+          <Table header={header} body={body as JSX.Element[]} className="min-w-150" />
         </div>
       </div>
     </div>

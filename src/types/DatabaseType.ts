@@ -7,5 +7,5 @@ export interface DepartmentType {
     id: string;
     name: string;
     facultyID: string;
-    faculty?: FacultyType;
+    faculty?: FacultyType | null;
 }
