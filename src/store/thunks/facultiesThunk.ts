@@ -4,12 +4,13 @@ import { FacultyType } from "../../types/DatabaseType";
 import { createFaculty, deleteFaculty, updateFaculty } from "../../graphql/mutations";
 import { listFaculties } from "../../graphql/queries";
 
-const client = generateClient();
+const userPoolClient = generateClient({authMode: 'userPool'});
+const apiKeyClient = generateClient({authMode: 'apiKey'});
 
 export const fetchFaculties = createAsyncThunk<FacultyType[]>(
     "fetchFaculties",
     async (): Promise<FacultyType[]> => {
-        const response = await client.graphql({
+        const response = await apiKeyClient.graphql({
             query: listFaculties,
         })
         return response.data.listFaculties.items;
@@ -19,7 +20,7 @@ export const fetchFaculties = createAsyncThunk<FacultyType[]>(
 export const addFaculty = createAsyncThunk<FacultyType, { name: string }>(
     "addFaculty",
     async ({ name }: { name: string }): Promise<FacultyType> => {
-        const response = await client.graphql({
+        const response = await userPoolClient.graphql({
             query: createFaculty,
             variables: {
                 input: {
@@ -35,7 +36,7 @@ export const addFaculty = createAsyncThunk<FacultyType, { name: string }>(
 export const removeFaculty = createAsyncThunk<string, string>(
     "removeFaculty",
     async (id: string): Promise<string> => {
-        const response = await client.graphql({
+        const response = await userPoolClient.graphql({
             query: deleteFaculty,
             variables: {
                 input: {
@@ -50,7 +51,7 @@ export const removeFaculty = createAsyncThunk<string, string>(
 export const putFaculty = createAsyncThunk<FacultyType, { id: string, name: string }>(
     "putFaculty",
     async ({ id, name }: { id: string, name: string }): Promise<FacultyType> => {
-        const response = await client.graphql({
+        const response = await userPoolClient.graphql({
             query: updateFaculty,
             variables: {
                 input: {

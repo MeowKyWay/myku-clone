@@ -6,12 +6,15 @@ import { TextFieldType } from "../../types/TextFieldType";
 import ClickableText from "../ClickableText";
 import Button from "../Button";
 import { ButtonType } from "../../types/ButtonType";
-import { useAppDispatch } from "../../hooks";
+import { useAppDispatch, useAppSelector } from "../../hooks";
 import { signUp } from "aws-amplify/auth";
 import Dropdown from "../Dropdown";
 import { generateClient } from "aws-amplify/api";
 import { listDepartments, listFaculties } from "../../graphql/queries";
 import Time from "../../utility/Time";
+import { fetchFaculties } from "../../store/thunks/facultiesThunk";
+import { fetchDepartments } from "../../store/thunks/departmentsThunk";
+import { DepartmentType, FacultyType } from "../../types/DatabaseType";
 
 
 function Register() {
@@ -20,8 +23,8 @@ function Register() {
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
 
-    const [faculties, setFaculties] = useState([]);
-    const [departments, setDepartments] = useState([]);
+    const faculties = useAppSelector(state => state.faculties.data);
+    const departments = useAppSelector(state => state.departments.data);
 
     const [studentID, setStudentID] = useState('');
     const [email, setEmail] = useState('');
@@ -32,37 +35,11 @@ function Register() {
     const [errorMessage, setErrorMessage] = useState('');
 
     useEffect(() => {
-        const fetch = async () => {
-            const fetchDepartments = await client.current.graphql({
-                query: listDepartments,
-                variables: {
-                    filter: {
-                        facultyID: {
-                            eq: faculty
-                        }
-                    }
-                }
-            });
-
-            setDepartment('');
-            setDepartments(fetchDepartments.data.listDepartments.items as never[])
-        }
-        
-        fetch();
-    }, [faculty])
-
-    useEffect(() => {
-        const fetch = async () => {
-            const fetchFaculties = await client.current.graphql({
-                query: listFaculties
-            });
-            
-            setFaculties(fetchFaculties.data.listFaculties.items as never[])
-        }
-
-        fetch();
-        
-    }, [])
+        if (!faculties)
+            dispatch(fetchFaculties());
+        if (!departments)
+            dispatch(fetchDepartments());
+    }, [dispatch, faculties, departments])
 
     const handleRegister = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -159,7 +136,7 @@ function Register() {
                                     </div>
                                     <Dropdown
                                         onChange={setFaculty}
-                                        list={faculties}
+                                        list={faculties as FacultyType[]}
                                         name="faculty"
                                         className="w-full h-10 text-xs"
                                     >
@@ -172,7 +149,7 @@ function Register() {
                                     </div>
                                     <Dropdown
                                         onChange={setDepartment}
-                                        list={departments}
+                                        list={departments?.filter((department) => department.faculty?.id === faculty) as DepartmentType[]}
                                         name="department"
                                         className="flex-1 h-10 text-xs"
                                         disabled={!faculty}

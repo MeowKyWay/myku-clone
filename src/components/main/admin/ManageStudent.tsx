@@ -23,7 +23,7 @@ function ManageStudent() {
     if (!departments) {
       dispatch(fetchDepartments());
     }
-  })
+  }, [dispatch, students, departments])
 
   const header = (
     <tr>
