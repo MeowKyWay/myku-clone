@@ -121,6 +121,10 @@ export const onCreateDepartment = /* GraphQL */ `subscription OnCreateDepartment
       updatedAt
       __typename
     }
+    subjects {
+      nextToken
+      __typename
+    }
     createdAt
     updatedAt
     __typename
@@ -142,6 +146,10 @@ export const onUpdateDepartment = /* GraphQL */ `subscription OnUpdateDepartment
       name
       createdAt
       updatedAt
+      __typename
+    }
+    subjects {
+      nextToken
       __typename
     }
     createdAt
@@ -167,6 +175,10 @@ export const onDeleteDepartment = /* GraphQL */ `subscription OnDeleteDepartment
       updatedAt
       __typename
     }
+    subjects {
+      nextToken
+      __typename
+    }
     createdAt
     updatedAt
     __typename
@@ -175,4 +187,82 @@ export const onDeleteDepartment = /* GraphQL */ `subscription OnDeleteDepartment
 ` as GeneratedSubscription<
   APITypes.OnDeleteDepartmentSubscriptionVariables,
   APITypes.OnDeleteDepartmentSubscription
+>;
+export const onCreateSubject = /* GraphQL */ `subscription OnCreateSubject(
+  $filter: ModelSubscriptionSubjectFilterInput
+  $teacher: String
+) {
+  onCreateSubject(filter: $filter, teacher: $teacher) {
+    id
+    name
+    teacher
+    departmentID
+    department {
+      id
+      name
+      facultyID
+      createdAt
+      updatedAt
+      __typename
+    }
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedSubscription<
+  APITypes.OnCreateSubjectSubscriptionVariables,
+  APITypes.OnCreateSubjectSubscription
+>;
+export const onUpdateSubject = /* GraphQL */ `subscription OnUpdateSubject(
+  $filter: ModelSubscriptionSubjectFilterInput
+  $teacher: String
+) {
+  onUpdateSubject(filter: $filter, teacher: $teacher) {
+    id
+    name
+    teacher
+    departmentID
+    department {
+      id
+      name
+      facultyID
+      createdAt
+      updatedAt
+      __typename
+    }
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedSubscription<
+  APITypes.OnUpdateSubjectSubscriptionVariables,
+  APITypes.OnUpdateSubjectSubscription
+>;
+export const onDeleteSubject = /* GraphQL */ `subscription OnDeleteSubject(
+  $filter: ModelSubscriptionSubjectFilterInput
+  $teacher: String
+) {
+  onDeleteSubject(filter: $filter, teacher: $teacher) {
+    id
+    name
+    teacher
+    departmentID
+    department {
+      id
+      name
+      facultyID
+      createdAt
+      updatedAt
+      __typename
+    }
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedSubscription<
+  APITypes.OnDeleteSubjectSubscriptionVariables,
+  APITypes.OnDeleteSubjectSubscription
 >;

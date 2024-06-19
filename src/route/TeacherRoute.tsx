@@ -7,6 +7,10 @@ function TeacherRoute() {
                 index: true,
                 element: <div>Teacher</div>
             },
+            {
+                path: '/std/teacher/subjects',
+                element: <div>Subjects</div>
+            },
         ] as RouteObject[]
     )
 }

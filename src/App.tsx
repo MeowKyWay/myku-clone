@@ -4,7 +4,7 @@ import { setUser } from "./store/slices/userSlice"
 import { setPageState } from "./store/slices/statesSlice"
 import { PageState } from "./types/PageState"
 import MainPage from "./pages/MainPage"
-import { LoginPath } from "./types/LoginPath"
+import { LoginPath as LoginRoutePath } from "./types/LoginPath"
 import { useAppDispatch, useAppSelector } from "./hooks"
 import AuthUtils from "./utility/AuthUtils"
 
@@ -56,7 +56,7 @@ function App() {
       window.history.pushState({}, '', '/std');
       return;
     }
-    if (pageState === PageState.login && !Object.values(LoginPath).includes(window.location.pathname as LoginPath)) {
+    if (pageState === PageState.login && !Object.values(LoginRoutePath).includes(window.location.pathname as LoginRoutePath)) {
       window.history.pushState({}, '', '/login');
       return;
     }

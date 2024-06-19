@@ -98,6 +98,10 @@ export const getDepartment = /* GraphQL */ `query GetDepartment($id: ID!) {
       updatedAt
       __typename
     }
+    subjects {
+      nextToken
+      __typename
+    }
     createdAt
     updatedAt
     __typename
@@ -158,4 +162,81 @@ export const departmentsByFacultyID = /* GraphQL */ `query DepartmentsByFacultyI
 ` as GeneratedQuery<
   APITypes.DepartmentsByFacultyIDQueryVariables,
   APITypes.DepartmentsByFacultyIDQuery
+>;
+export const getSubject = /* GraphQL */ `query GetSubject($id: ID!) {
+  getSubject(id: $id) {
+    id
+    name
+    teacher
+    departmentID
+    department {
+      id
+      name
+      facultyID
+      createdAt
+      updatedAt
+      __typename
+    }
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedQuery<
+  APITypes.GetSubjectQueryVariables,
+  APITypes.GetSubjectQuery
+>;
+export const listSubjects = /* GraphQL */ `query ListSubjects(
+  $filter: ModelSubjectFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  listSubjects(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+      name
+      teacher
+      departmentID
+      createdAt
+      updatedAt
+      __typename
+    }
+    nextToken
+    __typename
+  }
+}
+` as GeneratedQuery<
+  APITypes.ListSubjectsQueryVariables,
+  APITypes.ListSubjectsQuery
+>;
+export const subjectsByDepartmentID = /* GraphQL */ `query SubjectsByDepartmentID(
+  $departmentID: ID!
+  $sortDirection: ModelSortDirection
+  $filter: ModelSubjectFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  subjectsByDepartmentID(
+    departmentID: $departmentID
+    sortDirection: $sortDirection
+    filter: $filter
+    limit: $limit
+    nextToken: $nextToken
+  ) {
+    items {
+      id
+      name
+      teacher
+      departmentID
+      createdAt
+      updatedAt
+      __typename
+    }
+    nextToken
+    __typename
+  }
+}
+` as GeneratedQuery<
+  APITypes.SubjectsByDepartmentIDQueryVariables,
+  APITypes.SubjectsByDepartmentIDQuery
 >;

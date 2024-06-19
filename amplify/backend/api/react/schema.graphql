@@ -17,7 +17,7 @@ type AuthorizationToken
   ) {
     id: ID!
     token: String!
-    group: String!
+    group: String! #specify the group token
   }
 
 type Faculty
@@ -32,7 +32,8 @@ type Faculty
   ) {
   id: ID!
   name: String!
-  departments: [Department] @hasMany(indexName: "faculty", fields: ["id"])
+
+  departments: [Department] @hasMany(indexName: "faculty", fields: ["id"]) #faculty has many departments
 }
 
 type Department
@@ -47,6 +48,29 @@ type Department
   ) {
   id: ID!
   name: String!
-  facultyID: ID! @index(name: "faculty")
+
+  facultyID: ID! @index(name: "faculty") #faculty has many departments
   faculty: Faculty @belongsTo(fields: ["facultyID"])
+
+  subjects: [Subject] @hasMany(indexName: "department", fields: ["id"]) #department has many subjects
 }
+
+type Subject
+  @model
+  @aws_api_key
+  @aws_cognito_user_pools
+  @auth(
+    rules: [
+      { allow: public, provider: apiKey, operations: [read] }
+      { allow: groups, provider: userPools, groups: ["Admin"], operations: [delete] }
+      { allow: owner, ownerField: "teacher", provider: userPools}
+    ]
+  ) {
+    id: ID!
+    name: String!
+
+    teacher: String! #owner
+
+    departmentID: ID! @index(name: "department") #department has many subjects
+    department: Department @belongsTo(fields: ["departmentID"])
+  }

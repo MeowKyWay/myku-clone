@@ -112,6 +112,24 @@ export type Department = {
   name: string,
   facultyID: string,
   faculty?: Faculty | null,
+  subjects?: ModelSubjectConnection | null,
+  createdAt: string,
+  updatedAt: string,
+};
+
+export type ModelSubjectConnection = {
+  __typename: "ModelSubjectConnection",
+  items:  Array<Subject | null >,
+  nextToken?: string | null,
+};
+
+export type Subject = {
+  __typename: "Subject",
+  id: string,
+  name: string,
+  teacher: string,
+  departmentID: string,
+  department?: Department | null,
   createdAt: string,
   updatedAt: string,
 };
@@ -167,6 +185,35 @@ export type DeleteDepartmentInput = {
   id: string,
 };
 
+export type CreateSubjectInput = {
+  id?: string | null,
+  name: string,
+  teacher: string,
+  departmentID: string,
+};
+
+export type ModelSubjectConditionInput = {
+  name?: ModelStringInput | null,
+  teacher?: ModelStringInput | null,
+  departmentID?: ModelIDInput | null,
+  and?: Array< ModelSubjectConditionInput | null > | null,
+  or?: Array< ModelSubjectConditionInput | null > | null,
+  not?: ModelSubjectConditionInput | null,
+  createdAt?: ModelStringInput | null,
+  updatedAt?: ModelStringInput | null,
+};
+
+export type UpdateSubjectInput = {
+  id: string,
+  name?: string | null,
+  teacher?: string | null,
+  departmentID?: string | null,
+};
+
+export type DeleteSubjectInput = {
+  id: string,
+};
+
 export type ModelAuthorizationTokenFilterInput = {
   id?: ModelIDInput | null,
   token?: ModelStringInput | null,
@@ -216,6 +263,18 @@ export enum ModelSortDirection {
   DESC = "DESC",
 }
 
+
+export type ModelSubjectFilterInput = {
+  id?: ModelIDInput | null,
+  name?: ModelStringInput | null,
+  teacher?: ModelStringInput | null,
+  departmentID?: ModelIDInput | null,
+  createdAt?: ModelStringInput | null,
+  updatedAt?: ModelStringInput | null,
+  and?: Array< ModelSubjectFilterInput | null > | null,
+  or?: Array< ModelSubjectFilterInput | null > | null,
+  not?: ModelSubjectFilterInput | null,
+};
 
 export type ModelSubscriptionAuthorizationTokenFilterInput = {
   id?: ModelSubscriptionIDInput | null,
@@ -273,6 +332,17 @@ export type ModelSubscriptionDepartmentFilterInput = {
   updatedAt?: ModelSubscriptionStringInput | null,
   and?: Array< ModelSubscriptionDepartmentFilterInput | null > | null,
   or?: Array< ModelSubscriptionDepartmentFilterInput | null > | null,
+};
+
+export type ModelSubscriptionSubjectFilterInput = {
+  id?: ModelSubscriptionIDInput | null,
+  name?: ModelSubscriptionStringInput | null,
+  departmentID?: ModelSubscriptionIDInput | null,
+  createdAt?: ModelSubscriptionStringInput | null,
+  updatedAt?: ModelSubscriptionStringInput | null,
+  and?: Array< ModelSubscriptionSubjectFilterInput | null > | null,
+  or?: Array< ModelSubscriptionSubjectFilterInput | null > | null,
+  teacher?: ModelStringInput | null,
 };
 
 export type CreateAuthorizationTokenMutationVariables = {
@@ -398,6 +468,10 @@ export type CreateDepartmentMutation = {
       createdAt: string,
       updatedAt: string,
     } | null,
+    subjects?:  {
+      __typename: "ModelSubjectConnection",
+      nextToken?: string | null,
+    } | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -421,6 +495,10 @@ export type UpdateDepartmentMutation = {
       createdAt: string,
       updatedAt: string,
     } | null,
+    subjects?:  {
+      __typename: "ModelSubjectConnection",
+      nextToken?: string | null,
+    } | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -441,6 +519,85 @@ export type DeleteDepartmentMutation = {
       __typename: "Faculty",
       id: string,
       name: string,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    subjects?:  {
+      __typename: "ModelSubjectConnection",
+      nextToken?: string | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type CreateSubjectMutationVariables = {
+  input: CreateSubjectInput,
+  condition?: ModelSubjectConditionInput | null,
+};
+
+export type CreateSubjectMutation = {
+  createSubject?:  {
+    __typename: "Subject",
+    id: string,
+    name: string,
+    teacher: string,
+    departmentID: string,
+    department?:  {
+      __typename: "Department",
+      id: string,
+      name: string,
+      facultyID: string,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type UpdateSubjectMutationVariables = {
+  input: UpdateSubjectInput,
+  condition?: ModelSubjectConditionInput | null,
+};
+
+export type UpdateSubjectMutation = {
+  updateSubject?:  {
+    __typename: "Subject",
+    id: string,
+    name: string,
+    teacher: string,
+    departmentID: string,
+    department?:  {
+      __typename: "Department",
+      id: string,
+      name: string,
+      facultyID: string,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type DeleteSubjectMutationVariables = {
+  input: DeleteSubjectInput,
+  condition?: ModelSubjectConditionInput | null,
+};
+
+export type DeleteSubjectMutation = {
+  deleteSubject?:  {
+    __typename: "Subject",
+    id: string,
+    name: string,
+    teacher: string,
+    departmentID: string,
+    department?:  {
+      __typename: "Department",
+      id: string,
+      name: string,
+      facultyID: string,
       createdAt: string,
       updatedAt: string,
     } | null,
@@ -540,6 +697,10 @@ export type GetDepartmentQuery = {
       createdAt: string,
       updatedAt: string,
     } | null,
+    subjects?:  {
+      __typename: "ModelSubjectConnection",
+      nextToken?: string | null,
+    } | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -582,6 +743,76 @@ export type DepartmentsByFacultyIDQuery = {
       id: string,
       name: string,
       facultyID: string,
+      createdAt: string,
+      updatedAt: string,
+    } | null >,
+    nextToken?: string | null,
+  } | null,
+};
+
+export type GetSubjectQueryVariables = {
+  id: string,
+};
+
+export type GetSubjectQuery = {
+  getSubject?:  {
+    __typename: "Subject",
+    id: string,
+    name: string,
+    teacher: string,
+    departmentID: string,
+    department?:  {
+      __typename: "Department",
+      id: string,
+      name: string,
+      facultyID: string,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type ListSubjectsQueryVariables = {
+  filter?: ModelSubjectFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListSubjectsQuery = {
+  listSubjects?:  {
+    __typename: "ModelSubjectConnection",
+    items:  Array< {
+      __typename: "Subject",
+      id: string,
+      name: string,
+      teacher: string,
+      departmentID: string,
+      createdAt: string,
+      updatedAt: string,
+    } | null >,
+    nextToken?: string | null,
+  } | null,
+};
+
+export type SubjectsByDepartmentIDQueryVariables = {
+  departmentID: string,
+  sortDirection?: ModelSortDirection | null,
+  filter?: ModelSubjectFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type SubjectsByDepartmentIDQuery = {
+  subjectsByDepartmentID?:  {
+    __typename: "ModelSubjectConnection",
+    items:  Array< {
+      __typename: "Subject",
+      id: string,
+      name: string,
+      teacher: string,
+      departmentID: string,
       createdAt: string,
       updatedAt: string,
     } | null >,
@@ -705,6 +936,10 @@ export type OnCreateDepartmentSubscription = {
       createdAt: string,
       updatedAt: string,
     } | null,
+    subjects?:  {
+      __typename: "ModelSubjectConnection",
+      nextToken?: string | null,
+    } | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -727,6 +962,10 @@ export type OnUpdateDepartmentSubscription = {
       createdAt: string,
       updatedAt: string,
     } | null,
+    subjects?:  {
+      __typename: "ModelSubjectConnection",
+      nextToken?: string | null,
+    } | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -746,6 +985,85 @@ export type OnDeleteDepartmentSubscription = {
       __typename: "Faculty",
       id: string,
       name: string,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    subjects?:  {
+      __typename: "ModelSubjectConnection",
+      nextToken?: string | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnCreateSubjectSubscriptionVariables = {
+  filter?: ModelSubscriptionSubjectFilterInput | null,
+  teacher?: string | null,
+};
+
+export type OnCreateSubjectSubscription = {
+  onCreateSubject?:  {
+    __typename: "Subject",
+    id: string,
+    name: string,
+    teacher: string,
+    departmentID: string,
+    department?:  {
+      __typename: "Department",
+      id: string,
+      name: string,
+      facultyID: string,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnUpdateSubjectSubscriptionVariables = {
+  filter?: ModelSubscriptionSubjectFilterInput | null,
+  teacher?: string | null,
+};
+
+export type OnUpdateSubjectSubscription = {
+  onUpdateSubject?:  {
+    __typename: "Subject",
+    id: string,
+    name: string,
+    teacher: string,
+    departmentID: string,
+    department?:  {
+      __typename: "Department",
+      id: string,
+      name: string,
+      facultyID: string,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnDeleteSubjectSubscriptionVariables = {
+  filter?: ModelSubscriptionSubjectFilterInput | null,
+  teacher?: string | null,
+};
+
+export type OnDeleteSubjectSubscription = {
+  onDeleteSubject?:  {
+    __typename: "Subject",
+    id: string,
+    name: string,
+    teacher: string,
+    departmentID: string,
+    department?:  {
+      __typename: "Department",
+      id: string,
+      name: string,
+      facultyID: string,
       createdAt: string,
       updatedAt: string,
     } | null,

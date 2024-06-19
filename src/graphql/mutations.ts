@@ -134,6 +134,10 @@ export const createDepartment = /* GraphQL */ `mutation CreateDepartment(
       updatedAt
       __typename
     }
+    subjects {
+      nextToken
+      __typename
+    }
     createdAt
     updatedAt
     __typename
@@ -156,6 +160,10 @@ export const updateDepartment = /* GraphQL */ `mutation UpdateDepartment(
       name
       createdAt
       updatedAt
+      __typename
+    }
+    subjects {
+      nextToken
       __typename
     }
     createdAt
@@ -182,6 +190,10 @@ export const deleteDepartment = /* GraphQL */ `mutation DeleteDepartment(
       updatedAt
       __typename
     }
+    subjects {
+      nextToken
+      __typename
+    }
     createdAt
     updatedAt
     __typename
@@ -190,4 +202,82 @@ export const deleteDepartment = /* GraphQL */ `mutation DeleteDepartment(
 ` as GeneratedMutation<
   APITypes.DeleteDepartmentMutationVariables,
   APITypes.DeleteDepartmentMutation
+>;
+export const createSubject = /* GraphQL */ `mutation CreateSubject(
+  $input: CreateSubjectInput!
+  $condition: ModelSubjectConditionInput
+) {
+  createSubject(input: $input, condition: $condition) {
+    id
+    name
+    teacher
+    departmentID
+    department {
+      id
+      name
+      facultyID
+      createdAt
+      updatedAt
+      __typename
+    }
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedMutation<
+  APITypes.CreateSubjectMutationVariables,
+  APITypes.CreateSubjectMutation
+>;
+export const updateSubject = /* GraphQL */ `mutation UpdateSubject(
+  $input: UpdateSubjectInput!
+  $condition: ModelSubjectConditionInput
+) {
+  updateSubject(input: $input, condition: $condition) {
+    id
+    name
+    teacher
+    departmentID
+    department {
+      id
+      name
+      facultyID
+      createdAt
+      updatedAt
+      __typename
+    }
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedMutation<
+  APITypes.UpdateSubjectMutationVariables,
+  APITypes.UpdateSubjectMutation
+>;
+export const deleteSubject = /* GraphQL */ `mutation DeleteSubject(
+  $input: DeleteSubjectInput!
+  $condition: ModelSubjectConditionInput
+) {
+  deleteSubject(input: $input, condition: $condition) {
+    id
+    name
+    teacher
+    departmentID
+    department {
+      id
+      name
+      facultyID
+      createdAt
+      updatedAt
+      __typename
+    }
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedMutation<
+  APITypes.DeleteSubjectMutationVariables,
+  APITypes.DeleteSubjectMutation
 >;

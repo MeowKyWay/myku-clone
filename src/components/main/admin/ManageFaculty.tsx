@@ -11,14 +11,15 @@ import { TbRefresh } from "react-icons/tb";
 import ClickableText from "../../ClickableText";
 import { useAppDispatch, useAppSelector } from "../../../hooks";
 import { addFaculty, fetchFaculties, putFaculty, removeFaculty } from "../../../store/thunks/facultiesThunk";
+import { AdminRoutePath } from "../../../route/AdminRoute";
 
 function ManageFaculty() {
 
   const location = useLocation();
   const dispatch = useAppDispatch();
 
-  if (location.pathname !== "/std/admin/faculty") {//in case of /std/admin/ (default path)
-    window.history.pushState({}, "", "/std/admin/faculty");
+  if (location.pathname !== AdminRoutePath.FACULTY) {//in case of /std/admin/ (default path)
+    window.history.pushState({}, "", AdminRoutePath.FACULTY);
   }
 
   const faculties = useAppSelector(state => state.faculties.data);

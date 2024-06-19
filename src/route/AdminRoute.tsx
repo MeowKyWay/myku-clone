@@ -4,6 +4,13 @@ import ManageDepartment from "../components/main/admin/ManageDepartment";
 import ManageTeacher from "../components/main/admin/ManageTeacher";
 import ManageStudent from "../components/main/admin/ManageStudent";
 
+export enum AdminRoutePath {
+    FACULTY = '/std/admin/faculties',
+    DEPARTMENT = '/std/admin/departments',
+    TEACHER = '/std/admin/teachers',
+    STUDENT = '/std/admin/students'
+}
+
 function AdminRoute() {
     return (
         [
@@ -12,19 +19,19 @@ function AdminRoute() {
                 element: <ManageFaculty />
             },
             {
-                path: '/std/admin/faculty',
+                path: AdminRoutePath.FACULTY,
                 element: <ManageFaculty />
             },
             {
-                path: '/std/admin/department/:filter?',
+                path: AdminRoutePath.DEPARTMENT,
                 element: <ManageDepartment />
             },
             {
-                path: '/std/admin/teacher',
+                path: AdminRoutePath.TEACHER,
                 element: <ManageTeacher />
             },
             {
-                path: '/std/admin/student',
+                path: AdminRoutePath.STUDENT,
                 element: <ManageStudent />
             }
         ] as RouteObject[]
