@@ -14,6 +14,7 @@ export const onCreateAuthorizationToken = /* GraphQL */ `subscription OnCreateAu
   onCreateAuthorizationToken(filter: $filter) {
     id
     token
+    group
     createdAt
     updatedAt
     __typename
@@ -29,6 +30,7 @@ export const onUpdateAuthorizationToken = /* GraphQL */ `subscription OnUpdateAu
   onUpdateAuthorizationToken(filter: $filter) {
     id
     token
+    group
     createdAt
     updatedAt
     __typename
@@ -44,6 +46,7 @@ export const onDeleteAuthorizationToken = /* GraphQL */ `subscription OnDeleteAu
   onDeleteAuthorizationToken(filter: $filter) {
     id
     token
+    group
     createdAt
     updatedAt
     __typename

@@ -13,6 +13,7 @@ export const fetchStudents = createAsyncThunk<UserType[]>(
             return {
                 id: user.Attributes.sub,
                 name: user.Attributes.name,
+                studentID: user.Attributes['custom:studentId'],
                 email: user.Attributes.email,
                 departmentID: user.Attributes['custom:departmentID'],
                 userStatus: user.UserStatus,

@@ -79,9 +79,8 @@ function ManageDepartment() {
   const header = (
     <tr>
       <th style={{ width: "2%" }}>no.</th>
-      <th style={{ width: "27%" }}>id</th>
-      <th style={{ width: "30%" }}>name</th>
-      <th style={{ width: "19%" }}>faculty</th>
+      <th style={{ width: "50%" }}>name</th>
+      <th style={{ width: "26%" }}>faculty</th>
       <th style={{ width: "7%" }}>teacher</th>
       <th style={{ width: "15%" }}>action</th>
     </tr>
@@ -92,7 +91,6 @@ function ManageDepartment() {
     return (
       <tr className="text-sm h-8" key={index}>
         <td className="text-center">{index + 1}</td>
-        <td className="mono">{department.id}</td>
         <td>{department.name}</td>
         <td>{department.faculty?.name}</td>
         <td className="text-center">View</td>

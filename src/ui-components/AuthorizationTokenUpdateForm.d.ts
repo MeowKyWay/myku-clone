@@ -24,14 +24,17 @@ export declare type ValidationResponse = {
 export declare type ValidationFunction<T> = (value: T, validationResponse: ValidationResponse) => ValidationResponse | Promise<ValidationResponse>;
 export declare type AuthorizationTokenUpdateFormInputValues = {
     token?: string;
+    group?: string;
 };
 export declare type AuthorizationTokenUpdateFormValidationValues = {
     token?: ValidationFunction<string>;
+    group?: ValidationFunction<string>;
 };
 export declare type PrimitiveOverrideProps<T> = Partial<T> & React.DOMAttributes<HTMLDivElement>;
 export declare type AuthorizationTokenUpdateFormOverridesProps = {
     AuthorizationTokenUpdateFormGrid?: PrimitiveOverrideProps<GridProps>;
     token?: PrimitiveOverrideProps<TextFieldProps>;
+    group?: PrimitiveOverrideProps<TextFieldProps>;
 } & EscapeHatchProps;
 export declare type AuthorizationTokenUpdateFormProps = React.PropsWithChildren<{
     overrides?: AuthorizationTokenUpdateFormOverridesProps | undefined | null;

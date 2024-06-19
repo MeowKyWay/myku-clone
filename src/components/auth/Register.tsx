@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { setRegisterEmail } from "../../store/slices/registerSlice";
 import TextField from "../TextField";
@@ -9,8 +9,6 @@ import { ButtonType } from "../../types/ButtonType";
 import { useAppDispatch, useAppSelector } from "../../hooks";
 import { signUp } from "aws-amplify/auth";
 import Dropdown from "../Dropdown";
-import { generateClient } from "aws-amplify/api";
-import { listDepartments, listFaculties } from "../../graphql/queries";
 import Time from "../../utility/Time";
 import { fetchFaculties } from "../../store/thunks/facultiesThunk";
 import { fetchDepartments } from "../../store/thunks/departmentsThunk";
@@ -19,13 +17,13 @@ import { DepartmentType, FacultyType } from "../../types/DatabaseType";
 
 function Register() {
 
-    const client = useRef(generateClient({authMode: 'apiKey'}));
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
 
     const faculties = useAppSelector(state => state.faculties.data);
     const departments = useAppSelector(state => state.departments.data);
 
+    const [name, setName] = useState("");
     const [studentID, setStudentID] = useState('');
     const [email, setEmail] = useState('');
     const [faculty, setFaculty] = useState('');
@@ -45,7 +43,7 @@ function Register() {
         event.preventDefault();
 
         setErrorMessage('');
-        
+
         if (password !== confirmPassword) {
             setErrorMessage('รหัสผ่านไม่ตรงกัน');
             return errorMessage;
@@ -60,6 +58,7 @@ function Register() {
                 password: password,
                 options: {
                     userAttributes: {
+                        name: name,
                         email: email,
                         'custom:studentId': studentID,
                         'custom:status': 'current',
@@ -95,11 +94,25 @@ function Register() {
     }
 
     return (
-        <div className="flex flex-col w-full px-6 pb-10">
+        <div className="flex flex-col w-full px-6 pb-2">
             <div className="text-center font-light mt-12 mb-4">ลงทะเบียนบัญชีนิสิต</div>
             <div className="mt-5">
                 <form onSubmit={(e) => handleRegister(e)}>
                     <div className="flex flex-col gap-1">
+                        <div className="flex flex-col h-16">
+                            <div className="h-6">
+                                <label className="text-xs text-gray-600"> ชื่อ-นามสกุล </label>
+                            </div>
+                            <TextField
+                                value={name}
+                                onChange={setName}
+                                type={TextFieldType.text}
+                                name="name"
+                                autoComplete="name"
+                            >
+                                เช่น สมชาย ใจดี
+                            </TextField>
+                        </div>
                         <div className="flex flex-col h-16">
                             <div className="h-6">
                                 <label className="text-xs text-gray-600"> รหัสนิสิต </label>

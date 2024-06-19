@@ -23,14 +23,17 @@ export declare type ValidationResponse = {
 export declare type ValidationFunction<T> = (value: T, validationResponse: ValidationResponse) => ValidationResponse | Promise<ValidationResponse>;
 export declare type AuthorizationTokenCreateFormInputValues = {
     token?: string;
+    group?: string;
 };
 export declare type AuthorizationTokenCreateFormValidationValues = {
     token?: ValidationFunction<string>;
+    group?: ValidationFunction<string>;
 };
 export declare type PrimitiveOverrideProps<T> = Partial<T> & React.DOMAttributes<HTMLDivElement>;
 export declare type AuthorizationTokenCreateFormOverridesProps = {
     AuthorizationTokenCreateFormGrid?: PrimitiveOverrideProps<GridProps>;
     token?: PrimitiveOverrideProps<TextFieldProps>;
+    group?: PrimitiveOverrideProps<TextFieldProps>;
 } & EscapeHatchProps;
 export declare type AuthorizationTokenCreateFormProps = React.PropsWithChildren<{
     overrides?: AuthorizationTokenCreateFormOverridesProps | undefined | null;

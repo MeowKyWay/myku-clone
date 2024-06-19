@@ -4,6 +4,7 @@ export interface UserType {
     email: string;
     departmentID: string;
     userStatus: string;
+    studentID?: string;
 }
 
 export interface FacultyType {

@@ -5,10 +5,12 @@
 export type CreateAuthorizationTokenInput = {
   id?: string | null,
   token: string,
+  group: string,
 };
 
 export type ModelAuthorizationTokenConditionInput = {
   token?: ModelStringInput | null,
+  group?: ModelStringInput | null,
   and?: Array< ModelAuthorizationTokenConditionInput | null > | null,
   or?: Array< ModelAuthorizationTokenConditionInput | null > | null,
   not?: ModelAuthorizationTokenConditionInput | null,
@@ -60,6 +62,7 @@ export type AuthorizationToken = {
   __typename: "AuthorizationToken",
   id: string,
   token: string,
+  group: string,
   createdAt: string,
   updatedAt: string,
 };
@@ -67,6 +70,7 @@ export type AuthorizationToken = {
 export type UpdateAuthorizationTokenInput = {
   id: string,
   token?: string | null,
+  group?: string | null,
 };
 
 export type DeleteAuthorizationTokenInput = {
@@ -166,6 +170,7 @@ export type DeleteDepartmentInput = {
 export type ModelAuthorizationTokenFilterInput = {
   id?: ModelIDInput | null,
   token?: ModelStringInput | null,
+  group?: ModelStringInput | null,
   createdAt?: ModelStringInput | null,
   updatedAt?: ModelStringInput | null,
   and?: Array< ModelAuthorizationTokenFilterInput | null > | null,
@@ -280,6 +285,7 @@ export type CreateAuthorizationTokenMutation = {
     __typename: "AuthorizationToken",
     id: string,
     token: string,
+    group: string,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -295,6 +301,7 @@ export type UpdateAuthorizationTokenMutation = {
     __typename: "AuthorizationToken",
     id: string,
     token: string,
+    group: string,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -310,6 +317,7 @@ export type DeleteAuthorizationTokenMutation = {
     __typename: "AuthorizationToken",
     id: string,
     token: string,
+    group: string,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -450,6 +458,7 @@ export type GetAuthorizationTokenQuery = {
     __typename: "AuthorizationToken",
     id: string,
     token: string,
+    group: string,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -468,6 +477,7 @@ export type ListAuthorizationTokensQuery = {
       __typename: "AuthorizationToken",
       id: string,
       token: string,
+      group: string,
       createdAt: string,
       updatedAt: string,
     } | null >,
@@ -588,6 +598,7 @@ export type OnCreateAuthorizationTokenSubscription = {
     __typename: "AuthorizationToken",
     id: string,
     token: string,
+    group: string,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -602,6 +613,7 @@ export type OnUpdateAuthorizationTokenSubscription = {
     __typename: "AuthorizationToken",
     id: string,
     token: string,
+    group: string,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -616,6 +628,7 @@ export type OnDeleteAuthorizationTokenSubscription = {
     __typename: "AuthorizationToken",
     id: string,
     token: string,
+    group: string,
     createdAt: string,
     updatedAt: string,
   } | null,

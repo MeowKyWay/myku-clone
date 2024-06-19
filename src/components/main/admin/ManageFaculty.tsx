@@ -70,8 +70,7 @@ function ManageFaculty() {
   const header = (
     <tr>
       <th style={{ width: "2%" }}>no.</th>
-      <th style={{ width: "27%" }}>id</th>
-      <th style={{ width: "46%" }}>name</th>
+      <th style={{ width: "73%" }}>name</th>
       <th style={{ width: "10%" }}>departments</th>
       <th style={{ width: "15%" }}>action</th>
     </tr>
@@ -81,7 +80,6 @@ function ManageFaculty() {
     return (
       <tr className="text-sm h-8" key={index}>
         <td className="text-center">{index + 1}</td>
-        <td className="mono">{faculty.id}</td>
         <td>{faculty.name}</td>
         <td className="text-center">
           <Link to={`/std/admin/department/${faculty.id}`}>

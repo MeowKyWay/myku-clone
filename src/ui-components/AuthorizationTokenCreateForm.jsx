@@ -24,15 +24,19 @@ export default function AuthorizationTokenCreateForm(props) {
   } = props;
   const initialValues = {
     token: "",
+    group: "",
   };
   const [token, setToken] = React.useState(initialValues.token);
+  const [group, setGroup] = React.useState(initialValues.group);
   const [errors, setErrors] = React.useState({});
   const resetStateValues = () => {
     setToken(initialValues.token);
+    setGroup(initialValues.group);
     setErrors({});
   };
   const validations = {
     token: [{ type: "Required" }],
+    group: [{ type: "Required" }],
   };
   const runValidationTasks = async (
     fieldName,
@@ -61,6 +65,7 @@ export default function AuthorizationTokenCreateForm(props) {
         event.preventDefault();
         let modelFields = {
           token,
+          group,
         };
         const validationResponses = await Promise.all(
           Object.keys(validations).reduce((promises, fieldName) => {
@@ -124,6 +129,7 @@ export default function AuthorizationTokenCreateForm(props) {
           if (onChange) {
             const modelFields = {
               token: value,
+              group,
             };
             const result = onChange(modelFields);
             value = result?.token ?? value;
@@ -137,6 +143,31 @@ export default function AuthorizationTokenCreateForm(props) {
         errorMessage={errors.token?.errorMessage}
         hasError={errors.token?.hasError}
         {...getOverrideProps(overrides, "token")}
+      ></TextField>
+      <TextField
+        label="Group"
+        isRequired={true}
+        isReadOnly={false}
+        value={group}
+        onChange={(e) => {
+          let { value } = e.target;
+          if (onChange) {
+            const modelFields = {
+              token,
+              group: value,
+            };
+            const result = onChange(modelFields);
+            value = result?.group ?? value;
+          }
+          if (errors.group?.hasError) {
+            runValidationTasks("group", value);
+          }
+          setGroup(value);
+        }}
+        onBlur={() => runValidationTasks("group", group)}
+        errorMessage={errors.group?.errorMessage}
+        hasError={errors.group?.hasError}
+        {...getOverrideProps(overrides, "group")}
       ></TextField>
       <Flex
         justifyContent="space-between"

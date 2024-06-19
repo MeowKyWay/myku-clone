@@ -28,7 +28,8 @@ function ManageStudent() {
   const header = (
     <tr>
       <th style={{ width: "2%" }}>no.</th>
-      <th style={{ width: "35%" }}>name</th>
+      <th style={{ width: "10%" }}>student id</th>
+      <th style={{ width: "25%" }}>name</th>
       <th style={{ width: "20%" }}>email</th>
       <th style={{ width: "25%" }}>department</th>
       <th style={{ width: "8%" }}>subjects</th>
@@ -40,6 +41,7 @@ function ManageStudent() {
     return (
       <tr className="text-sm h-8" key={index}>
         <td className="text-center">{index + 1}</td>
+        <td className="text-center mono">{student.studentID}</td>
         <td>{student.name}</td>
         <td>{student.email}</td>
         <td>

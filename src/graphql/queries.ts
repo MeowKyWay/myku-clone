@@ -12,6 +12,7 @@ export const getAuthorizationToken = /* GraphQL */ `query GetAuthorizationToken(
   getAuthorizationToken(id: $id) {
     id
     token
+    group
     createdAt
     updatedAt
     __typename
@@ -34,6 +35,7 @@ export const listAuthorizationTokens = /* GraphQL */ `query ListAuthorizationTok
     items {
       id
       token
+      group
       createdAt
       updatedAt
       __typename

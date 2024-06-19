@@ -12,11 +12,12 @@ type AuthorizationToken
   @aws_cognito_user_pools
   @auth(
     rules: [
-      { allow: groups, provider: userPools, groups: ["Admin"], operations: [read] }
+      { allow: groups, groupsField: "group", provider: userPools, operations: [read] }
     ]
   ) {
     id: ID!
     token: String!
+    group: String!
   }
 
 type Faculty

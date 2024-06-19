@@ -15,6 +15,7 @@ export const createAuthorizationToken = /* GraphQL */ `mutation CreateAuthorizat
   createAuthorizationToken(input: $input, condition: $condition) {
     id
     token
+    group
     createdAt
     updatedAt
     __typename
@@ -31,6 +32,7 @@ export const updateAuthorizationToken = /* GraphQL */ `mutation UpdateAuthorizat
   updateAuthorizationToken(input: $input, condition: $condition) {
     id
     token
+    group
     createdAt
     updatedAt
     __typename
@@ -47,6 +49,7 @@ export const deleteAuthorizationToken = /* GraphQL */ `mutation DeleteAuthorizat
   deleteAuthorizationToken(input: $input, condition: $condition) {
     id
     token
+    group
     createdAt
     updatedAt
     __typename
