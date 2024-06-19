@@ -3,13 +3,7 @@ import ManageFaculty from "../components/main/admin/ManageFaculty";
 import ManageDepartment from "../components/main/admin/ManageDepartment";
 import ManageTeacher from "../components/main/admin/ManageTeacher";
 import ManageStudent from "../components/main/admin/ManageStudent";
-
-export enum AdminRoutePath {
-    FACULTY = '/std/admin/faculties',
-    DEPARTMENT = '/std/admin/departments',
-    TEACHER = '/std/admin/teachers',
-    STUDENT = '/std/admin/students'
-}
+import { AdminRoutePath } from "./RoutePath";
 
 function AdminRoute() {
     return (
