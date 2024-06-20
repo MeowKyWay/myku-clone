@@ -8,7 +8,7 @@ function TeacherRoute() {
         [
             {
                 index: true,
-                element: <div>Teacher</div>
+                element: <Subject />
             },
             {
                 path: TeacherRoutePath.MYSUBJECT,

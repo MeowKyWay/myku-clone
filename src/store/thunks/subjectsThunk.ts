@@ -2,7 +2,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { generateClient } from "aws-amplify/api";
 import { SubjectType } from "../../types/DatabaseType";
 import { createSubject, deleteSubject, updateSubject } from "../../graphql/mutations";
-import { listSubjects } from "../../graphql/queries";
+import { listSubjectsWithDepartment } from "../../custom_graphql/customQueries";
 
 const client = generateClient();
 
@@ -10,7 +10,24 @@ export const fetchSubjects = createAsyncThunk<SubjectType[]>(
     "fetchSubjects",
     async (): Promise<SubjectType[]> => {
         const response = await client.graphql({
-            query: listSubjects,
+            query: listSubjectsWithDepartment,
+        })
+        return response.data.listSubjects.items;
+    }
+)
+
+export const fetchMySubjects = createAsyncThunk<SubjectType[], string>( // teacher's subjects
+    "fetchMySubjects",
+    async (teacher: string): Promise<SubjectType[]> => {
+        const response = await client.graphql({
+            query: listSubjectsWithDepartment,
+            variables: {
+                filter: {
+                    teacher: {
+                        eq: teacher,
+                    }
+                }
+            }
         })
         return response.data.listSubjects.items;
     }

@@ -26,6 +26,34 @@ export const listDepartmentsWithFaculty = /* GraphQL */ `query ListDepartments(
     }
   }
   ` as GeneratedQuery<
-    APITypes.ListDepartmentsQueryVariables,
-    APITypes.ListDepartmentsQuery
-  >;
+  APITypes.ListDepartmentsQueryVariables,
+  APITypes.ListDepartmentsQuery
+>;
+
+export const listSubjectsWithDepartment = /* GraphQL */ `query ListSubjects(
+    $filter: ModelSubjectFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listSubjects(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        name
+        credit
+        teacher
+        department {
+          id
+          name
+        }
+        createdAt
+        updatedAt
+        __typename
+      }
+      nextToken
+      __typename
+    }
+  }
+  ` as GeneratedQuery<
+  APITypes.ListSubjectsQueryVariables,
+  APITypes.ListSubjectsQuery
+>;

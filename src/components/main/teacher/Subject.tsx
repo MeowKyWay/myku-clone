@@ -10,7 +10,7 @@ import InputModal from "../../InputModal";
 import { TbRefresh } from "react-icons/tb";
 import { useAppDispatch, useAppSelector } from "../../../hooks";
 import { TeacherRoutePath } from "../../../route/RoutePath";
-import { addSubject, fetchSubjects, putSubject, removeSubject } from "../../../store/thunks/subjectsThunk";
+import { addSubject, fetchMySubjects, putSubject, removeSubject } from "../../../store/thunks/subjectsThunk";
 import { fetchDepartments } from "../../../store/thunks/departmentsThunk";
 import Dropdown from "../../Dropdown";
 
@@ -23,7 +23,7 @@ function Subject() {
     window.history.pushState({}, "", TeacherRoutePath.MYSUBJECT);
   }
 
-  const subjects = useAppSelector(state => state.subjects.data);
+  const subjects = useAppSelector(state => state.subjects.mySubjects);
   const departments = useAppSelector(state => state.departments.data);
 
   const user = useAppSelector(state => state.user.currentUser)
@@ -45,8 +45,9 @@ function Subject() {
   }, [showCreateModal, showUpdateModal])
 
   useEffect(() => { // initial fetch
+    console.log(user.attributes.sub)
     if (!subjects) {
-      dispatch(fetchSubjects());
+      dispatch(fetchMySubjects(user.attributes.sub as string));
     }
     if (!departments) {
       dispatch(fetchDepartments());
@@ -95,6 +96,7 @@ function Subject() {
         <td className="text-center">{index + 1}</td>
         <td>{subject.name}</td>
         <td className="text-center">
+          {subject.department?.name}
         </td>
         <td>
           <div className="text-center">
@@ -182,7 +184,7 @@ function Subject() {
         <div className="flex flex-col h-full flex-1 pr-2 justify-end items-end">
           <div className="h-full flex-1 flex flex-row justify-end items-end gap-1">
             <Button
-              onClick={() => dispatch(fetchSubjects())}
+              onClick={() => dispatch(fetchMySubjects(user.attributes.sub as string))}
               type={ButtonType.TERTIARY}
               className="h-6 w-6 mb-1 px-0"
             >
