@@ -32,7 +32,7 @@ function Subject() {
 
   const [name, setName] = useState("");
   const [credit, setCredit] = useState("");
-  const [department, setDepartment] = useState("");
+  const [department, setDepartment] = useState(user.attributes["custom:departmentID"] as string);
 
   const errorMessage = useAppSelector(state => state.subjects.error);
 
@@ -42,10 +42,11 @@ function Subject() {
   useEffect(() => { // on close modal reset input state
     if (showCreateModal || showUpdateModal) return;
     setName("");
-  }, [showCreateModal, showUpdateModal])
+    setCredit("");
+    setDepartment(user.attributes["custom:departmentID"] as string);
+  }, [showCreateModal, showUpdateModal, user])
 
   useEffect(() => { // initial fetch
-    console.log(user.attributes.sub)
     if (!subjects) {
       dispatch(fetchMySubjects(user.attributes.sub as string));
     }
@@ -85,8 +86,10 @@ function Subject() {
   const header = (
     <tr>
       <th style={{ width: "2%" }}>no.</th>
-      <th style={{ width: "73%" }}>name</th>
+      <th style={{ width: "43%" }}>name</th>
       <th style={{ width: "25%" }}>departments</th>
+      <th style={{ width: "15%" }}>section</th>
+      <th style={{ width: "15%" }}>action</th>
     </tr>
   );
 
@@ -97,6 +100,9 @@ function Subject() {
         <td>{subject.name}</td>
         <td className="text-center">
           {subject.department?.name}
+        </td>
+        <td className="text-center">
+          view
         </td>
         <td>
           <div className="text-center">
@@ -163,9 +169,10 @@ function Subject() {
           onCancle={() => setShowCreateModal(false)}
           onConfirm={handleCreateSubject}
           confirmButtonType={ButtonType.SECONDARY}
-          confirmButtonLabel="เพิ่มคณะ"
+          confirmButtonLabel="เพิ่มวิชา"
+          className="w-96"
         >
-          เพิ่มคณะ
+          เพิ่มวิชา
         </InputModal>
       )}
       {showUpdateModal && (
@@ -174,13 +181,14 @@ function Subject() {
           onCancle={() => setShowUpdateModal(false)}
           onConfirm={handleUpdateSubject}
           confirmButtonType={ButtonType.SECONDARY}
-          confirmButtonLabel="แก้ไขคณะ"
+          confirmButtonLabel="แก้ไขวิชา"
+          className="w-96"
         >
-          แก้ไขข้อมูลคณะ {updatingSubject.current?.name}
+          แก้ไขข้อมูลวิชา {updatingSubject.current?.name}
         </InputModal>
       )}
       <div className="w-11/12 h-20 flex flex-row items-center pl-10">
-        <span className="text-xl w-80 font-bold">Manage Faculties</span>
+        <span className="text-xl w-80 font-bold">Manage My Subject</span>
         <div className="flex flex-col h-full flex-1 pr-2 justify-end items-end">
           <div className="h-full flex-1 flex flex-row justify-end items-end gap-1">
             <Button
@@ -195,7 +203,7 @@ function Subject() {
               type={ButtonType.TERTIARY}
               className="text-xs h-6 w-16 mb-1"
             >
-              เพิ่มคณะ
+              เพิ่มวิชา
             </Button>
           </div>
           <span className="h-4 text-right text-xs text-red-500 mr-1 mb-1">
