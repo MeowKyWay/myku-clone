@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaEye } from "react-icons/fa";
 import { FaEyeSlash } from "react-icons/fa";
 import { TextFieldType } from "../types/TextFieldType";
@@ -17,6 +17,20 @@ function TextField({ children, onChange, value, className, type, name, autoCompl
 
     const [hidden, setHidden] = useState(type === TextFieldType.password);
 
+    const [number, setNumber] = useState(value);
+    
+    const handleChange = (newValue: string) => {
+        if (type !== TextFieldType.number) {
+            onChange(newValue);
+            return;
+        }
+
+        const numericValue = newValue.replace(/[a-zA-Z]/g, '');
+
+        setNumber(numericValue);
+        onChange(numericValue);
+    }
+
     const classes = classNames(
         [
             'flex flex-row items-center',
@@ -34,9 +48,9 @@ function TextField({ children, onChange, value, className, type, name, autoCompl
     return (
         <div className={classes}>
             <input
-                type={(type === TextFieldType.password)? (hidden)? 'password': 'text' : type}
-                value={value}
-                onChange={(e) => onChange(e.target.value)}
+                type={(type === TextFieldType.password) ? (hidden) ? 'password' : 'text' : 'text'}
+                value={(type === TextFieldType.number) ? number : value}
+                onChange={(e) => handleChange(e.target.value)}
                 placeholder={children}
                 className={inputClassName}
                 name={name}
@@ -44,7 +58,7 @@ function TextField({ children, onChange, value, className, type, name, autoCompl
                 spellCheck={spellCheck}
             >
             </input>
-            {type===TextFieldType.password && (
+            {type === TextFieldType.password && (
                 <button onClick={() => setHidden(!hidden)} className='w-9 h-9 grid place-content-center'>
                     {hidden && <FaEyeSlash className="text-lg text-gray-400" />}
                     {!hidden && <FaEye className="text-lg text-gray-400" />}

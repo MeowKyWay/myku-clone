@@ -3,24 +3,32 @@ import { generateClient } from "aws-amplify/api";
 import { FacultyType } from "../../types/DatabaseType";
 import { createFaculty, deleteFaculty, updateFaculty } from "../../graphql/mutations";
 import { listFaculties } from "../../graphql/queries";
+import axios from "axios";
 
-const userPoolClient = generateClient({authMode: 'userPool'});
-const apiKeyClient = generateClient({authMode: 'apiKey'});
+const client = generateClient();
 
 export const fetchFaculties = createAsyncThunk<FacultyType[]>(
     "fetchFaculties",
     async (): Promise<FacultyType[]> => {
-        const response = await apiKeyClient.graphql({
+        const response = await client.graphql({
             query: listFaculties,
         })
         return response.data.listFaculties.items;
     }
 )
 
+export const fetchFacultiesPublic = createAsyncThunk<FacultyType[]>(
+    "fetchFacultiesPublic",
+    async (): Promise<FacultyType[]> => {
+        const response = await axios.get('https://63tw46cuod.execute-api.ap-southeast-1.amazonaws.com/default/listFaculties');
+        return response.data;
+    }
+)
+
 export const addFaculty = createAsyncThunk<FacultyType, { name: string }>(
     "addFaculty",
     async ({ name }: { name: string }): Promise<FacultyType> => {
-        const response = await userPoolClient.graphql({
+        const response = await client.graphql({
             query: createFaculty,
             variables: {
                 input: {
@@ -36,7 +44,7 @@ export const addFaculty = createAsyncThunk<FacultyType, { name: string }>(
 export const removeFaculty = createAsyncThunk<string, string>(
     "removeFaculty",
     async (id: string): Promise<string> => {
-        const response = await userPoolClient.graphql({
+        const response = await client.graphql({
             query: deleteFaculty,
             variables: {
                 input: {
@@ -51,7 +59,7 @@ export const removeFaculty = createAsyncThunk<string, string>(
 export const putFaculty = createAsyncThunk<FacultyType, { id: string, name: string }>(
     "putFaculty",
     async ({ id, name }: { id: string, name: string }): Promise<FacultyType> => {
-        const response = await userPoolClient.graphql({
+        const response = await client.graphql({
             query: updateFaculty,
             variables: {
                 input: {

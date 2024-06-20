@@ -188,13 +188,11 @@ export const onDeleteDepartment = /* GraphQL */ `subscription OnDeleteDepartment
   APITypes.OnDeleteDepartmentSubscriptionVariables,
   APITypes.OnDeleteDepartmentSubscription
 >;
-export const onCreateSubject = /* GraphQL */ `subscription OnCreateSubject(
-  $filter: ModelSubscriptionSubjectFilterInput
-  $teacher: String
-) {
-  onCreateSubject(filter: $filter, teacher: $teacher) {
+export const onCreateSubject = /* GraphQL */ `subscription OnCreateSubject($filter: ModelSubscriptionSubjectFilterInput) {
+  onCreateSubject(filter: $filter) {
     id
     name
+    credit
     teacher
     departmentID
     department {
@@ -214,13 +212,11 @@ export const onCreateSubject = /* GraphQL */ `subscription OnCreateSubject(
   APITypes.OnCreateSubjectSubscriptionVariables,
   APITypes.OnCreateSubjectSubscription
 >;
-export const onUpdateSubject = /* GraphQL */ `subscription OnUpdateSubject(
-  $filter: ModelSubscriptionSubjectFilterInput
-  $teacher: String
-) {
-  onUpdateSubject(filter: $filter, teacher: $teacher) {
+export const onUpdateSubject = /* GraphQL */ `subscription OnUpdateSubject($filter: ModelSubscriptionSubjectFilterInput) {
+  onUpdateSubject(filter: $filter) {
     id
     name
+    credit
     teacher
     departmentID
     department {
@@ -240,13 +236,11 @@ export const onUpdateSubject = /* GraphQL */ `subscription OnUpdateSubject(
   APITypes.OnUpdateSubjectSubscriptionVariables,
   APITypes.OnUpdateSubjectSubscription
 >;
-export const onDeleteSubject = /* GraphQL */ `subscription OnDeleteSubject(
-  $filter: ModelSubscriptionSubjectFilterInput
-  $teacher: String
-) {
-  onDeleteSubject(filter: $filter, teacher: $teacher) {
+export const onDeleteSubject = /* GraphQL */ `subscription OnDeleteSubject($filter: ModelSubscriptionSubjectFilterInput) {
+  onDeleteSubject(filter: $filter) {
     id
     name
+    credit
     teacher
     departmentID
     department {

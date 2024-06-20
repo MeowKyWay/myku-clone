@@ -1,6 +1,6 @@
-import { Link, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
-import { FacultyType } from "../../../types/DatabaseType";
+import { DepartmentType, SubjectType } from "../../../types/DatabaseType";
 import Table from "../../Table";
 import Button from "../../Button";
 import { ButtonType } from "../../../types/ButtonType";
@@ -8,92 +8,101 @@ import TextField from "../../TextField";
 import { TextFieldType } from "../../../types/TextFieldType";
 import InputModal from "../../InputModal";
 import { TbRefresh } from "react-icons/tb";
-import ClickableText from "../../ClickableText";
 import { useAppDispatch, useAppSelector } from "../../../hooks";
-import { addFaculty, fetchFaculties, putFaculty, removeFaculty } from "../../../store/thunks/facultiesThunk";
-import { AdminRoutePath } from "../../../route/RoutePath";
+import { TeacherRoutePath } from "../../../route/RoutePath";
+import { addSubject, fetchSubjects, putSubject, removeSubject } from "../../../store/thunks/subjectsThunk";
+import { fetchDepartments } from "../../../store/thunks/departmentsThunk";
+import Dropdown from "../../Dropdown";
 
-function ManageFaculty() {
+function Subject() {
 
   const location = useLocation();
   const dispatch = useAppDispatch();
 
-  if (location.pathname !== AdminRoutePath.FACULTY) {//in case of /std/admin/ (default path)
-    window.history.pushState({}, "", AdminRoutePath.FACULTY);
+  if (location.pathname !== TeacherRoutePath.MYSUBJECT) {//in case of /std/admin/ (default path)
+    window.history.pushState({}, "", TeacherRoutePath.MYSUBJECT);
   }
 
-  const faculties = useAppSelector(state => state.faculties.data);
+  const subjects = useAppSelector(state => state.subjects.data);
+  const departments = useAppSelector(state => state.departments.data);
 
-  const updatingFaculty = useRef<FacultyType>();
+  const user = useAppSelector(state => state.user.currentUser)
+
+  const updatingSubject = useRef<SubjectType>();
 
   const [name, setName] = useState("");
+  const [credit, setCredit] = useState("");
+  const [department, setDepartment] = useState("");
 
-  const errorMessage = useAppSelector(state => state.faculties.error);
+  const errorMessage = useAppSelector(state => state.subjects.error);
 
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [showUpdateModal, setShowUpdateModal] = useState(false);
-
-  useEffect(() => { // initial fetch
-    if (!faculties) {
-      dispatch(fetchFaculties());
-    }
-  })
 
   useEffect(() => { // on close modal reset input state
     if (showCreateModal || showUpdateModal) return;
     setName("");
   }, [showCreateModal, showUpdateModal])
 
-  const handleCreateFaculty = async () => {
-    if (!confirm("Are you sure you want to create this faculty?")) return;
-    await dispatch(addFaculty({
-      name: name
+  useEffect(() => { // initial fetch
+    if (!subjects) {
+      dispatch(fetchSubjects());
+    }
+    if (!departments) {
+      dispatch(fetchDepartments());
+    }
+  })
+
+  const handleCreateSubject = async () => {
+    if (!confirm("Are you sure you want to create this subject?")) return;
+    await dispatch(addSubject({
+      name: name,
+      credit: Number(credit),
+      departmentID: department,
+      teacher: user.attributes.sub as string,
     }));
 
     setShowCreateModal(false);
   };
 
-  const handleUpdateFaculty = async () => {
-    if (!confirm("Are you sure you want to update this faculty?")) return;
-    await dispatch(putFaculty({
-      id: updatingFaculty.current?.id as string,
-      name: name
+  const handleUpdateSubject = async () => {
+    if (!confirm("Are you sure you want to update this subject?")) return;
+    await dispatch(putSubject({
+      id: updatingSubject.current?.id as string,
+      name: name,
+      credit: Number(credit),
     }))
 
     setShowUpdateModal(false);
   };
 
-  const handleDeleteFaculty = async (id: string) => {
-    if (!confirm("Are you sure you want to delete this faculty?")) return;
-    await dispatch(removeFaculty(id));
+  const handleDeleteSubject = async (id: string) => {
+    if (!confirm("Are you sure you want to delete this subject?")) return;
+    await dispatch(removeSubject(id));
   };
 
   const header = (
     <tr>
       <th style={{ width: "2%" }}>no.</th>
       <th style={{ width: "73%" }}>name</th>
-      <th style={{ width: "10%" }}>departments</th>
-      <th style={{ width: "15%" }}>action</th>
+      <th style={{ width: "25%" }}>departments</th>
     </tr>
   );
 
-  const body = faculties?.map((faculty, index) => {
+  const body = subjects?.map((subject, index) => {
     return (
       <tr className="text-sm h-8" key={index}>
         <td className="text-center">{index + 1}</td>
-        <td>{faculty.name}</td>
+        <td>{subject.name}</td>
         <td className="text-center">
-          <Link to={`/std/admin/department/${faculty.id}`}>
-            <ClickableText>View</ClickableText>
-          </Link>
         </td>
         <td>
           <div className="text-center">
             <Button
               onClick={() => {
                 setShowUpdateModal(true);
-                updatingFaculty.current = faculty;
-                setName(faculty.name);
+                updatingSubject.current = subject;
+                setName(subject.name);
               }}
               type={ButtonType.SECONDARY}
               className="text-sm w-20"
@@ -101,7 +110,7 @@ function ManageFaculty() {
               แก้ไข
             </Button>
             <Button
-              onClick={() => handleDeleteFaculty(faculty.id)}
+              onClick={() => handleDeleteSubject(subject.id)}
               type={ButtonType.WARNING}
               className="text-sm w-20"
             >
@@ -115,13 +124,33 @@ function ManageFaculty() {
 
   const modalFields = [
     {
-      label: "ชื่อคณะ",
+      label: "ชื่อวิชา",
       fields: (
         <TextField type={TextFieldType.text} value={name} onChange={setName}>
-          Faculty of something
+          Competitive Programming
         </TextField>
       ),
     },
+    {
+      label: "หน่วยกิต",
+      fields: (
+        <TextField type={TextFieldType.number} value={credit} onChange={setCredit}>
+          3
+        </TextField>
+      ),
+    },
+    {
+      label: "ภาควิชา",
+      fields: (
+        <Dropdown
+          onChange={setDepartment}
+          list={departments as DepartmentType[]}
+          value={department}
+          name="department"
+          className="h-10 text-xs"
+        ></Dropdown>
+      )
+    }
   ];
 
   return (
@@ -130,7 +159,7 @@ function ManageFaculty() {
         <InputModal // Create Faculty Modal
           fieldList={modalFields}
           onCancle={() => setShowCreateModal(false)}
-          onConfirm={handleCreateFaculty}
+          onConfirm={handleCreateSubject}
           confirmButtonType={ButtonType.SECONDARY}
           confirmButtonLabel="เพิ่มคณะ"
         >
@@ -141,11 +170,11 @@ function ManageFaculty() {
         <InputModal // Update Faculty Modal
           fieldList={modalFields}
           onCancle={() => setShowUpdateModal(false)}
-          onConfirm={handleUpdateFaculty}
+          onConfirm={handleUpdateSubject}
           confirmButtonType={ButtonType.SECONDARY}
           confirmButtonLabel="แก้ไขคณะ"
         >
-          แก้ไขข้อมูลคณะ {updatingFaculty.current?.name}
+          แก้ไขข้อมูลคณะ {updatingSubject.current?.name}
         </InputModal>
       )}
       <div className="w-11/12 h-20 flex flex-row items-center pl-10">
@@ -153,7 +182,7 @@ function ManageFaculty() {
         <div className="flex flex-col h-full flex-1 pr-2 justify-end items-end">
           <div className="h-full flex-1 flex flex-row justify-end items-end gap-1">
             <Button
-              onClick={() => dispatch(fetchFaculties())}
+              onClick={() => dispatch(fetchSubjects())}
               type={ButtonType.TERTIARY}
               className="h-6 w-6 mb-1 px-0"
             >
@@ -181,4 +210,4 @@ function ManageFaculty() {
   );
 }
 
-export default ManageFaculty;
+export default Subject;

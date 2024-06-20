@@ -8,13 +8,6 @@
       "cognitoUserPoolId": "authreact5215be15"
     },
     "conflictResolution": {},
-    "additionalAuthTypes": [
-      {
-        "mode": "API_KEY",
-        "expirationTime": 7,
-        "apiKeyExpirationDate": "2024-06-18T04:40:25.994Z",
-        "keyDescription": "API key"
-      }
-    ]
+    "additionalAuthTypes": []
   }
 }

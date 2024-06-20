@@ -3,6 +3,7 @@ import { FaUniversity } from "react-icons/fa";
 import { MdHomeWork } from "react-icons/md";
 import { FaBook } from "react-icons/fa";
 import { PiStudentBold } from "react-icons/pi";
+import { AdminRoutePath } from "../../route/RoutePath";
 
 function AdminNavigation() {
     return (
@@ -10,22 +11,22 @@ function AdminNavigation() {
             <NavigationButton
                 icon={<FaUniversity />}
                 label="จัดการคณะ"
-                to="/std/admin/faculty">
+                to={AdminRoutePath.FACULTY}>
             </NavigationButton>
             <NavigationButton
                 icon={<MdHomeWork />}
                 label="จัดการสาขา"
-                to="/std/admin/department">
+                to={AdminRoutePath.DEPARTMENT}>
             </NavigationButton>
             <NavigationButton
                 icon={<FaBook />}
                 label="จัดการอาจารย์"
-                to="/std/admin/teacher">
+                to={AdminRoutePath.TEACHER}>
             </NavigationButton>
             <NavigationButton
                 icon={<PiStudentBold />}
                 label="จัดการนิสิต"
-                to="/std/admin/student">
+                to={AdminRoutePath.STUDENT}>
             </NavigationButton>
         </div>
     )

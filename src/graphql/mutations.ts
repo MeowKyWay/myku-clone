@@ -210,6 +210,7 @@ export const createSubject = /* GraphQL */ `mutation CreateSubject(
   createSubject(input: $input, condition: $condition) {
     id
     name
+    credit
     teacher
     departmentID
     department {
@@ -236,6 +237,7 @@ export const updateSubject = /* GraphQL */ `mutation UpdateSubject(
   updateSubject(input: $input, condition: $condition) {
     id
     name
+    credit
     teacher
     departmentID
     department {
@@ -262,6 +264,7 @@ export const deleteSubject = /* GraphQL */ `mutation DeleteSubject(
   deleteSubject(input: $input, condition: $condition) {
     id
     name
+    credit
     teacher
     departmentID
     department {

@@ -10,8 +10,8 @@ import { useAppDispatch, useAppSelector } from "../../hooks";
 import { signUp } from "aws-amplify/auth";
 import Dropdown from "../Dropdown";
 import Time from "../../utility/Time";
-import { fetchFaculties } from "../../store/thunks/facultiesThunk";
-import { fetchDepartments } from "../../store/thunks/departmentsThunk";
+import { fetchFacultiesPublic } from "../../store/thunks/facultiesThunk";
+import { fetchDepartmentsPublic } from "../../store/thunks/departmentsThunk";
 import { DepartmentType, FacultyType } from "../../types/DatabaseType";
 
 
@@ -20,8 +20,8 @@ function Register() {
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
 
-    const faculties = useAppSelector(state => state.faculties.data);
-    const departments = useAppSelector(state => state.departments.data);
+    const faculties = useAppSelector(state => state.register.faculties);
+    const departments = useAppSelector(state => state.register.departments);
 
     const [name, setName] = useState("");
     const [studentID, setStudentID] = useState('');
@@ -34,9 +34,9 @@ function Register() {
 
     useEffect(() => {
         if (!faculties)
-            dispatch(fetchFaculties());
+            dispatch(fetchFacultiesPublic());
         if (!departments)
-            dispatch(fetchDepartments());
+            dispatch(fetchDepartmentsPublic());
     }, [dispatch, faculties, departments])
 
     const handleRegister = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -162,7 +162,7 @@ function Register() {
                                     </div>
                                     <Dropdown
                                         onChange={setDepartment}
-                                        list={departments?.filter((department) => department.faculty?.id === faculty) as DepartmentType[]}
+                                        list={departments?.filter((department) => department.facultyID === faculty) as DepartmentType[]}
                                         name="department"
                                         className="flex-1 h-10 text-xs"
                                         disabled={!faculty}

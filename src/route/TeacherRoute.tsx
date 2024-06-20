@@ -1,4 +1,7 @@
 import { RouteObject } from "react-router-dom";
+import { TeacherRoutePath } from "./RoutePath";
+import Subject from "../components/main/teacher/Subject";
+import SubjectAnnouncement from "../components/main/teacher/SubjectAnnouncement";
 
 function TeacherRoute() {
     return (
@@ -8,9 +11,13 @@ function TeacherRoute() {
                 element: <div>Teacher</div>
             },
             {
-                path: '/std/teacher/subjects',
-                element: <div>Subjects</div>
+                path: TeacherRoutePath.MYSUBJECT,
+                element: <Subject />
             },
+            {
+                path: TeacherRoutePath.MYSUBJECT_ANNOUNCEMENT,
+                element: <SubjectAnnouncement />
+            }
         ] as RouteObject[]
     )
 }

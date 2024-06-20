@@ -133,6 +133,54 @@ export const listDepartments = /* GraphQL */ `query ListDepartments(
   APITypes.ListDepartmentsQueryVariables,
   APITypes.ListDepartmentsQuery
 >;
+export const getSubject = /* GraphQL */ `query GetSubject($id: ID!) {
+  getSubject(id: $id) {
+    id
+    name
+    credit
+    teacher
+    departmentID
+    department {
+      id
+      name
+      facultyID
+      createdAt
+      updatedAt
+      __typename
+    }
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedQuery<
+  APITypes.GetSubjectQueryVariables,
+  APITypes.GetSubjectQuery
+>;
+export const listSubjects = /* GraphQL */ `query ListSubjects(
+  $filter: ModelSubjectFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  listSubjects(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+      name
+      credit
+      teacher
+      departmentID
+      createdAt
+      updatedAt
+      __typename
+    }
+    nextToken
+    __typename
+  }
+}
+` as GeneratedQuery<
+  APITypes.ListSubjectsQueryVariables,
+  APITypes.ListSubjectsQuery
+>;
 export const departmentsByFacultyID = /* GraphQL */ `query DepartmentsByFacultyID(
   $facultyID: ID!
   $sortDirection: ModelSortDirection
@@ -163,52 +211,6 @@ export const departmentsByFacultyID = /* GraphQL */ `query DepartmentsByFacultyI
   APITypes.DepartmentsByFacultyIDQueryVariables,
   APITypes.DepartmentsByFacultyIDQuery
 >;
-export const getSubject = /* GraphQL */ `query GetSubject($id: ID!) {
-  getSubject(id: $id) {
-    id
-    name
-    teacher
-    departmentID
-    department {
-      id
-      name
-      facultyID
-      createdAt
-      updatedAt
-      __typename
-    }
-    createdAt
-    updatedAt
-    __typename
-  }
-}
-` as GeneratedQuery<
-  APITypes.GetSubjectQueryVariables,
-  APITypes.GetSubjectQuery
->;
-export const listSubjects = /* GraphQL */ `query ListSubjects(
-  $filter: ModelSubjectFilterInput
-  $limit: Int
-  $nextToken: String
-) {
-  listSubjects(filter: $filter, limit: $limit, nextToken: $nextToken) {
-    items {
-      id
-      name
-      teacher
-      departmentID
-      createdAt
-      updatedAt
-      __typename
-    }
-    nextToken
-    __typename
-  }
-}
-` as GeneratedQuery<
-  APITypes.ListSubjectsQueryVariables,
-  APITypes.ListSubjectsQuery
->;
 export const subjectsByDepartmentID = /* GraphQL */ `query SubjectsByDepartmentID(
   $departmentID: ID!
   $sortDirection: ModelSortDirection
@@ -226,6 +228,7 @@ export const subjectsByDepartmentID = /* GraphQL */ `query SubjectsByDepartmentI
     items {
       id
       name
+      credit
       teacher
       departmentID
       createdAt

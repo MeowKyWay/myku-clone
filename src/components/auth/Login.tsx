@@ -39,7 +39,6 @@ function Login() {
       }
 
       const currentUser = await AuthUtils.getCurrentUser();
-      console.log(currentUser);
 
       dispatch(setUser(currentUser));
 

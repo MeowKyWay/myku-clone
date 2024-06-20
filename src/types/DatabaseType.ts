@@ -18,3 +18,11 @@ export interface DepartmentType {
     facultyID: string;
     faculty?: FacultyType | null;
 }
+
+export interface SubjectType {
+    id: string;
+    name: string;
+    credit: number;
+    departmentID: string;
+    department?: DepartmentType | null;
+}
