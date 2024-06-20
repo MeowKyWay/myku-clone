@@ -11,11 +11,11 @@ function TeacherRoute() {
                 element: <Subject />
             },
             {
-                path: TeacherRoutePath.MYSUBJECT,
+                path: TeacherRoutePath.SUBJECT,
                 element: <Subject />
             },
             {
-                path: TeacherRoutePath.MYSUBJECT_ANNOUNCEMENT,
+                path: TeacherRoutePath.SUBJECT_ANNOUNCEMENT,
                 element: <SubjectAnnouncement />
             }
         ] as RouteObject[]

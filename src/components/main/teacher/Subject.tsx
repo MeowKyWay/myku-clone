@@ -19,8 +19,8 @@ function Subject() {
   const location = useLocation();
   const dispatch = useAppDispatch();
 
-  if (location.pathname !== TeacherRoutePath.MYSUBJECT) {//in case of /std/admin/ (default path)
-    window.history.pushState({}, "", TeacherRoutePath.MYSUBJECT);
+  if (location.pathname !== TeacherRoutePath.SUBJECT) {//in case of /std/admin/ (default path)
+    window.history.pushState({}, "", TeacherRoutePath.SUBJECT);
   }
 
   const subjects = useAppSelector(state => state.subjects.mySubjects);

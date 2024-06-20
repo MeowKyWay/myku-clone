@@ -3,6 +3,7 @@ import { setNavigationBarState } from "../../store/slices/statesSlice";
 import { UserGroup } from "../../store/slices/userSlice";
 import AdminNavigation from "./AdminNavigation";
 import StudentNavigation from "./StudentNavigation";
+import TeacherNavigation from "./TeacherNavigation";
 
 function NavigationBar() {
 
@@ -19,6 +20,7 @@ function NavigationBar() {
         >
             <div className={`h-full ${navibationBarState? 'w-62.5' :  'w-17.5'} bg-gray transition-all overflow-hidden`}>
                 {user.groups === UserGroup.ADMIN && <AdminNavigation />}
+                {user.groups === UserGroup.TEACHER && <TeacherNavigation />}
                 {user.groups === UserGroup.STUDENT && <StudentNavigation />}
             </div>
         </div>
