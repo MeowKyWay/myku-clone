@@ -1,7 +1,6 @@
 import { RouteObject } from "react-router-dom";
 import { TeacherRoutePath } from "./RoutePath";
 import Subject from "../components/main/teacher/Subject";
-import SubjectAnnouncement from "../components/main/teacher/SubjectAnnouncement";
 
 function TeacherRoute() {
     return (
@@ -15,8 +14,7 @@ function TeacherRoute() {
                 element: <Subject />
             },
             {
-                path: TeacherRoutePath.SUBJECT_ANNOUNCEMENT,
-                element: <SubjectAnnouncement />
+                path: TeacherRoutePath.SECTION
             }
         ] as RouteObject[]
     )

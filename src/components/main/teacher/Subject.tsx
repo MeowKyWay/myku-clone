@@ -86,8 +86,9 @@ function Subject() {
   const header = (
     <tr>
       <th style={{ width: "2%" }}>no.</th>
-      <th style={{ width: "43%" }}>name</th>
+      <th style={{ width: "28%" }}>name</th>
       <th style={{ width: "25%" }}>departments</th>
+      <th style={{ width: "15%" }}>announcement</th>
       <th style={{ width: "15%" }}>section</th>
       <th style={{ width: "15%" }}>action</th>
     </tr>
@@ -101,9 +102,8 @@ function Subject() {
         <td className="text-center">
           {subject.department?.name}
         </td>
-        <td className="text-center">
-          view
-        </td>
+        <td className="text-center">view</td>
+        <td className="text-center">view</td>
         <td>
           <div className="text-center">
             <Button

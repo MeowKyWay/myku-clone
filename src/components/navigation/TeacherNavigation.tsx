@@ -12,9 +12,14 @@ function TeacherNavigation() {
                 to={TeacherRoutePath.SUBJECT}>
             </NavigationButton>
             <NavigationButton
+                icon={<FaUniversity />}
+                label="ประกาศของฉัน"
+                to={TeacherRoutePath.SUBJECT_ANNOUNCEMENT}>
+            </NavigationButton>
+            <NavigationButton
                 icon={<MdHomeWork />}
                 label="หมู่เรียนของฉัน"
-                to={TeacherRoutePath.SUBJECT_SECTION}>
+                to={TeacherRoutePath.SECTION}>
             </NavigationButton>
         </div>
     )
