@@ -16,9 +16,9 @@ export const fetchSubjects = createAsyncThunk<SubjectType[]>(
     }
 )
 
-export const addSubject = createAsyncThunk<SubjectType, { name: string, credit: number, departmentID: string, teacher: string }>(
+export const addSubject = createAsyncThunk<SubjectType, { name: string, credit: number, departmentID: string }>(
     "addSubject",
-    async ({ name, credit, departmentID, teacher }: { name: string, credit: number, departmentID: string, teacher: string }): Promise<SubjectType> => {
+    async ({ name, credit, departmentID }: { name: string, credit: number, departmentID: string }): Promise<SubjectType> => {
         const response = await client.graphql({
             query: createSubject,
             variables: {
@@ -26,7 +26,6 @@ export const addSubject = createAsyncThunk<SubjectType, { name: string, credit: 
                     name: name,
                     credit: credit,
                     departmentID: departmentID,
-                    teacher: teacher,
                 }
             }
         })

@@ -37,4 +37,20 @@ export interface SectionType {
 
     subjectID: string;
     subject?: SubjectType | null;
+
+    eligibleDepartments?: {
+        items: SectionEligibleDepartmentType[];
+    } | null;
+}
+
+export interface SectionEligibleDepartmentType {
+    id: string;
+
+    sectionID: string;
+    departmentID: string;
+
+    department?: {
+        id: string;
+        name: string;
+    } | null;
 }

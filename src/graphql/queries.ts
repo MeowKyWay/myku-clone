@@ -102,6 +102,10 @@ export const getDepartment = /* GraphQL */ `query GetDepartment($id: ID!) {
       nextToken
       __typename
     }
+    eligibleSubjects {
+      nextToken
+      __typename
+    }
     createdAt
     updatedAt
     __typename
@@ -199,7 +203,7 @@ export const getSection = /* GraphQL */ `query GetSection($id: ID!) {
       updatedAt
       __typename
     }
-    eligibles {
+    eligibleDepartments {
       nextToken
       __typename
     }
@@ -236,8 +240,8 @@ export const listSections = /* GraphQL */ `query ListSections(
   APITypes.ListSectionsQueryVariables,
   APITypes.ListSectionsQuery
 >;
-export const getEligible = /* GraphQL */ `query GetEligible($id: ID!) {
-  getEligible(id: $id) {
+export const getSectionEligibleDepartment = /* GraphQL */ `query GetSectionEligibleDepartment($id: ID!) {
+  getSectionEligibleDepartment(id: $id) {
     id
     sectionID
     section {
@@ -250,24 +254,38 @@ export const getEligible = /* GraphQL */ `query GetEligible($id: ID!) {
       updatedAt
       __typename
     }
+    departmentID
+    department {
+      id
+      name
+      facultyID
+      createdAt
+      updatedAt
+      __typename
+    }
     createdAt
     updatedAt
     __typename
   }
 }
 ` as GeneratedQuery<
-  APITypes.GetEligibleQueryVariables,
-  APITypes.GetEligibleQuery
+  APITypes.GetSectionEligibleDepartmentQueryVariables,
+  APITypes.GetSectionEligibleDepartmentQuery
 >;
-export const listEligibles = /* GraphQL */ `query ListEligibles(
-  $filter: ModelEligibleFilterInput
+export const listSectionEligibleDepartments = /* GraphQL */ `query ListSectionEligibleDepartments(
+  $filter: ModelSectionEligibleDepartmentFilterInput
   $limit: Int
   $nextToken: String
 ) {
-  listEligibles(filter: $filter, limit: $limit, nextToken: $nextToken) {
+  listSectionEligibleDepartments(
+    filter: $filter
+    limit: $limit
+    nextToken: $nextToken
+  ) {
     items {
       id
       sectionID
+      departmentID
       createdAt
       updatedAt
       __typename
@@ -277,8 +295,8 @@ export const listEligibles = /* GraphQL */ `query ListEligibles(
   }
 }
 ` as GeneratedQuery<
-  APITypes.ListEligiblesQueryVariables,
-  APITypes.ListEligiblesQuery
+  APITypes.ListSectionEligibleDepartmentsQueryVariables,
+  APITypes.ListSectionEligibleDepartmentsQuery
 >;
 export const departmentsByFacultyID = /* GraphQL */ `query DepartmentsByFacultyID(
   $facultyID: ID!
@@ -373,14 +391,14 @@ export const sectionsBySubjectID = /* GraphQL */ `query SectionsBySubjectID(
   APITypes.SectionsBySubjectIDQueryVariables,
   APITypes.SectionsBySubjectIDQuery
 >;
-export const eligiblesBySectionID = /* GraphQL */ `query EligiblesBySectionID(
+export const sectionEligibleDepartmentsBySectionID = /* GraphQL */ `query SectionEligibleDepartmentsBySectionID(
   $sectionID: ID!
   $sortDirection: ModelSortDirection
-  $filter: ModelEligibleFilterInput
+  $filter: ModelSectionEligibleDepartmentFilterInput
   $limit: Int
   $nextToken: String
 ) {
-  eligiblesBySectionID(
+  sectionEligibleDepartmentsBySectionID(
     sectionID: $sectionID
     sortDirection: $sortDirection
     filter: $filter
@@ -390,6 +408,7 @@ export const eligiblesBySectionID = /* GraphQL */ `query EligiblesBySectionID(
     items {
       id
       sectionID
+      departmentID
       createdAt
       updatedAt
       __typename
@@ -399,6 +418,36 @@ export const eligiblesBySectionID = /* GraphQL */ `query EligiblesBySectionID(
   }
 }
 ` as GeneratedQuery<
-  APITypes.EligiblesBySectionIDQueryVariables,
-  APITypes.EligiblesBySectionIDQuery
+  APITypes.SectionEligibleDepartmentsBySectionIDQueryVariables,
+  APITypes.SectionEligibleDepartmentsBySectionIDQuery
+>;
+export const sectionEligibleDepartmentsByDepartmentID = /* GraphQL */ `query SectionEligibleDepartmentsByDepartmentID(
+  $departmentID: ID!
+  $sortDirection: ModelSortDirection
+  $filter: ModelSectionEligibleDepartmentFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  sectionEligibleDepartmentsByDepartmentID(
+    departmentID: $departmentID
+    sortDirection: $sortDirection
+    filter: $filter
+    limit: $limit
+    nextToken: $nextToken
+  ) {
+    items {
+      id
+      sectionID
+      departmentID
+      createdAt
+      updatedAt
+      __typename
+    }
+    nextToken
+    __typename
+  }
+}
+` as GeneratedQuery<
+  APITypes.SectionEligibleDepartmentsByDepartmentIDQueryVariables,
+  APITypes.SectionEligibleDepartmentsByDepartmentIDQuery
 >;

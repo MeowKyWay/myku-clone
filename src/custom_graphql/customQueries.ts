@@ -1,4 +1,6 @@
 import * as APITypes from "../API";
+import * as CustomAPITypes from "./customAPI";
+
 type GeneratedQuery<InputType, OutputType> = string & {
   __generatedQueryInput: InputType;
   __generatedQueryOutput: OutputType;
@@ -83,4 +85,41 @@ export const listSectionsWithSubject = /* GraphQL */ `query ListSections(
 ` as GeneratedQuery<
   APITypes.ListSectionsQueryVariables,
   APITypes.ListSectionsQuery
+>;
+
+export const listSectionsWithSubjectEligibleDepartment = /* GraphQL */ `query ListSections(
+  $filter: ModelSectionFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  listSections(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+      name
+      capacity
+      teacher
+      subject {
+        id
+        name
+      }
+      eligibleDepartments {
+        items {
+          id
+          department {
+            id
+            name
+          }
+        }
+      }
+      createdAt
+      updatedAt
+      __typename
+    }
+    nextToken
+    __typename
+  }
+}
+` as GeneratedQuery<
+  APITypes.ListSectionsQueryVariables,
+  CustomAPITypes.ListSectionsWithSubjectEligibleDepartmentsQuery
 >;

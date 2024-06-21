@@ -8,25 +8,31 @@ import Dropdown from "../../Dropdown";
 import InputModal from "../../InputModal";
 import { TbRefresh } from "react-icons/tb";
 import { useAppDispatch, useAppSelector } from "../../../hooks";
-import { SectionType, SubjectType } from "../../../types/DatabaseType";
+import { DepartmentType, SectionType, SubjectType } from "../../../types/DatabaseType";
 import { useNavigate, useParams } from "react-router-dom";
 import { addSection, fetchSections, putSection, removeSection } from "../../../store/thunks/sectionsThunk";
 import { fetchSubjects } from "../../../store/thunks/subjectsThunk";
 import { TeacherRoutePath } from "../../../route/RoutePath";
+import { generateClient } from "aws-amplify/api";
+import { listSectionsWithSubjectEligibleDepartment } from "../../../custom_graphql/customQueries";
+import { fetchDepartments } from "../../../store/thunks/departmentsThunk";
+import { addSectionEligibleDepartment } from "../../../store/thunks/sectionEligibleDepartmentThunk";
 
 function Section() {
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  const sections = useAppSelector(state => state.sections.allSections);
+  const sections = useAppSelector(state => state.sections.data);
   const subjects = useAppSelector(state => state.subjects.data);
+  const departments = useAppSelector(state => state.departments.data);
 
   const user = useAppSelector(state => state.user.currentUser)
 
   const sectionErrorMessage = useAppSelector(state => state.sections.error);
   const subjectErrorMessage = useAppSelector(state => state.subjects.error);
-  const errorMessage = sectionErrorMessage || subjectErrorMessage;
+  const departmentErrorMessage = useAppSelector(state => state.departments.error);
+  const errorMessage = sectionErrorMessage || subjectErrorMessage || departmentErrorMessage;
 
   const { filter } = useParams();
 
@@ -36,8 +42,11 @@ function Section() {
   const [capacity, setCapacity] = useState("");
   const [subject, setSubject] = useState("");
 
+  const [department, setDepartment] = useState("");
+
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [showUpdateModal, setShowUpdateModal] = useState(false);
+  const [showCreateEligibleDepartmentModal, setShowCreateEligibleDepartmentModal] = useState(false);
 
   useEffect(() => { //initial fetch
     if (!sections) { //Only fetch if not already fetched
@@ -46,7 +55,10 @@ function Section() {
     if (!subjects) {
       dispatch(fetchSubjects());
     }
-  }, [dispatch, sections, subjects])
+    if (!departments) {
+      dispatch(fetchDepartments());
+    }
+  }, [dispatch, sections, subjects, departments])
 
   useEffect(() => { //On close modal reset input state
     if (showCreateModal || showUpdateModal) return;
@@ -54,6 +66,11 @@ function Section() {
     setCapacity("");
     setSubject("");
   }, [showCreateModal, showUpdateModal])
+
+  useEffect(() => { //On close modal reset input state
+    if (showCreateEligibleDepartmentModal) return;
+    setDepartment("");
+  }, [showCreateEligibleDepartmentModal])
 
   const handleCreateSection = async () => {
     if (!confirm("Are you sure you want to create this section?")) return;
@@ -83,6 +100,22 @@ function Section() {
     await dispatch(removeSection(id));
   }
 
+  const handleCreateSectionEligibleDepartment = async () => {
+    if (!confirm("Are you sure you want to add this eligible department?")) return;
+    await dispatch(addSectionEligibleDepartment({
+      sectionID: updatingSection.current?.id as string,
+      departmentID: department,
+    }));
+
+    setShowCreateEligibleDepartmentModal(false);
+  }
+
+  const filterDepartment = () => {
+    return departments?.filter(
+      department => !(updatingSection.current?.eligibleDepartments?.items.map(item => item.departmentID).includes(department.id))
+    );
+  }
+
   const header = (
     <tr>
       <th style={{ width: "2%" }}>no.</th>
@@ -102,8 +135,20 @@ function Section() {
       <tr className="text-sm h-8" key={index}>
         <td className="text-center">{index + 1}</td>
         <td>{section.subject?.name}</td>
-        <td>{section.name}</td>
-        <td>{"Todo"}</td>
+        <td className="text-center">{section.name}</td>
+        <td className="flex flex-col">
+          {
+            section.eligibleDepartments?.items.map((eligibleDepartment, index) => {
+              return (
+                <span key={index} className="text-xs">{eligibleDepartment.department?.name}</span>
+              );
+            })
+          }
+          <Button onClick={ () => {
+            setShowCreateEligibleDepartmentModal(true);
+            updatingSection.current = section;
+          }} type={ButtonType.SECONDARY}>Add</Button>
+        </td>
         <td className="text-center">{section.capacity}</td>
         <td className="text-center">View</td>
         <td className="text-center">View</td>
@@ -134,7 +179,7 @@ function Section() {
     );
   });
 
-  const modalFields = [
+  const sectionModalFields = [
     {
       label: "หมู่เรียนที่",
       fields: (
@@ -165,11 +210,42 @@ function Section() {
     },
   ];
 
+  const eligibleDepartmentModalFields = [
+    {
+      label: "ภาควิชา",
+      fields: (
+        <Dropdown
+          onChange={setDepartment}
+          list={filterDepartment() as DepartmentType[]}
+          value={department}
+          name="department"
+          className="h-10 text-xs"
+        ></Dropdown>
+      ),
+    },
+  ];
+
+  const client = generateClient();
+
+  const test = async () => {
+    try {
+      const res = await client.graphql({
+        query: listSectionsWithSubjectEligibleDepartment,
+      })
+
+      console.log(res);
+    } catch (error) {
+      console.log(error);
+    }
+
+  }
+
   return (
     <div className="size-full flex flex-col items-center">
+      <button onClick={test}>test</button>
       {showCreateModal && (
         <InputModal //Create Department Modal
-          fieldList={modalFields}
+          fieldList={sectionModalFields}
           onCancle={() => setShowCreateModal(false)}
           onConfirm={handleCreateSection}
           confirmButtonType={ButtonType.SECONDARY}
@@ -181,7 +257,7 @@ function Section() {
       )}
       {showUpdateModal && (
         <InputModal //Update Department Modal
-          fieldList={modalFields}
+          fieldList={sectionModalFields}
           onCancle={() => setShowUpdateModal(false)}
           onConfirm={handleUpdateSection}
           confirmButtonType={ButtonType.SECONDARY}
@@ -189,6 +265,18 @@ function Section() {
           className="w-80"
         >
           แก้ไขสาขา {updatingSection.current?.name}
+        </InputModal>
+      )}
+      {showCreateEligibleDepartmentModal && (
+        <InputModal //Create Department Modal
+          fieldList={eligibleDepartmentModalFields}
+          onCancle={() => setShowCreateEligibleDepartmentModal(false)}
+          onConfirm={handleCreateSectionEligibleDepartment}
+          confirmButtonType={ButtonType.SECONDARY}
+          confirmButtonLabel="เพิ่มหมู่เรียน"
+          className="w-80"
+        >
+          เพิ่มสาขา
         </InputModal>
       )}
       <div className="w-11/12 h-20 flex flex-row items-center pl-10">
@@ -213,7 +301,7 @@ function Section() {
             ></Dropdown>
             <Button
               onClick={() => {
-                setSubject(filter? filter : "");
+                setSubject(filter ? filter : "");
                 setShowCreateModal(true)
               }}
               type={ButtonType.TERTIARY}

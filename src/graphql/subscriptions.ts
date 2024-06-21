@@ -125,6 +125,10 @@ export const onCreateDepartment = /* GraphQL */ `subscription OnCreateDepartment
       nextToken
       __typename
     }
+    eligibleSubjects {
+      nextToken
+      __typename
+    }
     createdAt
     updatedAt
     __typename
@@ -152,6 +156,10 @@ export const onUpdateDepartment = /* GraphQL */ `subscription OnUpdateDepartment
       nextToken
       __typename
     }
+    eligibleSubjects {
+      nextToken
+      __typename
+    }
     createdAt
     updatedAt
     __typename
@@ -176,6 +184,10 @@ export const onDeleteDepartment = /* GraphQL */ `subscription OnDeleteDepartment
       __typename
     }
     subjects {
+      nextToken
+      __typename
+    }
+    eligibleSubjects {
       nextToken
       __typename
     }
@@ -285,7 +297,7 @@ export const onCreateSection = /* GraphQL */ `subscription OnCreateSection($filt
       updatedAt
       __typename
     }
-    eligibles {
+    eligibleDepartments {
       nextToken
       __typename
     }
@@ -314,7 +326,7 @@ export const onUpdateSection = /* GraphQL */ `subscription OnUpdateSection($filt
       updatedAt
       __typename
     }
-    eligibles {
+    eligibleDepartments {
       nextToken
       __typename
     }
@@ -343,7 +355,7 @@ export const onDeleteSection = /* GraphQL */ `subscription OnDeleteSection($filt
       updatedAt
       __typename
     }
-    eligibles {
+    eligibleDepartments {
       nextToken
       __typename
     }
@@ -356,8 +368,10 @@ export const onDeleteSection = /* GraphQL */ `subscription OnDeleteSection($filt
   APITypes.OnDeleteSectionSubscriptionVariables,
   APITypes.OnDeleteSectionSubscription
 >;
-export const onCreateEligible = /* GraphQL */ `subscription OnCreateEligible($filter: ModelSubscriptionEligibleFilterInput) {
-  onCreateEligible(filter: $filter) {
+export const onCreateSectionEligibleDepartment = /* GraphQL */ `subscription OnCreateSectionEligibleDepartment(
+  $filter: ModelSubscriptionSectionEligibleDepartmentFilterInput
+) {
+  onCreateSectionEligibleDepartment(filter: $filter) {
     id
     sectionID
     section {
@@ -370,17 +384,28 @@ export const onCreateEligible = /* GraphQL */ `subscription OnCreateEligible($fi
       updatedAt
       __typename
     }
+    departmentID
+    department {
+      id
+      name
+      facultyID
+      createdAt
+      updatedAt
+      __typename
+    }
     createdAt
     updatedAt
     __typename
   }
 }
 ` as GeneratedSubscription<
-  APITypes.OnCreateEligibleSubscriptionVariables,
-  APITypes.OnCreateEligibleSubscription
+  APITypes.OnCreateSectionEligibleDepartmentSubscriptionVariables,
+  APITypes.OnCreateSectionEligibleDepartmentSubscription
 >;
-export const onUpdateEligible = /* GraphQL */ `subscription OnUpdateEligible($filter: ModelSubscriptionEligibleFilterInput) {
-  onUpdateEligible(filter: $filter) {
+export const onUpdateSectionEligibleDepartment = /* GraphQL */ `subscription OnUpdateSectionEligibleDepartment(
+  $filter: ModelSubscriptionSectionEligibleDepartmentFilterInput
+) {
+  onUpdateSectionEligibleDepartment(filter: $filter) {
     id
     sectionID
     section {
@@ -393,17 +418,28 @@ export const onUpdateEligible = /* GraphQL */ `subscription OnUpdateEligible($fi
       updatedAt
       __typename
     }
+    departmentID
+    department {
+      id
+      name
+      facultyID
+      createdAt
+      updatedAt
+      __typename
+    }
     createdAt
     updatedAt
     __typename
   }
 }
 ` as GeneratedSubscription<
-  APITypes.OnUpdateEligibleSubscriptionVariables,
-  APITypes.OnUpdateEligibleSubscription
+  APITypes.OnUpdateSectionEligibleDepartmentSubscriptionVariables,
+  APITypes.OnUpdateSectionEligibleDepartmentSubscription
 >;
-export const onDeleteEligible = /* GraphQL */ `subscription OnDeleteEligible($filter: ModelSubscriptionEligibleFilterInput) {
-  onDeleteEligible(filter: $filter) {
+export const onDeleteSectionEligibleDepartment = /* GraphQL */ `subscription OnDeleteSectionEligibleDepartment(
+  $filter: ModelSubscriptionSectionEligibleDepartmentFilterInput
+) {
+  onDeleteSectionEligibleDepartment(filter: $filter) {
     id
     sectionID
     section {
@@ -416,12 +452,21 @@ export const onDeleteEligible = /* GraphQL */ `subscription OnDeleteEligible($fi
       updatedAt
       __typename
     }
+    departmentID
+    department {
+      id
+      name
+      facultyID
+      createdAt
+      updatedAt
+      __typename
+    }
     createdAt
     updatedAt
     __typename
   }
 }
 ` as GeneratedSubscription<
-  APITypes.OnDeleteEligibleSubscriptionVariables,
-  APITypes.OnDeleteEligibleSubscription
+  APITypes.OnDeleteSectionEligibleDepartmentSubscriptionVariables,
+  APITypes.OnDeleteSectionEligibleDepartmentSubscription
 >;

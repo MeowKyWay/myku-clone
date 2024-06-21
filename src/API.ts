@@ -113,6 +113,7 @@ export type Department = {
   facultyID: string,
   faculty?: Faculty | null,
   subjects?: ModelSubjectConnection | null,
+  eligibleSubjects?: ModelSectionEligibleDepartmentConnection | null,
   createdAt: string,
   updatedAt: string,
 };
@@ -149,22 +150,24 @@ export type Section = {
   teacher: string,
   subjectID: string,
   subject?: Subject | null,
-  eligibles?: ModelEligibleConnection | null,
+  eligibleDepartments?: ModelSectionEligibleDepartmentConnection | null,
   createdAt: string,
   updatedAt: string,
 };
 
-export type ModelEligibleConnection = {
-  __typename: "ModelEligibleConnection",
-  items:  Array<Eligible | null >,
+export type ModelSectionEligibleDepartmentConnection = {
+  __typename: "ModelSectionEligibleDepartmentConnection",
+  items:  Array<SectionEligibleDepartment | null >,
   nextToken?: string | null,
 };
 
-export type Eligible = {
-  __typename: "Eligible",
+export type SectionEligibleDepartment = {
+  __typename: "SectionEligibleDepartment",
   id: string,
   sectionID: string,
   section?: Section | null,
+  departmentID: string,
+  department?: Department | null,
   createdAt: string,
   updatedAt: string,
 };
@@ -293,26 +296,29 @@ export type DeleteSectionInput = {
   id: string,
 };
 
-export type CreateEligibleInput = {
+export type CreateSectionEligibleDepartmentInput = {
   id?: string | null,
   sectionID: string,
+  departmentID: string,
 };
 
-export type ModelEligibleConditionInput = {
+export type ModelSectionEligibleDepartmentConditionInput = {
   sectionID?: ModelIDInput | null,
-  and?: Array< ModelEligibleConditionInput | null > | null,
-  or?: Array< ModelEligibleConditionInput | null > | null,
-  not?: ModelEligibleConditionInput | null,
+  departmentID?: ModelIDInput | null,
+  and?: Array< ModelSectionEligibleDepartmentConditionInput | null > | null,
+  or?: Array< ModelSectionEligibleDepartmentConditionInput | null > | null,
+  not?: ModelSectionEligibleDepartmentConditionInput | null,
   createdAt?: ModelStringInput | null,
   updatedAt?: ModelStringInput | null,
 };
 
-export type UpdateEligibleInput = {
+export type UpdateSectionEligibleDepartmentInput = {
   id: string,
   sectionID?: string | null,
+  departmentID?: string | null,
 };
 
-export type DeleteEligibleInput = {
+export type DeleteSectionEligibleDepartmentInput = {
   id: string,
 };
 
@@ -385,14 +391,15 @@ export type ModelSectionFilterInput = {
   not?: ModelSectionFilterInput | null,
 };
 
-export type ModelEligibleFilterInput = {
+export type ModelSectionEligibleDepartmentFilterInput = {
   id?: ModelIDInput | null,
   sectionID?: ModelIDInput | null,
+  departmentID?: ModelIDInput | null,
   createdAt?: ModelStringInput | null,
   updatedAt?: ModelStringInput | null,
-  and?: Array< ModelEligibleFilterInput | null > | null,
-  or?: Array< ModelEligibleFilterInput | null > | null,
-  not?: ModelEligibleFilterInput | null,
+  and?: Array< ModelSectionEligibleDepartmentFilterInput | null > | null,
+  or?: Array< ModelSectionEligibleDepartmentFilterInput | null > | null,
+  not?: ModelSectionEligibleDepartmentFilterInput | null,
 };
 
 export enum ModelSortDirection {
@@ -494,13 +501,14 @@ export type ModelSubscriptionSectionFilterInput = {
   or?: Array< ModelSubscriptionSectionFilterInput | null > | null,
 };
 
-export type ModelSubscriptionEligibleFilterInput = {
+export type ModelSubscriptionSectionEligibleDepartmentFilterInput = {
   id?: ModelSubscriptionIDInput | null,
   sectionID?: ModelSubscriptionIDInput | null,
+  departmentID?: ModelSubscriptionIDInput | null,
   createdAt?: ModelSubscriptionStringInput | null,
   updatedAt?: ModelSubscriptionStringInput | null,
-  and?: Array< ModelSubscriptionEligibleFilterInput | null > | null,
-  or?: Array< ModelSubscriptionEligibleFilterInput | null > | null,
+  and?: Array< ModelSubscriptionSectionEligibleDepartmentFilterInput | null > | null,
+  or?: Array< ModelSubscriptionSectionEligibleDepartmentFilterInput | null > | null,
 };
 
 export type CreateAuthorizationTokenMutationVariables = {
@@ -630,6 +638,10 @@ export type CreateDepartmentMutation = {
       __typename: "ModelSubjectConnection",
       nextToken?: string | null,
     } | null,
+    eligibleSubjects?:  {
+      __typename: "ModelSectionEligibleDepartmentConnection",
+      nextToken?: string | null,
+    } | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -657,6 +669,10 @@ export type UpdateDepartmentMutation = {
       __typename: "ModelSubjectConnection",
       nextToken?: string | null,
     } | null,
+    eligibleSubjects?:  {
+      __typename: "ModelSectionEligibleDepartmentConnection",
+      nextToken?: string | null,
+    } | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -682,6 +698,10 @@ export type DeleteDepartmentMutation = {
     } | null,
     subjects?:  {
       __typename: "ModelSubjectConnection",
+      nextToken?: string | null,
+    } | null,
+    eligibleSubjects?:  {
+      __typename: "ModelSectionEligibleDepartmentConnection",
       nextToken?: string | null,
     } | null,
     createdAt: string,
@@ -798,8 +818,8 @@ export type CreateSectionMutation = {
       createdAt: string,
       updatedAt: string,
     } | null,
-    eligibles?:  {
-      __typename: "ModelEligibleConnection",
+    eligibleDepartments?:  {
+      __typename: "ModelSectionEligibleDepartmentConnection",
       nextToken?: string | null,
     } | null,
     createdAt: string,
@@ -829,8 +849,8 @@ export type UpdateSectionMutation = {
       createdAt: string,
       updatedAt: string,
     } | null,
-    eligibles?:  {
-      __typename: "ModelEligibleConnection",
+    eligibleDepartments?:  {
+      __typename: "ModelSectionEligibleDepartmentConnection",
       nextToken?: string | null,
     } | null,
     createdAt: string,
@@ -860,8 +880,8 @@ export type DeleteSectionMutation = {
       createdAt: string,
       updatedAt: string,
     } | null,
-    eligibles?:  {
-      __typename: "ModelEligibleConnection",
+    eligibleDepartments?:  {
+      __typename: "ModelSectionEligibleDepartmentConnection",
       nextToken?: string | null,
     } | null,
     createdAt: string,
@@ -869,14 +889,14 @@ export type DeleteSectionMutation = {
   } | null,
 };
 
-export type CreateEligibleMutationVariables = {
-  input: CreateEligibleInput,
-  condition?: ModelEligibleConditionInput | null,
+export type CreateSectionEligibleDepartmentMutationVariables = {
+  input: CreateSectionEligibleDepartmentInput,
+  condition?: ModelSectionEligibleDepartmentConditionInput | null,
 };
 
-export type CreateEligibleMutation = {
-  createEligible?:  {
-    __typename: "Eligible",
+export type CreateSectionEligibleDepartmentMutation = {
+  createSectionEligibleDepartment?:  {
+    __typename: "SectionEligibleDepartment",
     id: string,
     sectionID: string,
     section?:  {
@@ -889,19 +909,28 @@ export type CreateEligibleMutation = {
       createdAt: string,
       updatedAt: string,
     } | null,
+    departmentID: string,
+    department?:  {
+      __typename: "Department",
+      id: string,
+      name: string,
+      facultyID: string,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
     createdAt: string,
     updatedAt: string,
   } | null,
 };
 
-export type UpdateEligibleMutationVariables = {
-  input: UpdateEligibleInput,
-  condition?: ModelEligibleConditionInput | null,
+export type UpdateSectionEligibleDepartmentMutationVariables = {
+  input: UpdateSectionEligibleDepartmentInput,
+  condition?: ModelSectionEligibleDepartmentConditionInput | null,
 };
 
-export type UpdateEligibleMutation = {
-  updateEligible?:  {
-    __typename: "Eligible",
+export type UpdateSectionEligibleDepartmentMutation = {
+  updateSectionEligibleDepartment?:  {
+    __typename: "SectionEligibleDepartment",
     id: string,
     sectionID: string,
     section?:  {
@@ -914,19 +943,28 @@ export type UpdateEligibleMutation = {
       createdAt: string,
       updatedAt: string,
     } | null,
+    departmentID: string,
+    department?:  {
+      __typename: "Department",
+      id: string,
+      name: string,
+      facultyID: string,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
     createdAt: string,
     updatedAt: string,
   } | null,
 };
 
-export type DeleteEligibleMutationVariables = {
-  input: DeleteEligibleInput,
-  condition?: ModelEligibleConditionInput | null,
+export type DeleteSectionEligibleDepartmentMutationVariables = {
+  input: DeleteSectionEligibleDepartmentInput,
+  condition?: ModelSectionEligibleDepartmentConditionInput | null,
 };
 
-export type DeleteEligibleMutation = {
-  deleteEligible?:  {
-    __typename: "Eligible",
+export type DeleteSectionEligibleDepartmentMutation = {
+  deleteSectionEligibleDepartment?:  {
+    __typename: "SectionEligibleDepartment",
     id: string,
     sectionID: string,
     section?:  {
@@ -936,6 +974,15 @@ export type DeleteEligibleMutation = {
       capacity: number,
       teacher: string,
       subjectID: string,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    departmentID: string,
+    department?:  {
+      __typename: "Department",
+      id: string,
+      name: string,
+      facultyID: string,
       createdAt: string,
       updatedAt: string,
     } | null,
@@ -1039,6 +1086,10 @@ export type GetDepartmentQuery = {
       __typename: "ModelSubjectConnection",
       nextToken?: string | null,
     } | null,
+    eligibleSubjects?:  {
+      __typename: "ModelSectionEligibleDepartmentConnection",
+      nextToken?: string | null,
+    } | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -1136,8 +1187,8 @@ export type GetSectionQuery = {
       createdAt: string,
       updatedAt: string,
     } | null,
-    eligibles?:  {
-      __typename: "ModelEligibleConnection",
+    eligibleDepartments?:  {
+      __typename: "ModelSectionEligibleDepartmentConnection",
       nextToken?: string | null,
     } | null,
     createdAt: string,
@@ -1168,13 +1219,13 @@ export type ListSectionsQuery = {
   } | null,
 };
 
-export type GetEligibleQueryVariables = {
+export type GetSectionEligibleDepartmentQueryVariables = {
   id: string,
 };
 
-export type GetEligibleQuery = {
-  getEligible?:  {
-    __typename: "Eligible",
+export type GetSectionEligibleDepartmentQuery = {
+  getSectionEligibleDepartment?:  {
+    __typename: "SectionEligibleDepartment",
     id: string,
     sectionID: string,
     section?:  {
@@ -1187,24 +1238,34 @@ export type GetEligibleQuery = {
       createdAt: string,
       updatedAt: string,
     } | null,
+    departmentID: string,
+    department?:  {
+      __typename: "Department",
+      id: string,
+      name: string,
+      facultyID: string,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
     createdAt: string,
     updatedAt: string,
   } | null,
 };
 
-export type ListEligiblesQueryVariables = {
-  filter?: ModelEligibleFilterInput | null,
+export type ListSectionEligibleDepartmentsQueryVariables = {
+  filter?: ModelSectionEligibleDepartmentFilterInput | null,
   limit?: number | null,
   nextToken?: string | null,
 };
 
-export type ListEligiblesQuery = {
-  listEligibles?:  {
-    __typename: "ModelEligibleConnection",
+export type ListSectionEligibleDepartmentsQuery = {
+  listSectionEligibleDepartments?:  {
+    __typename: "ModelSectionEligibleDepartmentConnection",
     items:  Array< {
-      __typename: "Eligible",
+      __typename: "SectionEligibleDepartment",
       id: string,
       sectionID: string,
+      departmentID: string,
       createdAt: string,
       updatedAt: string,
     } | null >,
@@ -1284,21 +1345,45 @@ export type SectionsBySubjectIDQuery = {
   } | null,
 };
 
-export type EligiblesBySectionIDQueryVariables = {
+export type SectionEligibleDepartmentsBySectionIDQueryVariables = {
   sectionID: string,
   sortDirection?: ModelSortDirection | null,
-  filter?: ModelEligibleFilterInput | null,
+  filter?: ModelSectionEligibleDepartmentFilterInput | null,
   limit?: number | null,
   nextToken?: string | null,
 };
 
-export type EligiblesBySectionIDQuery = {
-  eligiblesBySectionID?:  {
-    __typename: "ModelEligibleConnection",
+export type SectionEligibleDepartmentsBySectionIDQuery = {
+  sectionEligibleDepartmentsBySectionID?:  {
+    __typename: "ModelSectionEligibleDepartmentConnection",
     items:  Array< {
-      __typename: "Eligible",
+      __typename: "SectionEligibleDepartment",
       id: string,
       sectionID: string,
+      departmentID: string,
+      createdAt: string,
+      updatedAt: string,
+    } | null >,
+    nextToken?: string | null,
+  } | null,
+};
+
+export type SectionEligibleDepartmentsByDepartmentIDQueryVariables = {
+  departmentID: string,
+  sortDirection?: ModelSortDirection | null,
+  filter?: ModelSectionEligibleDepartmentFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type SectionEligibleDepartmentsByDepartmentIDQuery = {
+  sectionEligibleDepartmentsByDepartmentID?:  {
+    __typename: "ModelSectionEligibleDepartmentConnection",
+    items:  Array< {
+      __typename: "SectionEligibleDepartment",
+      id: string,
+      sectionID: string,
+      departmentID: string,
       createdAt: string,
       updatedAt: string,
     } | null >,
@@ -1426,6 +1511,10 @@ export type OnCreateDepartmentSubscription = {
       __typename: "ModelSubjectConnection",
       nextToken?: string | null,
     } | null,
+    eligibleSubjects?:  {
+      __typename: "ModelSectionEligibleDepartmentConnection",
+      nextToken?: string | null,
+    } | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -1452,6 +1541,10 @@ export type OnUpdateDepartmentSubscription = {
       __typename: "ModelSubjectConnection",
       nextToken?: string | null,
     } | null,
+    eligibleSubjects?:  {
+      __typename: "ModelSectionEligibleDepartmentConnection",
+      nextToken?: string | null,
+    } | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -1476,6 +1569,10 @@ export type OnDeleteDepartmentSubscription = {
     } | null,
     subjects?:  {
       __typename: "ModelSubjectConnection",
+      nextToken?: string | null,
+    } | null,
+    eligibleSubjects?:  {
+      __typename: "ModelSectionEligibleDepartmentConnection",
       nextToken?: string | null,
     } | null,
     createdAt: string,
@@ -1588,8 +1685,8 @@ export type OnCreateSectionSubscription = {
       createdAt: string,
       updatedAt: string,
     } | null,
-    eligibles?:  {
-      __typename: "ModelEligibleConnection",
+    eligibleDepartments?:  {
+      __typename: "ModelSectionEligibleDepartmentConnection",
       nextToken?: string | null,
     } | null,
     createdAt: string,
@@ -1618,8 +1715,8 @@ export type OnUpdateSectionSubscription = {
       createdAt: string,
       updatedAt: string,
     } | null,
-    eligibles?:  {
-      __typename: "ModelEligibleConnection",
+    eligibleDepartments?:  {
+      __typename: "ModelSectionEligibleDepartmentConnection",
       nextToken?: string | null,
     } | null,
     createdAt: string,
@@ -1648,8 +1745,8 @@ export type OnDeleteSectionSubscription = {
       createdAt: string,
       updatedAt: string,
     } | null,
-    eligibles?:  {
-      __typename: "ModelEligibleConnection",
+    eligibleDepartments?:  {
+      __typename: "ModelSectionEligibleDepartmentConnection",
       nextToken?: string | null,
     } | null,
     createdAt: string,
@@ -1657,13 +1754,13 @@ export type OnDeleteSectionSubscription = {
   } | null,
 };
 
-export type OnCreateEligibleSubscriptionVariables = {
-  filter?: ModelSubscriptionEligibleFilterInput | null,
+export type OnCreateSectionEligibleDepartmentSubscriptionVariables = {
+  filter?: ModelSubscriptionSectionEligibleDepartmentFilterInput | null,
 };
 
-export type OnCreateEligibleSubscription = {
-  onCreateEligible?:  {
-    __typename: "Eligible",
+export type OnCreateSectionEligibleDepartmentSubscription = {
+  onCreateSectionEligibleDepartment?:  {
+    __typename: "SectionEligibleDepartment",
     id: string,
     sectionID: string,
     section?:  {
@@ -1676,18 +1773,27 @@ export type OnCreateEligibleSubscription = {
       createdAt: string,
       updatedAt: string,
     } | null,
+    departmentID: string,
+    department?:  {
+      __typename: "Department",
+      id: string,
+      name: string,
+      facultyID: string,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
     createdAt: string,
     updatedAt: string,
   } | null,
 };
 
-export type OnUpdateEligibleSubscriptionVariables = {
-  filter?: ModelSubscriptionEligibleFilterInput | null,
+export type OnUpdateSectionEligibleDepartmentSubscriptionVariables = {
+  filter?: ModelSubscriptionSectionEligibleDepartmentFilterInput | null,
 };
 
-export type OnUpdateEligibleSubscription = {
-  onUpdateEligible?:  {
-    __typename: "Eligible",
+export type OnUpdateSectionEligibleDepartmentSubscription = {
+  onUpdateSectionEligibleDepartment?:  {
+    __typename: "SectionEligibleDepartment",
     id: string,
     sectionID: string,
     section?:  {
@@ -1700,18 +1806,27 @@ export type OnUpdateEligibleSubscription = {
       createdAt: string,
       updatedAt: string,
     } | null,
+    departmentID: string,
+    department?:  {
+      __typename: "Department",
+      id: string,
+      name: string,
+      facultyID: string,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
     createdAt: string,
     updatedAt: string,
   } | null,
 };
 
-export type OnDeleteEligibleSubscriptionVariables = {
-  filter?: ModelSubscriptionEligibleFilterInput | null,
+export type OnDeleteSectionEligibleDepartmentSubscriptionVariables = {
+  filter?: ModelSubscriptionSectionEligibleDepartmentFilterInput | null,
 };
 
-export type OnDeleteEligibleSubscription = {
-  onDeleteEligible?:  {
-    __typename: "Eligible",
+export type OnDeleteSectionEligibleDepartmentSubscription = {
+  onDeleteSectionEligibleDepartment?:  {
+    __typename: "SectionEligibleDepartment",
     id: string,
     sectionID: string,
     section?:  {
@@ -1721,6 +1836,15 @@ export type OnDeleteEligibleSubscription = {
       capacity: number,
       teacher: string,
       subjectID: string,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    departmentID: string,
+    department?:  {
+      __typename: "Department",
+      id: string,
+      name: string,
+      facultyID: string,
       createdAt: string,
       updatedAt: string,
     } | null,

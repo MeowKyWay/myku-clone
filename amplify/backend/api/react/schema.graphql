@@ -44,8 +44,9 @@ type Department
   facultyID: ID! @index(name: "faculty") #faculty has many departments
   faculty: Faculty @belongsTo(fields: ["facultyID"])
 
-  subjects: [Subject] @hasMany(indexName: "department", fields: ["id"]) 
-  #department has many subjects
+  subjects: [Subject] @hasMany(indexName: "department", fields: ["id"]) #department has many subjects
+
+  eligibleSubjects: [SectionEligibleDepartment] @hasMany(indexName: "department", fields: ["id"]) #department has many eligibles
 }
 
 type Subject
@@ -91,10 +92,10 @@ type Section
   subjectID: ID! @index(name: "subject") #subject has many sections
   subject: Subject @belongsTo(fields: ["subjectID"])
 
-  eligibles: [Eligible] @hasMany(indexName: "section", fields: ["id"]) #section has many eligibles
+  eligibleDepartments: [SectionEligibleDepartment] @hasMany(indexName: "section", fields: ["id"]) #section has many eligibles
 }
 
-type Eligible
+type SectionEligibleDepartment
   @model
   @aws_cognito_user_pools
   @auth(
@@ -107,4 +108,7 @@ type Eligible
 
     sectionID: ID! @index(name: "section") #section has many eligibles
     section: Section @belongsTo(fields: ["sectionID"])
+
+    departmentID: ID! @index(name: "department") #department has many eligibles
+    department: Department @belongsTo(fields: ["departmentID"])
   }

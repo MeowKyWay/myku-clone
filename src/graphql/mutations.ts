@@ -138,6 +138,10 @@ export const createDepartment = /* GraphQL */ `mutation CreateDepartment(
       nextToken
       __typename
     }
+    eligibleSubjects {
+      nextToken
+      __typename
+    }
     createdAt
     updatedAt
     __typename
@@ -166,6 +170,10 @@ export const updateDepartment = /* GraphQL */ `mutation UpdateDepartment(
       nextToken
       __typename
     }
+    eligibleSubjects {
+      nextToken
+      __typename
+    }
     createdAt
     updatedAt
     __typename
@@ -191,6 +199,10 @@ export const deleteDepartment = /* GraphQL */ `mutation DeleteDepartment(
       __typename
     }
     subjects {
+      nextToken
+      __typename
+    }
+    eligibleSubjects {
       nextToken
       __typename
     }
@@ -312,7 +324,7 @@ export const createSection = /* GraphQL */ `mutation CreateSection(
       updatedAt
       __typename
     }
-    eligibles {
+    eligibleDepartments {
       nextToken
       __typename
     }
@@ -344,7 +356,7 @@ export const updateSection = /* GraphQL */ `mutation UpdateSection(
       updatedAt
       __typename
     }
-    eligibles {
+    eligibleDepartments {
       nextToken
       __typename
     }
@@ -376,7 +388,7 @@ export const deleteSection = /* GraphQL */ `mutation DeleteSection(
       updatedAt
       __typename
     }
-    eligibles {
+    eligibleDepartments {
       nextToken
       __typename
     }
@@ -389,11 +401,11 @@ export const deleteSection = /* GraphQL */ `mutation DeleteSection(
   APITypes.DeleteSectionMutationVariables,
   APITypes.DeleteSectionMutation
 >;
-export const createEligible = /* GraphQL */ `mutation CreateEligible(
-  $input: CreateEligibleInput!
-  $condition: ModelEligibleConditionInput
+export const createSectionEligibleDepartment = /* GraphQL */ `mutation CreateSectionEligibleDepartment(
+  $input: CreateSectionEligibleDepartmentInput!
+  $condition: ModelSectionEligibleDepartmentConditionInput
 ) {
-  createEligible(input: $input, condition: $condition) {
+  createSectionEligibleDepartment(input: $input, condition: $condition) {
     id
     sectionID
     section {
@@ -406,20 +418,29 @@ export const createEligible = /* GraphQL */ `mutation CreateEligible(
       updatedAt
       __typename
     }
+    departmentID
+    department {
+      id
+      name
+      facultyID
+      createdAt
+      updatedAt
+      __typename
+    }
     createdAt
     updatedAt
     __typename
   }
 }
 ` as GeneratedMutation<
-  APITypes.CreateEligibleMutationVariables,
-  APITypes.CreateEligibleMutation
+  APITypes.CreateSectionEligibleDepartmentMutationVariables,
+  APITypes.CreateSectionEligibleDepartmentMutation
 >;
-export const updateEligible = /* GraphQL */ `mutation UpdateEligible(
-  $input: UpdateEligibleInput!
-  $condition: ModelEligibleConditionInput
+export const updateSectionEligibleDepartment = /* GraphQL */ `mutation UpdateSectionEligibleDepartment(
+  $input: UpdateSectionEligibleDepartmentInput!
+  $condition: ModelSectionEligibleDepartmentConditionInput
 ) {
-  updateEligible(input: $input, condition: $condition) {
+  updateSectionEligibleDepartment(input: $input, condition: $condition) {
     id
     sectionID
     section {
@@ -432,20 +453,29 @@ export const updateEligible = /* GraphQL */ `mutation UpdateEligible(
       updatedAt
       __typename
     }
+    departmentID
+    department {
+      id
+      name
+      facultyID
+      createdAt
+      updatedAt
+      __typename
+    }
     createdAt
     updatedAt
     __typename
   }
 }
 ` as GeneratedMutation<
-  APITypes.UpdateEligibleMutationVariables,
-  APITypes.UpdateEligibleMutation
+  APITypes.UpdateSectionEligibleDepartmentMutationVariables,
+  APITypes.UpdateSectionEligibleDepartmentMutation
 >;
-export const deleteEligible = /* GraphQL */ `mutation DeleteEligible(
-  $input: DeleteEligibleInput!
-  $condition: ModelEligibleConditionInput
+export const deleteSectionEligibleDepartment = /* GraphQL */ `mutation DeleteSectionEligibleDepartment(
+  $input: DeleteSectionEligibleDepartmentInput!
+  $condition: ModelSectionEligibleDepartmentConditionInput
 ) {
-  deleteEligible(input: $input, condition: $condition) {
+  deleteSectionEligibleDepartment(input: $input, condition: $condition) {
     id
     sectionID
     section {
@@ -458,12 +488,21 @@ export const deleteEligible = /* GraphQL */ `mutation DeleteEligible(
       updatedAt
       __typename
     }
+    departmentID
+    department {
+      id
+      name
+      facultyID
+      createdAt
+      updatedAt
+      __typename
+    }
     createdAt
     updatedAt
     __typename
   }
 }
 ` as GeneratedMutation<
-  APITypes.DeleteEligibleMutationVariables,
-  APITypes.DeleteEligibleMutation
+  APITypes.DeleteSectionEligibleDepartmentMutationVariables,
+  APITypes.DeleteSectionEligibleDepartmentMutation
 >;

@@ -1,7 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { generateClient } from "aws-amplify/api";
 import { SectionType } from "../../types/DatabaseType";
-import { listSectionsWithSubject } from "../../custom_graphql/customQueries";
+import { listSectionsWithSubjectEligibleDepartment } from "../../custom_graphql/customQueries";
 import { createSection, deleteSection, updateSection } from "../../graphql/mutations";
 
 const client = generateClient();
@@ -10,8 +10,9 @@ export const fetchSections = createAsyncThunk<SectionType[]>(
     "fetchSections",
     async (): Promise<SectionType[]> => {
         const response = await client.graphql({
-            query: listSectionsWithSubject,
+            query: listSectionsWithSubjectEligibleDepartment,
         })
+
         return response.data.listSections.items;
     }
 )
@@ -20,7 +21,7 @@ export const fetchTeacherSections = createAsyncThunk<SectionType[], string>(
     "fetchMySections",
     async (teacher: string): Promise<SectionType[]> => {
         const response = await client.graphql({
-            query: listSectionsWithSubject,
+            query: listSectionsWithSubjectEligibleDepartment,
             variables: {
                 filter: {
                     teacher: {
@@ -48,7 +49,7 @@ export const addSection = createAsyncThunk<SectionType, {name: string, capacity:
             }
         })
 
-        return response.data.createSection;
+        return response.data.createSection as SectionType;
     }
 )
 
@@ -81,6 +82,6 @@ export const putSection = createAsyncThunk<SectionType, {id: string, name: strin
             },
         })
 
-        return response.data.updateSection
+        return response.data.updateSection as SectionType;
     }
 )
