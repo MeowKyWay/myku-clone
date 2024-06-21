@@ -211,7 +211,6 @@ export const createSubject = /* GraphQL */ `mutation CreateSubject(
     id
     name
     credit
-    teacher
     departmentID
     department {
       id
@@ -242,7 +241,6 @@ export const updateSubject = /* GraphQL */ `mutation UpdateSubject(
     id
     name
     credit
-    teacher
     departmentID
     department {
       id
@@ -273,7 +271,6 @@ export const deleteSubject = /* GraphQL */ `mutation DeleteSubject(
     id
     name
     credit
-    teacher
     departmentID
     department {
       id
@@ -310,7 +307,6 @@ export const createSection = /* GraphQL */ `mutation CreateSection(
       id
       name
       credit
-      teacher
       departmentID
       createdAt
       updatedAt
@@ -339,7 +335,6 @@ export const updateSection = /* GraphQL */ `mutation UpdateSection(
       id
       name
       credit
-      teacher
       departmentID
       createdAt
       updatedAt
@@ -368,7 +363,6 @@ export const deleteSection = /* GraphQL */ `mutation DeleteSection(
       id
       name
       credit
-      teacher
       departmentID
       createdAt
       updatedAt

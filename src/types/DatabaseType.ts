@@ -24,8 +24,6 @@ export interface SubjectType {
     name: string;
     credit: number;
 
-    teacher: string;
-
     departmentID: string;
     department?: DepartmentType | null;
 }

@@ -193,7 +193,6 @@ export const onCreateSubject = /* GraphQL */ `subscription OnCreateSubject($filt
     id
     name
     credit
-    teacher
     departmentID
     department {
       id
@@ -221,7 +220,6 @@ export const onUpdateSubject = /* GraphQL */ `subscription OnUpdateSubject($filt
     id
     name
     credit
-    teacher
     departmentID
     department {
       id
@@ -249,7 +247,6 @@ export const onDeleteSubject = /* GraphQL */ `subscription OnDeleteSubject($filt
     id
     name
     credit
-    teacher
     departmentID
     department {
       id
@@ -283,7 +280,6 @@ export const onCreateSection = /* GraphQL */ `subscription OnCreateSection($filt
       id
       name
       credit
-      teacher
       departmentID
       createdAt
       updatedAt
@@ -309,7 +305,6 @@ export const onUpdateSection = /* GraphQL */ `subscription OnUpdateSection($filt
       id
       name
       credit
-      teacher
       departmentID
       createdAt
       updatedAt
@@ -335,7 +330,6 @@ export const onDeleteSection = /* GraphQL */ `subscription OnDeleteSection($filt
       id
       name
       credit
-      teacher
       departmentID
       createdAt
       updatedAt

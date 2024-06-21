@@ -44,9 +44,7 @@ type Department
   facultyID: ID! @index(name: "faculty") #faculty has many departments
   faculty: Faculty @belongsTo(fields: ["facultyID"])
 
-  subjects: [Subject] 
-    @hasMany(indexName: "department", fields: ["id"]) 
-    @auth(rules: [{ allow: groups, groups: ["Teacher"], operations: [update] }])
+  subjects: [Subject] @hasMany(indexName: "department", fields: ["id"]) 
   #department has many subjects
 }
 
@@ -56,8 +54,6 @@ type Subject
   @auth(
     rules: [
       { allow: groups, groups: ["Admin"] }
-      { allow: groups, groups: ["Teacher"], operations: [create] }
-      { allow: owner, ownerField: "teacher", operations: [update, delete]}
       { allow: private, operations: [read] }
     ]
   ) {
@@ -65,14 +61,16 @@ type Subject
   name: String!
   credit: Int!
 
-  teacher: String!
-
   departmentID: ID! @index(name: "department") #department has many subjects
   department: Department @belongsTo(fields: ["departmentID"])
 
   sections: [Section] 
-    @hasMany(indexName: "subject", fields: ["id"]) 
-    @auth(rules: [{ allow: groups, groups: ["Teacher"], operations: [update] }])
+    @hasMany(indexName: "subject", fields: ["id"])
+    @auth(rules: [
+      { allow: groups, groups: ["Admin"] }
+      { allow: groups, groups: ["Teacher"], operations: [update] }
+      { allow: private, operations: [read] }
+      ])
 }
 
 type Section

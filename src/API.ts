@@ -128,7 +128,6 @@ export type Subject = {
   id: string,
   name: string,
   credit: number,
-  teacher: string,
   departmentID: string,
   department?: Department | null,
   sections?: ModelSectionConnection | null,
@@ -209,14 +208,12 @@ export type CreateSubjectInput = {
   id?: string | null,
   name: string,
   credit: number,
-  teacher: string,
   departmentID: string,
 };
 
 export type ModelSubjectConditionInput = {
   name?: ModelStringInput | null,
   credit?: ModelIntInput | null,
-  teacher?: ModelStringInput | null,
   departmentID?: ModelIDInput | null,
   and?: Array< ModelSubjectConditionInput | null > | null,
   or?: Array< ModelSubjectConditionInput | null > | null,
@@ -241,7 +238,6 @@ export type UpdateSubjectInput = {
   id: string,
   name?: string | null,
   credit?: number | null,
-  teacher?: string | null,
   departmentID?: string | null,
 };
 
@@ -329,7 +325,6 @@ export type ModelSubjectFilterInput = {
   id?: ModelIDInput | null,
   name?: ModelStringInput | null,
   credit?: ModelIntInput | null,
-  teacher?: ModelStringInput | null,
   departmentID?: ModelIDInput | null,
   createdAt?: ModelStringInput | null,
   updatedAt?: ModelStringInput | null,
@@ -424,7 +419,6 @@ export type ModelSubscriptionSubjectFilterInput = {
   updatedAt?: ModelSubscriptionStringInput | null,
   and?: Array< ModelSubscriptionSubjectFilterInput | null > | null,
   or?: Array< ModelSubscriptionSubjectFilterInput | null > | null,
-  teacher?: ModelStringInput | null,
 };
 
 export type ModelSubscriptionIntInput = {
@@ -648,7 +642,6 @@ export type CreateSubjectMutation = {
     id: string,
     name: string,
     credit: number,
-    teacher: string,
     departmentID: string,
     department?:  {
       __typename: "Department",
@@ -678,7 +671,6 @@ export type UpdateSubjectMutation = {
     id: string,
     name: string,
     credit: number,
-    teacher: string,
     departmentID: string,
     department?:  {
       __typename: "Department",
@@ -708,7 +700,6 @@ export type DeleteSubjectMutation = {
     id: string,
     name: string,
     credit: number,
-    teacher: string,
     departmentID: string,
     department?:  {
       __typename: "Department",
@@ -745,7 +736,6 @@ export type CreateSectionMutation = {
       id: string,
       name: string,
       credit: number,
-      teacher: string,
       departmentID: string,
       createdAt: string,
       updatedAt: string,
@@ -773,7 +763,6 @@ export type UpdateSectionMutation = {
       id: string,
       name: string,
       credit: number,
-      teacher: string,
       departmentID: string,
       createdAt: string,
       updatedAt: string,
@@ -801,7 +790,6 @@ export type DeleteSectionMutation = {
       id: string,
       name: string,
       credit: number,
-      teacher: string,
       departmentID: string,
       createdAt: string,
       updatedAt: string,
@@ -942,7 +930,6 @@ export type GetSubjectQuery = {
     id: string,
     name: string,
     credit: number,
-    teacher: string,
     departmentID: string,
     department?:  {
       __typename: "Department",
@@ -975,7 +962,6 @@ export type ListSubjectsQuery = {
       id: string,
       name: string,
       credit: number,
-      teacher: string,
       departmentID: string,
       createdAt: string,
       updatedAt: string,
@@ -1001,7 +987,6 @@ export type GetSectionQuery = {
       id: string,
       name: string,
       credit: number,
-      teacher: string,
       departmentID: string,
       createdAt: string,
       updatedAt: string,
@@ -1073,7 +1058,6 @@ export type SubjectsByDepartmentIDQuery = {
       id: string,
       name: string,
       credit: number,
-      teacher: string,
       departmentID: string,
       createdAt: string,
       updatedAt: string,
@@ -1294,7 +1278,6 @@ export type OnCreateSubjectSubscription = {
     id: string,
     name: string,
     credit: number,
-    teacher: string,
     departmentID: string,
     department?:  {
       __typename: "Department",
@@ -1323,7 +1306,6 @@ export type OnUpdateSubjectSubscription = {
     id: string,
     name: string,
     credit: number,
-    teacher: string,
     departmentID: string,
     department?:  {
       __typename: "Department",
@@ -1352,7 +1334,6 @@ export type OnDeleteSubjectSubscription = {
     id: string,
     name: string,
     credit: number,
-    teacher: string,
     departmentID: string,
     department?:  {
       __typename: "Department",
@@ -1388,7 +1369,6 @@ export type OnCreateSectionSubscription = {
       id: string,
       name: string,
       credit: number,
-      teacher: string,
       departmentID: string,
       createdAt: string,
       updatedAt: string,
@@ -1415,7 +1395,6 @@ export type OnUpdateSectionSubscription = {
       id: string,
       name: string,
       credit: number,
-      teacher: string,
       departmentID: string,
       createdAt: string,
       updatedAt: string,
@@ -1442,7 +1421,6 @@ export type OnDeleteSectionSubscription = {
       id: string,
       name: string,
       credit: number,
-      teacher: string,
       departmentID: string,
       createdAt: string,
       updatedAt: string,

@@ -1,4 +1,4 @@
-import { useLocation } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import { DepartmentType, SubjectType } from "../../../types/DatabaseType";
 import Table from "../../Table";
@@ -9,21 +9,17 @@ import { TextFieldType } from "../../../types/TextFieldType";
 import InputModal from "../../InputModal";
 import { TbRefresh } from "react-icons/tb";
 import { useAppDispatch, useAppSelector } from "../../../hooks";
-import { TeacherRoutePath } from "../../../route/RoutePath";
-import { addSubject, fetchTeacherSubjects, putSubject, removeSubject } from "../../../store/thunks/subjectsThunk";
+import { AdminRoutePath } from "../../../route/RoutePath";
+import { addSubject, fetchSubjects, putSubject, removeSubject } from "../../../store/thunks/subjectsThunk";
 import { fetchDepartments } from "../../../store/thunks/departmentsThunk";
 import Dropdown from "../../Dropdown";
 
-function Subject() {
+function ManageSubject() {
 
-  const location = useLocation();
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
-  if (location.pathname !== TeacherRoutePath.SUBJECT) {//in case of /std/admin/ (default path)
-    window.history.pushState({}, "", TeacherRoutePath.SUBJECT);
-  }
-
-  const subjects = useAppSelector(state => state.subjects.mySubjects);
+  const subjects = useAppSelector(state => state.subjects.data);
   const departments = useAppSelector(state => state.departments.data);
 
   const user = useAppSelector(state => state.user.currentUser)
@@ -32,9 +28,11 @@ function Subject() {
 
   const [name, setName] = useState("");
   const [credit, setCredit] = useState("");
-  const [department, setDepartment] = useState(user.attributes["custom:departmentID"] as string);
+  const [department, setDepartment] = useState("");
 
   const errorMessage = useAppSelector(state => state.subjects.error);
+
+  const { filter } = useParams();
 
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [showUpdateModal, setShowUpdateModal] = useState(false);
@@ -43,12 +41,13 @@ function Subject() {
     if (showCreateModal || showUpdateModal) return;
     setName("");
     setCredit("");
-    setDepartment(user.attributes["custom:departmentID"] as string);
-  }, [showCreateModal, showUpdateModal, user])
+    setDepartment("");
+  }, [showCreateModal, showUpdateModal])
 
   useEffect(() => { // initial fetch
+
     if (!subjects) {
-      dispatch(fetchTeacherSubjects(user.attributes.sub as string));
+      dispatch(fetchSubjects());
     }
     if (!departments) {
       dispatch(fetchDepartments());
@@ -61,7 +60,7 @@ function Subject() {
       name: name,
       credit: Number(credit),
       departmentID: department,
-      teacher: user.attributes.sub as string,
+      teacher: user.attributes.name as string,
     }));
 
     setShowCreateModal(false);
@@ -86,23 +85,22 @@ function Subject() {
   const header = (
     <tr>
       <th style={{ width: "2%" }}>no.</th>
-      <th style={{ width: "28%" }}>name</th>
-      <th style={{ width: "25%" }}>departments</th>
-      <th style={{ width: "15%" }}>announcement</th>
-      <th style={{ width: "15%" }}>section</th>
+      <th style={{ width: "38%" }}>name</th>
+      <th style={{ width: "35%" }}>departments</th>
+      <th style={{ width: "10%" }}>section</th>
       <th style={{ width: "15%" }}>action</th>
     </tr>
   );
 
   const body = subjects?.map((subject, index) => {
+    if (subject.department?.id !== filter && filter) return null;
     return (
       <tr className="text-sm h-8" key={index}>
         <td className="text-center">{index + 1}</td>
         <td>{subject.name}</td>
-        <td className="text-center">
+        <td>
           {subject.department?.name}
         </td>
-        <td className="text-center">view</td>
         <td className="text-center">view</td>
         <td>
           <div className="text-center">
@@ -111,6 +109,8 @@ function Subject() {
                 setShowUpdateModal(true);
                 updatingSubject.current = subject;
                 setName(subject.name);
+                setCredit(subject.credit.toString());
+                setDepartment(subject.departmentID);
               }}
               type={ButtonType.SECONDARY}
               className="text-sm w-20"
@@ -192,14 +192,26 @@ function Subject() {
         <div className="flex flex-col h-full flex-1 pr-2 justify-end items-end">
           <div className="h-full flex-1 flex flex-row justify-end items-end gap-1">
             <Button
-              onClick={() => dispatch(fetchTeacherSubjects(user.attributes.sub as string))}
+              onClick={() => dispatch(fetchSubjects())}
               type={ButtonType.TERTIARY}
               className="h-6 w-6 mb-1 px-0"
             >
               <TbRefresh className="m-auto" />
             </Button>
+            <Dropdown
+              onChange={(value) => {
+                navigate(`${AdminRoutePath.SUBJECT}/${value}`);
+              }}
+              list={departments as DepartmentType[]}
+              value={filter}
+              name="faculty"
+              className="w-80 h-6 text-xs mb-1"
+            ></Dropdown>
             <Button
-              onClick={() => setShowCreateModal(true)}
+              onClick={() => {
+                setShowCreateModal(true)
+                setDepartment(filter? filter : "")
+              }}
               type={ButtonType.TERTIARY}
               className="text-xs h-6 w-16 mb-1"
             >
@@ -220,4 +232,4 @@ function Subject() {
   );
 }
 
-export default Subject;
+export default ManageSubject;

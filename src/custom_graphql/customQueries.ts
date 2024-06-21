@@ -40,7 +40,6 @@ export const listSubjectsWithDepartment = /* GraphQL */ `query ListSubjects(
         id
         name
         credit
-        teacher
         department {
           id
           name

@@ -8,100 +8,108 @@ import Dropdown from "../../Dropdown";
 import InputModal from "../../InputModal";
 import { TbRefresh } from "react-icons/tb";
 import { useAppDispatch, useAppSelector } from "../../../hooks";
-import { addDepartment, fetchDepartments, putDepartment, removeDepartment } from "../../../store/thunks/departmentsThunk";
-import { fetchFaculties } from "../../../store/thunks/facultiesThunk";
-import { DepartmentType, FacultyType } from "../../../types/DatabaseType";
+import { SectionType, SubjectType } from "../../../types/DatabaseType";
 import { useNavigate, useParams } from "react-router-dom";
+import { addSection, fetchSections, putSection, removeSection } from "../../../store/thunks/sectionsThunk";
+import { fetchSubjects } from "../../../store/thunks/subjectsThunk";
 
 function Section() {
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  const departments = useAppSelector(state => state.departments.data);
-  const faculties = useAppSelector(state => state.faculties.data);
+  const sections = useAppSelector(state => state.sections.allSections);
+  const subjects = useAppSelector(state => state.subjects.data);
 
-  const departmentErrorMessage = useAppSelector(state => state.departments.error);
-  const facultyErrorMessage = useAppSelector(state => state.faculties.error);
-  const errorMessage = departmentErrorMessage || facultyErrorMessage;
+  const user = useAppSelector(state => state.user.currentUser)
+
+  const sectionErrorMessage = useAppSelector(state => state.sections.error);
+  const subjectErrorMessage = useAppSelector(state => state.subjects.error);
+  const errorMessage = sectionErrorMessage || subjectErrorMessage;
 
   const { filter } = useParams();
 
-  const updatingDepartment = useRef<DepartmentType>();
+  const updatingSection = useRef<SectionType>();
 
   const [name, setName] = useState("");
-  const [faculty, setFaculty] = useState("");
+  const [capacity, setCapacity] = useState("");
+  const [subject, setSubject] = useState("");
 
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [showUpdateModal, setShowUpdateModal] = useState(false);
 
   useEffect(() => { //initial fetch
-    if (!departments) { //Only fetch if not already fetched
-      dispatch(fetchDepartments());
+    if (!sections) { //Only fetch if not already fetched
+      dispatch(fetchSections());
     }
-    if (!faculties) {
-      dispatch(fetchFaculties());
+    if (!subjects) {
+      dispatch(fetchSubjects());
     }
-  }, [dispatch, departments, faculties])
+  }, [dispatch, sections, subjects])
 
   useEffect(() => { //On close modal reset input state
     if (showCreateModal || showUpdateModal) return;
     setName("");
-    setFaculty("");
+    setCapacity("");
+    setSubject("");
   }, [showCreateModal, showUpdateModal])
 
-  const handleCreateDepartment = async () => {
-    if (!confirm("Are you sure you want to create this department?")) return;
-    await dispatch(addDepartment({
+  const handleCreateSection = async () => {
+    if (!confirm("Are you sure you want to create this section?")) return;
+    await dispatch(addSection({
       name: name,
-      facultyID: faculty,
+      capacity: Number(capacity),
+      teacher: user.attributes.sub as string,
+      subjectID: subject,
     }));
 
     setShowCreateModal(false);
   }
 
-  const handleUpdateDepartment = async () => {
-    if (!confirm("Are you sure you want to update this department?")) return;
-    await dispatch(putDepartment({
-      id: updatingDepartment.current?.id as string,
+  const handleUpdateSection = async () => {
+    if (!confirm("Are you sure you want to update this section?")) return;
+    await dispatch(putSection({
+      id: updatingSection.current?.id as string,
       name: name,
-      facultyID: faculty,
+      capacity: Number(capacity),
     }));
 
     setShowUpdateModal(false);
   }
 
-  const handleDeleteDepartment = async (id: string) => {
-    if (!confirm("Are you sure you want to delete this department?")) return;
-    await dispatch(removeDepartment(id));
+  const handleDeleteSection = async (id: string) => {
+    if (!confirm("Are you sure you want to delete this section?")) return;
+    await dispatch(removeSection(id));
   }
 
   const header = (
     <tr>
       <th style={{ width: "2%" }}>no.</th>
-      <th style={{ width: "50%" }}>name</th>
-      <th style={{ width: "26%" }}>faculty</th>
-      <th style={{ width: "7%" }}>teacher</th>
+      <th style={{ width: "26%" }}>subject</th>
+      <th style={{ width: "43%" }}>name</th>
+      <th style={{ width: "7%" }}>student</th>
+      <th style={{ width: "7%" }}>schedue</th>
       <th style={{ width: "15%" }}>action</th>
     </tr>
   );
 
-  const body = departments?.map((department, index) => {
-    if (department.faculty?.id !== filter && filter) return null;
+  const body = sections?.map((section, index) => {
+    if (section.subject?.id !== filter && filter) return null;
     return (
       <tr className="text-sm h-8" key={index}>
         <td className="text-center">{index + 1}</td>
-        <td>{department.name}</td>
-        <td>{department.faculty?.name}</td>
+        <td>{section.subject?.name}</td>
+        <td>{section.name}</td>
+        <td className="text-center">View</td>
         <td className="text-center">View</td>
         <td>
           <div className="text-center">
             <Button
               onClick={() => {
                 setShowUpdateModal(true);
-                updatingDepartment.current = department;
-                setFaculty(department.faculty?.id as string);
-                setName(department.name);
+                updatingSection.current = section;
+                setSubject(section.subject?.id as string);
+                setName(section.name);
               }}
               type={ButtonType.SECONDARY}
               className="text-sm w-20"
@@ -109,7 +117,7 @@ function Section() {
               Edit
             </Button>
             <Button
-              onClick={() => handleDeleteDepartment(department.id)}
+              onClick={() => handleDeleteSection(section.id)}
               type={ButtonType.WARNING}
               className="text-sm w-20"
             >
@@ -123,7 +131,7 @@ function Section() {
 
   const modalFields = [
     {
-      label: "ชื่อสาขา",
+      label: "หมู่เรียนที่",
       fields: (
         <TextField type={TextFieldType.text} value={name} onChange={setName}>
           Department of something
@@ -131,13 +139,13 @@ function Section() {
       ),
     },
     {
-      label: "คณะ",
+      label: "วิชา",
       fields: (
         <Dropdown
-          onChange={setFaculty}
-          list={faculties as FacultyType[]}
-          value={faculty}
-          name="faculty"
+          onChange={setSubject}
+          list={subjects as SubjectType[]}
+          value={subject}
+          name="subject"
           className="h-10 text-xs"
         ></Dropdown>
       ),
@@ -150,9 +158,9 @@ function Section() {
         <InputModal //Create Department Modal
           fieldList={modalFields}
           onCancle={() => setShowCreateModal(false)}
-          onConfirm={handleCreateDepartment}
+          onConfirm={handleCreateSection}
           confirmButtonType={ButtonType.SECONDARY}
-          confirmButtonLabel="เพิ่มสาขา"
+          confirmButtonLabel="เพิ่มหมู่เรียน"
         >
           เพิ่มสาขา
         </InputModal>
@@ -161,19 +169,19 @@ function Section() {
         <InputModal //Update Department Modal
           fieldList={modalFields}
           onCancle={() => setShowUpdateModal(false)}
-          onConfirm={handleUpdateDepartment}
+          onConfirm={handleUpdateSection}
           confirmButtonType={ButtonType.SECONDARY}
-          confirmButtonLabel="แก้สาขา"
+          confirmButtonLabel="แก้หมู่เรียน"
         >
-          แก้ไขสาขา {updatingDepartment.current?.name}
+          แก้ไขสาขา {updatingSection.current?.name}
         </InputModal>
       )}
       <div className="w-11/12 h-20 flex flex-row items-center pl-10">
-        <span className="text-xl w-80 font-bold">Manage Departments</span>
+        <span className="text-xl w-80 font-bold">Manage Sections</span>
         <div className="flex flex-col h-full flex-1 pr-2 justify-end items-end">
           <div className="h-full flex-1 flex flex-row justify-end items-end gap-1">
             <Button
-              onClick={() => dispatch(fetchDepartments())}
+              onClick={() => dispatch(fetchSections())}
               type={ButtonType.TERTIARY}
               className="h-6 w-6 mb-1 px-0"
             >
@@ -183,17 +191,17 @@ function Section() {
               onChange={(value) => {
                 navigate(`/std/admin/department/${value}`);
               }}
-              list={faculties as FacultyType[]}
+              list={subjects as SubjectType[]}
               value={filter}
-              name="faculty"
+              name="subject"
               className="w-40 h-6 text-xs mb-1"
             ></Dropdown>
             <Button
               onClick={() => setShowCreateModal(true)}
               type={ButtonType.TERTIARY}
-              className="text-xs h-6 w-16 mb-1"
+              className="text-xs h-6 w-18 mb-1"
             >
-              เพิ่มสาขา
+              เพิ่มหมู่เรียน
             </Button>
           </div>
           <span className="h-4 text-right text-xs text-red-500 mr-1 mb-1">

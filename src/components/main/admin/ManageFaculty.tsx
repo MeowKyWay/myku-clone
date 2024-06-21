@@ -83,7 +83,7 @@ function ManageFaculty() {
         <td className="text-center">{index + 1}</td>
         <td>{faculty.name}</td>
         <td className="text-center">
-          <Link to={`/std/admin/department/${faculty.id}`}>
+          <Link to={`${AdminRoutePath.DEPARTMENT}/${faculty.id}`}>
             <ClickableText>View</ClickableText>
           </Link>
         </td>

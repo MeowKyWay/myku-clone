@@ -138,7 +138,6 @@ export const getSubject = /* GraphQL */ `query GetSubject($id: ID!) {
     id
     name
     credit
-    teacher
     departmentID
     department {
       id
@@ -171,7 +170,6 @@ export const listSubjects = /* GraphQL */ `query ListSubjects(
       id
       name
       credit
-      teacher
       departmentID
       createdAt
       updatedAt
@@ -196,7 +194,6 @@ export const getSection = /* GraphQL */ `query GetSection($id: ID!) {
       id
       name
       credit
-      teacher
       departmentID
       createdAt
       updatedAt
@@ -283,7 +280,6 @@ export const subjectsByDepartmentID = /* GraphQL */ `query SubjectsByDepartmentI
       id
       name
       credit
-      teacher
       departmentID
       createdAt
       updatedAt

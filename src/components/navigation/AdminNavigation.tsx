@@ -1,6 +1,7 @@
 import NavigationButton from "./NavigationButton";
 import { FaUniversity } from "react-icons/fa";
 import { MdHomeWork } from "react-icons/md";
+import { FaBookOpen } from "react-icons/fa";
 import { FaBook } from "react-icons/fa";
 import { PiStudentBold } from "react-icons/pi";
 import { AdminRoutePath } from "../../route/RoutePath";
@@ -17,6 +18,11 @@ function AdminNavigation() {
                 icon={<MdHomeWork />}
                 label="จัดการสาขา"
                 to={AdminRoutePath.DEPARTMENT}>
+            </NavigationButton>
+            <NavigationButton
+                icon={<FaBookOpen />}
+                label="จัดการวิชา"
+                to={AdminRoutePath.SUBJECT}>
             </NavigationButton>
             <NavigationButton
                 icon={<FaBook />}

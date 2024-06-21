@@ -4,6 +4,7 @@ import ManageDepartment from "../components/main/admin/ManageDepartment";
 import ManageTeacher from "../components/main/admin/ManageTeacher";
 import ManageStudent from "../components/main/admin/ManageStudent";
 import { AdminRoutePath } from "./RoutePath";
+import ManageSubject from "../components/main/admin/ManageSubject";
 
 function AdminRoute() {
     return (
@@ -19,6 +20,18 @@ function AdminRoute() {
             {
                 path: AdminRoutePath.DEPARTMENT,
                 element: <ManageDepartment />
+            },
+            {
+                path: AdminRoutePath.DEPARTMENT + "/:filter",
+                element: <ManageDepartment />
+            },
+            {
+                path: AdminRoutePath.SUBJECT,
+                element: <ManageSubject />
+            },
+            {
+                path: AdminRoutePath.SUBJECT + "/:filter",
+                element: <ManageSubject />
             },
             {
                 path: AdminRoutePath.TEACHER,

@@ -12,6 +12,7 @@ import { addDepartment, fetchDepartments, putDepartment, removeDepartment } from
 import { fetchFaculties } from "../../../store/thunks/facultiesThunk";
 import { DepartmentType, FacultyType } from "../../../types/DatabaseType";
 import { useNavigate, useParams } from "react-router-dom";
+import { AdminRoutePath } from "../../../route/RoutePath";
 
 function ManageDepartment() {
 
@@ -181,12 +182,12 @@ function ManageDepartment() {
             </Button>
             <Dropdown
               onChange={(value) => {
-                navigate(`/std/admin/department/${value}`);
+                navigate(`${AdminRoutePath.DEPARTMENT}/${value}`);
               }}
               list={faculties as FacultyType[]}
               value={filter}
               name="faculty"
-              className="w-40 h-6 text-xs mb-1"
+              className="w-60 h-6 text-xs mb-1"
             ></Dropdown>
             <Button
               onClick={() => setShowCreateModal(true)}
