@@ -10,7 +10,7 @@ import InputModal from "../../InputModal";
 import { TbRefresh } from "react-icons/tb";
 import { useAppDispatch, useAppSelector } from "../../../hooks";
 import { TeacherRoutePath } from "../../../route/RoutePath";
-import { addSubject, fetchMySubjects, putSubject, removeSubject } from "../../../store/thunks/subjectsThunk";
+import { addSubject, fetchTeacherSubjects, putSubject, removeSubject } from "../../../store/thunks/subjectsThunk";
 import { fetchDepartments } from "../../../store/thunks/departmentsThunk";
 import Dropdown from "../../Dropdown";
 
@@ -48,7 +48,7 @@ function Subject() {
 
   useEffect(() => { // initial fetch
     if (!subjects) {
-      dispatch(fetchMySubjects(user.attributes.sub as string));
+      dispatch(fetchTeacherSubjects(user.attributes.sub as string));
     }
     if (!departments) {
       dispatch(fetchDepartments());
@@ -192,7 +192,7 @@ function Subject() {
         <div className="flex flex-col h-full flex-1 pr-2 justify-end items-end">
           <div className="h-full flex-1 flex flex-row justify-end items-end gap-1">
             <Button
-              onClick={() => dispatch(fetchMySubjects(user.attributes.sub as string))}
+              onClick={() => dispatch(fetchTeacherSubjects(user.attributes.sub as string))}
               type={ButtonType.TERTIARY}
               className="h-6 w-6 mb-1 px-0"
             >

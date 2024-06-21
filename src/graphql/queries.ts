@@ -148,6 +148,10 @@ export const getSubject = /* GraphQL */ `query GetSubject($id: ID!) {
       updatedAt
       __typename
     }
+    sections {
+      nextToken
+      __typename
+    }
     createdAt
     updatedAt
     __typename
@@ -180,6 +184,56 @@ export const listSubjects = /* GraphQL */ `query ListSubjects(
 ` as GeneratedQuery<
   APITypes.ListSubjectsQueryVariables,
   APITypes.ListSubjectsQuery
+>;
+export const getSection = /* GraphQL */ `query GetSection($id: ID!) {
+  getSection(id: $id) {
+    id
+    name
+    capacity
+    teacher
+    subjectID
+    subject {
+      id
+      name
+      credit
+      teacher
+      departmentID
+      createdAt
+      updatedAt
+      __typename
+    }
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedQuery<
+  APITypes.GetSectionQueryVariables,
+  APITypes.GetSectionQuery
+>;
+export const listSections = /* GraphQL */ `query ListSections(
+  $filter: ModelSectionFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  listSections(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+      name
+      capacity
+      teacher
+      subjectID
+      createdAt
+      updatedAt
+      __typename
+    }
+    nextToken
+    __typename
+  }
+}
+` as GeneratedQuery<
+  APITypes.ListSectionsQueryVariables,
+  APITypes.ListSectionsQuery
 >;
 export const departmentsByFacultyID = /* GraphQL */ `query DepartmentsByFacultyID(
   $facultyID: ID!
@@ -242,4 +296,36 @@ export const subjectsByDepartmentID = /* GraphQL */ `query SubjectsByDepartmentI
 ` as GeneratedQuery<
   APITypes.SubjectsByDepartmentIDQueryVariables,
   APITypes.SubjectsByDepartmentIDQuery
+>;
+export const sectionsBySubjectID = /* GraphQL */ `query SectionsBySubjectID(
+  $subjectID: ID!
+  $sortDirection: ModelSortDirection
+  $filter: ModelSectionFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  sectionsBySubjectID(
+    subjectID: $subjectID
+    sortDirection: $sortDirection
+    filter: $filter
+    limit: $limit
+    nextToken: $nextToken
+  ) {
+    items {
+      id
+      name
+      capacity
+      teacher
+      subjectID
+      createdAt
+      updatedAt
+      __typename
+    }
+    nextToken
+    __typename
+  }
+}
+` as GeneratedQuery<
+  APITypes.SectionsBySubjectIDQueryVariables,
+  APITypes.SectionsBySubjectIDQuery
 >;

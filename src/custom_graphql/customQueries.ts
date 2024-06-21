@@ -57,3 +57,31 @@ export const listSubjectsWithDepartment = /* GraphQL */ `query ListSubjects(
   APITypes.ListSubjectsQueryVariables,
   APITypes.ListSubjectsQuery
 >;
+
+export const listSectionsWithSubject = /* GraphQL */ `query ListSections(
+  $filter: ModelSectionFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  listSections(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+      name
+      capacity
+      teacher
+      subject {
+        id
+        name
+      }
+      createdAt
+      updatedAt
+      __typename
+    }
+    nextToken
+    __typename
+  }
+}
+` as GeneratedQuery<
+  APITypes.ListSectionsQueryVariables,
+  APITypes.ListSectionsQuery
+>;

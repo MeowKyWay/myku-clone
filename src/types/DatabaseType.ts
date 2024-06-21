@@ -23,6 +23,20 @@ export interface SubjectType {
     id: string;
     name: string;
     credit: number;
+
+    teacher: string;
+
     departmentID: string;
     department?: DepartmentType | null;
+}
+
+export interface SectionType {
+    id: string;
+    name: string;
+    capacity: number;
+
+    teacher: string;
+
+    subjectID: string;
+    subject?: SubjectType | null;
 }

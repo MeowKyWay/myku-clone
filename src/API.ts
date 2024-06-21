@@ -131,6 +131,25 @@ export type Subject = {
   teacher: string,
   departmentID: string,
   department?: Department | null,
+  sections?: ModelSectionConnection | null,
+  createdAt: string,
+  updatedAt: string,
+};
+
+export type ModelSectionConnection = {
+  __typename: "ModelSectionConnection",
+  items:  Array<Section | null >,
+  nextToken?: string | null,
+};
+
+export type Section = {
+  __typename: "Section",
+  id: string,
+  name: string,
+  capacity: number,
+  teacher: string,
+  subjectID: string,
+  subject?: Subject | null,
   createdAt: string,
   updatedAt: string,
 };
@@ -230,6 +249,38 @@ export type DeleteSubjectInput = {
   id: string,
 };
 
+export type CreateSectionInput = {
+  id?: string | null,
+  name: string,
+  capacity: number,
+  teacher: string,
+  subjectID: string,
+};
+
+export type ModelSectionConditionInput = {
+  name?: ModelStringInput | null,
+  capacity?: ModelIntInput | null,
+  teacher?: ModelStringInput | null,
+  subjectID?: ModelIDInput | null,
+  and?: Array< ModelSectionConditionInput | null > | null,
+  or?: Array< ModelSectionConditionInput | null > | null,
+  not?: ModelSectionConditionInput | null,
+  createdAt?: ModelStringInput | null,
+  updatedAt?: ModelStringInput | null,
+};
+
+export type UpdateSectionInput = {
+  id: string,
+  name?: string | null,
+  capacity?: number | null,
+  teacher?: string | null,
+  subjectID?: string | null,
+};
+
+export type DeleteSectionInput = {
+  id: string,
+};
+
 export type ModelAuthorizationTokenFilterInput = {
   id?: ModelIDInput | null,
   token?: ModelStringInput | null,
@@ -285,6 +336,19 @@ export type ModelSubjectFilterInput = {
   and?: Array< ModelSubjectFilterInput | null > | null,
   or?: Array< ModelSubjectFilterInput | null > | null,
   not?: ModelSubjectFilterInput | null,
+};
+
+export type ModelSectionFilterInput = {
+  id?: ModelIDInput | null,
+  name?: ModelStringInput | null,
+  capacity?: ModelIntInput | null,
+  teacher?: ModelStringInput | null,
+  subjectID?: ModelIDInput | null,
+  createdAt?: ModelStringInput | null,
+  updatedAt?: ModelStringInput | null,
+  and?: Array< ModelSectionFilterInput | null > | null,
+  or?: Array< ModelSectionFilterInput | null > | null,
+  not?: ModelSectionFilterInput | null,
 };
 
 export enum ModelSortDirection {
@@ -373,6 +437,18 @@ export type ModelSubscriptionIntInput = {
   between?: Array< number | null > | null,
   in?: Array< number | null > | null,
   notIn?: Array< number | null > | null,
+};
+
+export type ModelSubscriptionSectionFilterInput = {
+  id?: ModelSubscriptionIDInput | null,
+  name?: ModelSubscriptionStringInput | null,
+  capacity?: ModelSubscriptionIntInput | null,
+  subjectID?: ModelSubscriptionIDInput | null,
+  createdAt?: ModelSubscriptionStringInput | null,
+  updatedAt?: ModelSubscriptionStringInput | null,
+  and?: Array< ModelSubscriptionSectionFilterInput | null > | null,
+  or?: Array< ModelSubscriptionSectionFilterInput | null > | null,
+  teacher?: ModelStringInput | null,
 };
 
 export type CreateAuthorizationTokenMutationVariables = {
@@ -582,6 +658,10 @@ export type CreateSubjectMutation = {
       createdAt: string,
       updatedAt: string,
     } | null,
+    sections?:  {
+      __typename: "ModelSectionConnection",
+      nextToken?: string | null,
+    } | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -608,6 +688,10 @@ export type UpdateSubjectMutation = {
       createdAt: string,
       updatedAt: string,
     } | null,
+    sections?:  {
+      __typename: "ModelSectionConnection",
+      nextToken?: string | null,
+    } | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -631,6 +715,94 @@ export type DeleteSubjectMutation = {
       id: string,
       name: string,
       facultyID: string,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    sections?:  {
+      __typename: "ModelSectionConnection",
+      nextToken?: string | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type CreateSectionMutationVariables = {
+  input: CreateSectionInput,
+  condition?: ModelSectionConditionInput | null,
+};
+
+export type CreateSectionMutation = {
+  createSection?:  {
+    __typename: "Section",
+    id: string,
+    name: string,
+    capacity: number,
+    teacher: string,
+    subjectID: string,
+    subject?:  {
+      __typename: "Subject",
+      id: string,
+      name: string,
+      credit: number,
+      teacher: string,
+      departmentID: string,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type UpdateSectionMutationVariables = {
+  input: UpdateSectionInput,
+  condition?: ModelSectionConditionInput | null,
+};
+
+export type UpdateSectionMutation = {
+  updateSection?:  {
+    __typename: "Section",
+    id: string,
+    name: string,
+    capacity: number,
+    teacher: string,
+    subjectID: string,
+    subject?:  {
+      __typename: "Subject",
+      id: string,
+      name: string,
+      credit: number,
+      teacher: string,
+      departmentID: string,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type DeleteSectionMutationVariables = {
+  input: DeleteSectionInput,
+  condition?: ModelSectionConditionInput | null,
+};
+
+export type DeleteSectionMutation = {
+  deleteSection?:  {
+    __typename: "Section",
+    id: string,
+    name: string,
+    capacity: number,
+    teacher: string,
+    subjectID: string,
+    subject?:  {
+      __typename: "Subject",
+      id: string,
+      name: string,
+      credit: number,
+      teacher: string,
+      departmentID: string,
       createdAt: string,
       updatedAt: string,
     } | null,
@@ -780,6 +952,10 @@ export type GetSubjectQuery = {
       createdAt: string,
       updatedAt: string,
     } | null,
+    sections?:  {
+      __typename: "ModelSectionConnection",
+      nextToken?: string | null,
+    } | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -801,6 +977,56 @@ export type ListSubjectsQuery = {
       credit: number,
       teacher: string,
       departmentID: string,
+      createdAt: string,
+      updatedAt: string,
+    } | null >,
+    nextToken?: string | null,
+  } | null,
+};
+
+export type GetSectionQueryVariables = {
+  id: string,
+};
+
+export type GetSectionQuery = {
+  getSection?:  {
+    __typename: "Section",
+    id: string,
+    name: string,
+    capacity: number,
+    teacher: string,
+    subjectID: string,
+    subject?:  {
+      __typename: "Subject",
+      id: string,
+      name: string,
+      credit: number,
+      teacher: string,
+      departmentID: string,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type ListSectionsQueryVariables = {
+  filter?: ModelSectionFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListSectionsQuery = {
+  listSections?:  {
+    __typename: "ModelSectionConnection",
+    items:  Array< {
+      __typename: "Section",
+      id: string,
+      name: string,
+      capacity: number,
+      teacher: string,
+      subjectID: string,
       createdAt: string,
       updatedAt: string,
     } | null >,
@@ -849,6 +1075,31 @@ export type SubjectsByDepartmentIDQuery = {
       credit: number,
       teacher: string,
       departmentID: string,
+      createdAt: string,
+      updatedAt: string,
+    } | null >,
+    nextToken?: string | null,
+  } | null,
+};
+
+export type SectionsBySubjectIDQueryVariables = {
+  subjectID: string,
+  sortDirection?: ModelSortDirection | null,
+  filter?: ModelSectionFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type SectionsBySubjectIDQuery = {
+  sectionsBySubjectID?:  {
+    __typename: "ModelSectionConnection",
+    items:  Array< {
+      __typename: "Section",
+      id: string,
+      name: string,
+      capacity: number,
+      teacher: string,
+      subjectID: string,
       createdAt: string,
       updatedAt: string,
     } | null >,
@@ -1053,6 +1304,10 @@ export type OnCreateSubjectSubscription = {
       createdAt: string,
       updatedAt: string,
     } | null,
+    sections?:  {
+      __typename: "ModelSectionConnection",
+      nextToken?: string | null,
+    } | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -1078,6 +1333,10 @@ export type OnUpdateSubjectSubscription = {
       createdAt: string,
       updatedAt: string,
     } | null,
+    sections?:  {
+      __typename: "ModelSectionConnection",
+      nextToken?: string | null,
+    } | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -1100,6 +1359,91 @@ export type OnDeleteSubjectSubscription = {
       id: string,
       name: string,
       facultyID: string,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    sections?:  {
+      __typename: "ModelSectionConnection",
+      nextToken?: string | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnCreateSectionSubscriptionVariables = {
+  filter?: ModelSubscriptionSectionFilterInput | null,
+};
+
+export type OnCreateSectionSubscription = {
+  onCreateSection?:  {
+    __typename: "Section",
+    id: string,
+    name: string,
+    capacity: number,
+    teacher: string,
+    subjectID: string,
+    subject?:  {
+      __typename: "Subject",
+      id: string,
+      name: string,
+      credit: number,
+      teacher: string,
+      departmentID: string,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnUpdateSectionSubscriptionVariables = {
+  filter?: ModelSubscriptionSectionFilterInput | null,
+};
+
+export type OnUpdateSectionSubscription = {
+  onUpdateSection?:  {
+    __typename: "Section",
+    id: string,
+    name: string,
+    capacity: number,
+    teacher: string,
+    subjectID: string,
+    subject?:  {
+      __typename: "Subject",
+      id: string,
+      name: string,
+      credit: number,
+      teacher: string,
+      departmentID: string,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnDeleteSectionSubscriptionVariables = {
+  filter?: ModelSubscriptionSectionFilterInput | null,
+};
+
+export type OnDeleteSectionSubscription = {
+  onDeleteSection?:  {
+    __typename: "Section",
+    id: string,
+    name: string,
+    capacity: number,
+    teacher: string,
+    subjectID: string,
+    subject?:  {
+      __typename: "Subject",
+      id: string,
+      name: string,
+      credit: number,
+      teacher: string,
+      departmentID: string,
       createdAt: string,
       updatedAt: string,
     } | null,

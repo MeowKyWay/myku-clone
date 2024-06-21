@@ -69,4 +69,29 @@ type Subject
 
   departmentID: ID! @index(name: "department") #department has many subjects
   department: Department @belongsTo(fields: ["departmentID"])
+
+  sections: [Section] 
+    @hasMany(indexName: "subject", fields: ["id"]) 
+    @auth(rules: [{ allow: groups, groups: ["Teacher"], operations: [update] }])
+}
+
+type Section
+@model
+@aws_cognito_user_pools
+@auth(
+  rules: [
+    { allow: groups, groups: ["Admin"] }
+    { allow: groups, groups: ["Teacher"], operations: [create] }
+    { allow: owner, ownerField: "teacher", operations: [update, delete]}
+    { allow: private, operations: [read] }
+  ]
+) {
+  id: ID!
+  name: String!
+  capacity: Int!
+
+  teacher: String!
+
+  subjectID: ID! @index(name: "subject") #subject has many sections
+  subject: Subject @belongsTo(fields: ["subjectID"])
 }

@@ -1,6 +1,6 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { SubjectType } from "../../types/DatabaseType";
-import { addSubject, fetchMySubjects, fetchSubjects, putSubject, removeSubject } from "../thunks/subjectsThunk";
+import { addSubject, fetchTeacherSubjects, fetchSubjects, putSubject, removeSubject } from "../thunks/subjectsThunk";
 
 const subjectsSlice = createSlice({
     name: 'subjects',
@@ -28,15 +28,15 @@ const subjectsSlice = createSlice({
                 state.error = 'error';
         });
 
-        builder.addCase(fetchMySubjects.pending, (state) => {
+        builder.addCase(fetchTeacherSubjects.pending, (state) => {
             state.isLoading = true;
             state.error = '';
         });
-        builder.addCase(fetchMySubjects.fulfilled, (state, action: PayloadAction<SubjectType[]>) => {
+        builder.addCase(fetchTeacherSubjects.fulfilled, (state, action: PayloadAction<SubjectType[]>) => {
             state.mySubjects = action.payload;
             state.isLoading = false;
         });
-        builder.addCase(fetchMySubjects.rejected, (state, action) => {
+        builder.addCase(fetchTeacherSubjects.rejected, (state, action) => {
             state.isLoading = false;
             if (action.error.message)
                 state.error = action.error.message;
