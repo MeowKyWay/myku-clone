@@ -312,6 +312,10 @@ export const createSection = /* GraphQL */ `mutation CreateSection(
       updatedAt
       __typename
     }
+    eligibles {
+      nextToken
+      __typename
+    }
     createdAt
     updatedAt
     __typename
@@ -338,6 +342,10 @@ export const updateSection = /* GraphQL */ `mutation UpdateSection(
       departmentID
       createdAt
       updatedAt
+      __typename
+    }
+    eligibles {
+      nextToken
       __typename
     }
     createdAt
@@ -368,6 +376,10 @@ export const deleteSection = /* GraphQL */ `mutation DeleteSection(
       updatedAt
       __typename
     }
+    eligibles {
+      nextToken
+      __typename
+    }
     createdAt
     updatedAt
     __typename
@@ -376,4 +388,82 @@ export const deleteSection = /* GraphQL */ `mutation DeleteSection(
 ` as GeneratedMutation<
   APITypes.DeleteSectionMutationVariables,
   APITypes.DeleteSectionMutation
+>;
+export const createEligible = /* GraphQL */ `mutation CreateEligible(
+  $input: CreateEligibleInput!
+  $condition: ModelEligibleConditionInput
+) {
+  createEligible(input: $input, condition: $condition) {
+    id
+    sectionID
+    section {
+      id
+      name
+      capacity
+      teacher
+      subjectID
+      createdAt
+      updatedAt
+      __typename
+    }
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedMutation<
+  APITypes.CreateEligibleMutationVariables,
+  APITypes.CreateEligibleMutation
+>;
+export const updateEligible = /* GraphQL */ `mutation UpdateEligible(
+  $input: UpdateEligibleInput!
+  $condition: ModelEligibleConditionInput
+) {
+  updateEligible(input: $input, condition: $condition) {
+    id
+    sectionID
+    section {
+      id
+      name
+      capacity
+      teacher
+      subjectID
+      createdAt
+      updatedAt
+      __typename
+    }
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedMutation<
+  APITypes.UpdateEligibleMutationVariables,
+  APITypes.UpdateEligibleMutation
+>;
+export const deleteEligible = /* GraphQL */ `mutation DeleteEligible(
+  $input: DeleteEligibleInput!
+  $condition: ModelEligibleConditionInput
+) {
+  deleteEligible(input: $input, condition: $condition) {
+    id
+    sectionID
+    section {
+      id
+      name
+      capacity
+      teacher
+      subjectID
+      createdAt
+      updatedAt
+      __typename
+    }
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedMutation<
+  APITypes.DeleteEligibleMutationVariables,
+  APITypes.DeleteEligibleMutation
 >;

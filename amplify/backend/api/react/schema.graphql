@@ -74,9 +74,9 @@ type Subject
 }
 
 type Section
-@model
-@aws_cognito_user_pools
-@auth(
+  @model
+  @aws_cognito_user_pools
+  @auth(
   rules: [
     { allow: groups, groups: ["Admin", "Teacher"] }
     { allow: private, operations: [read] }
@@ -90,4 +90,21 @@ type Section
 
   subjectID: ID! @index(name: "subject") #subject has many sections
   subject: Subject @belongsTo(fields: ["subjectID"])
+
+  eligibles: [Eligible] @hasMany(indexName: "section", fields: ["id"]) #section has many eligibles
 }
+
+type Eligible
+  @model
+  @aws_cognito_user_pools
+  @auth(
+    rules: [
+      { allow: groups, groups: ["Admin", "Teacher"] }
+      { allow: private, operations: [read] }
+    ]
+  ) {
+    id: ID!
+
+    sectionID: ID! @index(name: "section") #section has many eligibles
+    section: Section @belongsTo(fields: ["sectionID"])
+  }

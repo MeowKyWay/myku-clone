@@ -199,6 +199,10 @@ export const getSection = /* GraphQL */ `query GetSection($id: ID!) {
       updatedAt
       __typename
     }
+    eligibles {
+      nextToken
+      __typename
+    }
     createdAt
     updatedAt
     __typename
@@ -231,6 +235,50 @@ export const listSections = /* GraphQL */ `query ListSections(
 ` as GeneratedQuery<
   APITypes.ListSectionsQueryVariables,
   APITypes.ListSectionsQuery
+>;
+export const getEligible = /* GraphQL */ `query GetEligible($id: ID!) {
+  getEligible(id: $id) {
+    id
+    sectionID
+    section {
+      id
+      name
+      capacity
+      teacher
+      subjectID
+      createdAt
+      updatedAt
+      __typename
+    }
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedQuery<
+  APITypes.GetEligibleQueryVariables,
+  APITypes.GetEligibleQuery
+>;
+export const listEligibles = /* GraphQL */ `query ListEligibles(
+  $filter: ModelEligibleFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  listEligibles(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+      sectionID
+      createdAt
+      updatedAt
+      __typename
+    }
+    nextToken
+    __typename
+  }
+}
+` as GeneratedQuery<
+  APITypes.ListEligiblesQueryVariables,
+  APITypes.ListEligiblesQuery
 >;
 export const departmentsByFacultyID = /* GraphQL */ `query DepartmentsByFacultyID(
   $facultyID: ID!
@@ -324,4 +372,33 @@ export const sectionsBySubjectID = /* GraphQL */ `query SectionsBySubjectID(
 ` as GeneratedQuery<
   APITypes.SectionsBySubjectIDQueryVariables,
   APITypes.SectionsBySubjectIDQuery
+>;
+export const eligiblesBySectionID = /* GraphQL */ `query EligiblesBySectionID(
+  $sectionID: ID!
+  $sortDirection: ModelSortDirection
+  $filter: ModelEligibleFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  eligiblesBySectionID(
+    sectionID: $sectionID
+    sortDirection: $sortDirection
+    filter: $filter
+    limit: $limit
+    nextToken: $nextToken
+  ) {
+    items {
+      id
+      sectionID
+      createdAt
+      updatedAt
+      __typename
+    }
+    nextToken
+    __typename
+  }
+}
+` as GeneratedQuery<
+  APITypes.EligiblesBySectionIDQueryVariables,
+  APITypes.EligiblesBySectionIDQuery
 >;

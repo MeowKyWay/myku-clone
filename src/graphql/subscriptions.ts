@@ -285,6 +285,10 @@ export const onCreateSection = /* GraphQL */ `subscription OnCreateSection($filt
       updatedAt
       __typename
     }
+    eligibles {
+      nextToken
+      __typename
+    }
     createdAt
     updatedAt
     __typename
@@ -308,6 +312,10 @@ export const onUpdateSection = /* GraphQL */ `subscription OnUpdateSection($filt
       departmentID
       createdAt
       updatedAt
+      __typename
+    }
+    eligibles {
+      nextToken
       __typename
     }
     createdAt
@@ -335,6 +343,10 @@ export const onDeleteSection = /* GraphQL */ `subscription OnDeleteSection($filt
       updatedAt
       __typename
     }
+    eligibles {
+      nextToken
+      __typename
+    }
     createdAt
     updatedAt
     __typename
@@ -343,4 +355,73 @@ export const onDeleteSection = /* GraphQL */ `subscription OnDeleteSection($filt
 ` as GeneratedSubscription<
   APITypes.OnDeleteSectionSubscriptionVariables,
   APITypes.OnDeleteSectionSubscription
+>;
+export const onCreateEligible = /* GraphQL */ `subscription OnCreateEligible($filter: ModelSubscriptionEligibleFilterInput) {
+  onCreateEligible(filter: $filter) {
+    id
+    sectionID
+    section {
+      id
+      name
+      capacity
+      teacher
+      subjectID
+      createdAt
+      updatedAt
+      __typename
+    }
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedSubscription<
+  APITypes.OnCreateEligibleSubscriptionVariables,
+  APITypes.OnCreateEligibleSubscription
+>;
+export const onUpdateEligible = /* GraphQL */ `subscription OnUpdateEligible($filter: ModelSubscriptionEligibleFilterInput) {
+  onUpdateEligible(filter: $filter) {
+    id
+    sectionID
+    section {
+      id
+      name
+      capacity
+      teacher
+      subjectID
+      createdAt
+      updatedAt
+      __typename
+    }
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedSubscription<
+  APITypes.OnUpdateEligibleSubscriptionVariables,
+  APITypes.OnUpdateEligibleSubscription
+>;
+export const onDeleteEligible = /* GraphQL */ `subscription OnDeleteEligible($filter: ModelSubscriptionEligibleFilterInput) {
+  onDeleteEligible(filter: $filter) {
+    id
+    sectionID
+    section {
+      id
+      name
+      capacity
+      teacher
+      subjectID
+      createdAt
+      updatedAt
+      __typename
+    }
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedSubscription<
+  APITypes.OnDeleteEligibleSubscriptionVariables,
+  APITypes.OnDeleteEligibleSubscription
 >;
