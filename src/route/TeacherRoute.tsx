@@ -12,6 +12,10 @@ function TeacherRoute() {
             {
                 path: TeacherRoutePath.SECTION,
                 element: <Section />
+            },
+            {
+                path: TeacherRoutePath.SECTION + "/:filter",
+                element: <Section />
             }
         ] as RouteObject[]
     )

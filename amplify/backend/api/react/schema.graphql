@@ -78,9 +78,7 @@ type Section
 @aws_cognito_user_pools
 @auth(
   rules: [
-    { allow: groups, groups: ["Admin"] }
-    { allow: groups, groups: ["Teacher"], operations: [create] }
-    { allow: owner, ownerField: "teacher", operations: [update, delete]}
+    { allow: groups, groups: ["Admin", "Teacher"] }
     { allow: private, operations: [read] }
   ]
 ) {

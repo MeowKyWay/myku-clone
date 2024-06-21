@@ -12,6 +12,7 @@ import { SectionType, SubjectType } from "../../../types/DatabaseType";
 import { useNavigate, useParams } from "react-router-dom";
 import { addSection, fetchSections, putSection, removeSection } from "../../../store/thunks/sectionsThunk";
 import { fetchSubjects } from "../../../store/thunks/subjectsThunk";
+import { TeacherRoutePath } from "../../../route/RoutePath";
 
 function Section() {
 
@@ -86,7 +87,9 @@ function Section() {
     <tr>
       <th style={{ width: "2%" }}>no.</th>
       <th style={{ width: "26%" }}>subject</th>
-      <th style={{ width: "43%" }}>name</th>
+      <th style={{ width: "5%" }}>section</th>
+      <th style={{ width: "31%" }}>eligible</th>
+      <th style={{ width: "7%" }}>capacity</th>
       <th style={{ width: "7%" }}>student</th>
       <th style={{ width: "7%" }}>schedue</th>
       <th style={{ width: "15%" }}>action</th>
@@ -100,6 +103,8 @@ function Section() {
         <td className="text-center">{index + 1}</td>
         <td>{section.subject?.name}</td>
         <td>{section.name}</td>
+        <td>{"Todo"}</td>
+        <td className="text-center">{section.capacity}</td>
         <td className="text-center">View</td>
         <td className="text-center">View</td>
         <td>
@@ -134,7 +139,15 @@ function Section() {
       label: "หมู่เรียนที่",
       fields: (
         <TextField type={TextFieldType.text} value={name} onChange={setName}>
-          Department of something
+          example 1
+        </TextField>
+      ),
+    },
+    {
+      label: "ความจุนักศึกษา",
+      fields: (
+        <TextField type={TextFieldType.number} value={capacity} onChange={setCapacity}>
+          50
         </TextField>
       ),
     },
@@ -161,6 +174,7 @@ function Section() {
           onConfirm={handleCreateSection}
           confirmButtonType={ButtonType.SECONDARY}
           confirmButtonLabel="เพิ่มหมู่เรียน"
+          className="w-80"
         >
           เพิ่มสาขา
         </InputModal>
@@ -172,6 +186,7 @@ function Section() {
           onConfirm={handleUpdateSection}
           confirmButtonType={ButtonType.SECONDARY}
           confirmButtonLabel="แก้หมู่เรียน"
+          className="w-80"
         >
           แก้ไขสาขา {updatingSection.current?.name}
         </InputModal>
@@ -189,15 +204,18 @@ function Section() {
             </Button>
             <Dropdown
               onChange={(value) => {
-                navigate(`/std/admin/department/${value}`);
+                navigate(`${TeacherRoutePath.SECTION}/${value}`);
               }}
               list={subjects as SubjectType[]}
               value={filter}
               name="subject"
-              className="w-40 h-6 text-xs mb-1"
+              className="w-60 h-6 text-xs mb-1"
             ></Dropdown>
             <Button
-              onClick={() => setShowCreateModal(true)}
+              onClick={() => {
+                setSubject(filter? filter : "");
+                setShowCreateModal(true)
+              }}
               type={ButtonType.TERTIARY}
               className="text-xs h-6 w-18 mb-1"
             >

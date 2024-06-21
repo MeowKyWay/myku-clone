@@ -7,6 +7,5 @@ export enum AdminRoutePath {
 }
 
 export enum TeacherRoutePath {
-    SUBJECT = '/std/teacher/subjects',
     SECTION = '/std/teacher/sections',
 }

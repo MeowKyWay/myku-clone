@@ -437,12 +437,12 @@ export type ModelSubscriptionSectionFilterInput = {
   id?: ModelSubscriptionIDInput | null,
   name?: ModelSubscriptionStringInput | null,
   capacity?: ModelSubscriptionIntInput | null,
+  teacher?: ModelSubscriptionStringInput | null,
   subjectID?: ModelSubscriptionIDInput | null,
   createdAt?: ModelSubscriptionStringInput | null,
   updatedAt?: ModelSubscriptionStringInput | null,
   and?: Array< ModelSubscriptionSectionFilterInput | null > | null,
   or?: Array< ModelSubscriptionSectionFilterInput | null > | null,
-  teacher?: ModelStringInput | null,
 };
 
 export type CreateAuthorizationTokenMutationVariables = {
