@@ -75,7 +75,7 @@ function Section() {
     await dispatch(addSection({
       name: name,
       capacity: Number(capacity),
-      teacher: user.attributes.sub as string,
+      teacher: user.attributes.name as string,
       subjectID: subject,
     }));
 

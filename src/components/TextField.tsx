@@ -1,10 +1,11 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { FaEye } from "react-icons/fa";
 import { FaEyeSlash } from "react-icons/fa";
 import { TextFieldType } from "../types/TextFieldType";
 import classNames from "classnames";
+import { TiDelete } from "react-icons/ti";
 
-function TextField({ children, onChange, value, className, type, name, autoComplete, spellCheck = false }: {
+function TextField({ children, onChange, value, className, type, name, autoComplete, spellCheck = false, resetButton = false }: {
     children?: string,
     onChange: (value: string) => void,
     value: string,
@@ -13,6 +14,7 @@ function TextField({ children, onChange, value, className, type, name, autoCompl
     name?: string,
     autoComplete?: string,
     spellCheck?: boolean,
+    resetButton?: boolean
 }) {
 
     const [hidden, setHidden] = useState(type === TextFieldType.password);
@@ -35,6 +37,7 @@ function TextField({ children, onChange, value, className, type, name, autoCompl
         [
             'flex flex-row items-center',
             'h-10 border border-gray text-sm font-light focus-within:border-green rounded transition-all',
+            'bg-white',
             className
         ],
     );
@@ -64,6 +67,11 @@ function TextField({ children, onChange, value, className, type, name, autoCompl
                     {!hidden && <FaEye className="text-lg text-gray-400" />}
                 </button>
 
+            )}
+            {resetButton && (
+                <button onClick={() => handleChange('')} className='w-9 h-9 grid place-content-center'>
+                    <TiDelete className="text-lg text-gray-400" />
+                </button>
             )}
         </div>
 

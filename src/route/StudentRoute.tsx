@@ -1,5 +1,4 @@
 import { RouteObject } from "react-router-dom";
-import Announcement from "../components/main/student/Announcement";
 import Enroll from "../components/main/student/Enroll";
 
 function StudentRoute() {

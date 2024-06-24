@@ -2,7 +2,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { generateClient } from "aws-amplify/api";
 import { SubjectType } from "../../types/DatabaseType";
 import { createSubject, deleteSubject, updateSubject } from "../../graphql/mutations";
-import { listSubjectsWithDepartment } from "../../custom_graphql/customQueries";
+import { listSubjectWithSections } from "../../custom_graphql/customQueries";
 
 const client = generateClient();
 
@@ -10,9 +10,20 @@ export const fetchSubjects = createAsyncThunk<SubjectType[]>(
     "fetchSubjects",
     async (): Promise<SubjectType[]> => {
         const response = await client.graphql({
-            query: listSubjectsWithDepartment,
+            query: listSubjectWithSections,
         })
-        return response.data.listSubjects.items;
+
+        const subjects = response.data.listSubjects.items.sort(
+            (a: SubjectType, b: SubjectType) => a.name.localeCompare(b.name)
+        );
+
+        subjects.map(subject => {
+            subject.sections?.items.sort(
+                (a, b) => a.name.localeCompare(b.name)
+            )
+        })
+
+        return subjects;
     }
 )
 
@@ -29,7 +40,7 @@ export const addSubject = createAsyncThunk<SubjectType, { name: string, credit: 
                 }
             }
         })
-        return response.data.createSubject;
+        return response.data.createSubject as SubjectType;
     }
 )
 
@@ -62,6 +73,6 @@ export const putSubject = createAsyncThunk<SubjectType, { id: string, name: stri
             },
         })
 
-        return response.data.updateSubject
+        return response.data.updateSubject as SubjectType;
     }
 )

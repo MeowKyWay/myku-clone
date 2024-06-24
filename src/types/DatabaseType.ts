@@ -26,6 +26,10 @@ export interface SubjectType {
 
     departmentID: string;
     department?: DepartmentType | null;
+
+    sections?: {
+        items: SectionType[];
+    } | null;
 }
 
 export interface SectionType {
