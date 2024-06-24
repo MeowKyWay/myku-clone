@@ -1,7 +1,7 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { SectionEligibleDepartmentType, SectionType } from "../../types/DatabaseType";
 import { addSection, fetchSections, putSection, removeSection } from "../thunks/sectionsThunk";
-import { addSectionEligibleDepartment } from "../thunks/sectionEligibleDepartmentThunk";
+import { addSectionEligibleDepartment, removeSectionEligibleDepartment } from "../thunks/sectionEligibleDepartmentThunk";
 
 const sectionsSlice = createSlice({
     name: 'sections',
@@ -19,6 +19,12 @@ const sectionsSlice = createSlice({
         builder.addCase(fetchSections.fulfilled, (state, action: PayloadAction<SectionType[]>) => {
             state.data = action.payload;
             state.isLoading = false;
+
+            state.data.sort((a, b) => {
+                return a.name.localeCompare(b.name);
+            }).sort((a, b) => {
+                return (a.subject?.name as string).localeCompare(b.subject?.name as string);
+            });
         });
         builder.addCase(fetchSections.rejected, (state, action) => {
             state.isLoading = false;
@@ -34,6 +40,7 @@ const sectionsSlice = createSlice({
         })
         builder.addCase(addSection.fulfilled, (state, action: PayloadAction<SectionType>) => {
             if (!state.data) return;
+            action.payload.eligibleDepartments = { items: [] } as { items: SectionEligibleDepartmentType[] };
             state.data.push(action.payload);
             state.isLoading = false;
         })
@@ -98,6 +105,31 @@ const sectionsSlice = createSlice({
         });
 
         builder.addCase(addSectionEligibleDepartment.rejected, (state, action) => {
+            state.isLoading = false;
+            if (action.error.message) {
+                state.error = action.error.message;
+            } else {
+                state.error = 'error';
+            }
+        });
+
+        builder.addCase(removeSectionEligibleDepartment.pending, (state) => {
+            state.isLoading = true;
+            state.error = '';
+        });
+        builder.addCase(removeSectionEligibleDepartment.fulfilled, (state, action: PayloadAction<{id: string, sectionID: string}>) => {
+            if (!state.data) return;
+            const index = state.data.findIndex(section => section.id === action.payload.sectionID);
+            if (index !== -1) {
+                const eligibleDepartments = state.data[index].eligibleDepartments?.items;
+                if (!eligibleDepartments) return;
+                const eligibleDepartmentIndex = eligibleDepartments.findIndex(department => department.id === action.payload.id);
+                if (eligibleDepartmentIndex === -1) return;
+                eligibleDepartments.splice(eligibleDepartmentIndex, 1);
+            }
+            state.isLoading = false;
+        });
+        builder.addCase(removeSectionEligibleDepartment.rejected, (state, action) => {
             state.isLoading = false;
             if (action.error.message) {
                 state.error = action.error.message;

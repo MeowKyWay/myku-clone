@@ -13,10 +13,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import { addSection, fetchSections, putSection, removeSection } from "../../../store/thunks/sectionsThunk";
 import { fetchSubjects } from "../../../store/thunks/subjectsThunk";
 import { TeacherRoutePath } from "../../../route/RoutePath";
-import { generateClient } from "aws-amplify/api";
-import { listSectionsWithSubjectEligibleDepartment } from "../../../custom_graphql/customQueries";
 import { fetchDepartments } from "../../../store/thunks/departmentsThunk";
-import { addSectionEligibleDepartment } from "../../../store/thunks/sectionEligibleDepartmentThunk";
+import { addSectionEligibleDepartment, removeSectionEligibleDepartment } from "../../../store/thunks/sectionEligibleDepartmentThunk";
 
 function Section() {
 
@@ -110,6 +108,11 @@ function Section() {
     setShowCreateEligibleDepartmentModal(false);
   }
 
+  const handleDeleteSectionEligibleDepartment = async (id: string) => {
+    if (!confirm("Are you sure you want to delete this eligible department?")) return;
+    await dispatch(removeSectionEligibleDepartment(id));
+  }
+
   const filterDepartment = () => {
     return departments?.filter(
       department => !(updatingSection.current?.eligibleDepartments?.items.map(item => item.departmentID).includes(department.id))
@@ -121,7 +124,7 @@ function Section() {
       <th style={{ width: "2%" }}>no.</th>
       <th style={{ width: "26%" }}>subject</th>
       <th style={{ width: "5%" }}>section</th>
-      <th style={{ width: "31%" }}>eligible</th>
+      <th style={{ width: "31%" }}>eligible departments</th>
       <th style={{ width: "7%" }}>capacity</th>
       <th style={{ width: "7%" }}>student</th>
       <th style={{ width: "7%" }}>schedue</th>
@@ -136,18 +139,30 @@ function Section() {
         <td className="text-center">{index + 1}</td>
         <td>{section.subject?.name}</td>
         <td className="text-center">{section.name}</td>
-        <td className="flex flex-col">
+        <td className="text-center pt-1"> {/* List eligible department */}
           {
+            (section.eligibleDepartments) &&
             section.eligibleDepartments?.items.map((eligibleDepartment, index) => {
               return (
-                <span key={index} className="text-xs">{eligibleDepartment.department?.name}</span>
+                <div className="flex flex-row mb-1" key={eligibleDepartment.id}>
+                  <span key={index} className="text-xs mr-auto">{eligibleDepartment.department?.name}</span>
+                  <Button onClick={() => {
+                    handleDeleteSectionEligibleDepartment(eligibleDepartment.id);
+                  }}
+                    type={ButtonType.WARNING}
+                    className="w-20 mr-1"
+                  >Delete</Button>
+                </div>
               );
             })
           }
-          <Button onClick={ () => {
+          <Button onClick={() => {
             setShowCreateEligibleDepartmentModal(true);
             updatingSection.current = section;
-          }} type={ButtonType.SECONDARY}>Add</Button>
+          }}
+            type={ButtonType.PRIMARY}
+            className="w-40 m-auto mb-1"
+          >Add</Button>
         </td>
         <td className="text-center">{section.capacity}</td>
         <td className="text-center">View</td>
@@ -225,24 +240,8 @@ function Section() {
     },
   ];
 
-  const client = generateClient();
-
-  const test = async () => {
-    try {
-      const res = await client.graphql({
-        query: listSectionsWithSubjectEligibleDepartment,
-      })
-
-      console.log(res);
-    } catch (error) {
-      console.log(error);
-    }
-
-  }
-
   return (
     <div className="size-full flex flex-col items-center">
-      <button onClick={test}>test</button>
       {showCreateModal && (
         <InputModal //Create Department Modal
           fieldList={sectionModalFields}

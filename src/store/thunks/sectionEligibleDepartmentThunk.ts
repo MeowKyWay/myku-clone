@@ -21,9 +21,9 @@ export const addSectionEligibleDepartment = createAsyncThunk<SectionEligibleDepa
     }
 )
 
-export const removeSectionEligibleDepartment = createAsyncThunk<string, string>(
+export const removeSectionEligibleDepartment = createAsyncThunk<{id: string, sectionID: string}, string>(
     "removeEligible",
-    async (id: string): Promise<string> => {
+    async (id: string): Promise<{id: string, sectionID: string}> => {
         const response = await client.graphql({
             query: deleteSectionEligibleDepartment,
             variables: {
@@ -32,6 +32,9 @@ export const removeSectionEligibleDepartment = createAsyncThunk<string, string>(
                 },
             },
         })
-        return response.data.deleteSectionEligibleDepartment.id;
+        return { 
+            id: response.data.deleteSectionEligibleDepartment.id,
+            sectionID: response.data.deleteSectionEligibleDepartment.sectionID
+        };
     }
 )

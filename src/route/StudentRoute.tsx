@@ -1,17 +1,18 @@
 import { RouteObject } from "react-router-dom";
 import Announcement from "../components/main/student/Announcement";
+import Enroll from "../components/main/student/Enroll";
 
 function StudentRoute() {
     return (
         [
             {
                 index: true,
-                element: <Announcement />
+                element: <Enroll />
             },
             {
-                path: '/std/classroom',
-                element: <div>classroom</div>
-            },
+                path: '/std/enroll',
+                element: <Enroll />
+            }
         ] as RouteObject[]
     )
 }
