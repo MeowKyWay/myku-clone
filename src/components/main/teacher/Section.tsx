@@ -47,16 +47,16 @@ function Section() {
   const [showCreateEligibleDepartmentModal, setShowCreateEligibleDepartmentModal] = useState(false);
 
   useEffect(() => { //initial fetch
-    if (!sections) { //Only fetch if not already fetched
+    if (!sections && sectionErrorMessage === "") { //Only fetch if not already fetched
       dispatch(fetchSections());
     }
-    if (!subjects) {
+    if (!subjects && subjectErrorMessage === "") {
       dispatch(fetchSubjects());
     }
-    if (!departments) {
+    if (!departments && departmentErrorMessage === "") {
       dispatch(fetchDepartments());
     }
-  }, [dispatch, sections, subjects, departments])
+  }, [dispatch, sections, subjects, departments, sectionErrorMessage, subjectErrorMessage, departmentErrorMessage])
 
   useEffect(() => { //On close modal reset input state
     if (showCreateModal || showUpdateModal) return;

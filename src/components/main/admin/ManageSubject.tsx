@@ -22,15 +22,14 @@ function ManageSubject() {
   const subjects = useAppSelector(state => state.subjects.data);
   const departments = useAppSelector(state => state.departments.data);
 
-  const user = useAppSelector(state => state.user.currentUser)
-
   const updatingSubject = useRef<SubjectType>();
 
   const [name, setName] = useState("");
   const [credit, setCredit] = useState("");
   const [department, setDepartment] = useState("");
 
-  const errorMessage = useAppSelector(state => state.subjects.error);
+  const subjectsErrorMessage = useAppSelector(state => state.subjects.error);
+  const departmentErrorMessage = useAppSelector(state => state.departments.error);
 
   const { filter } = useParams();
 
@@ -46,13 +45,13 @@ function ManageSubject() {
 
   useEffect(() => { // initial fetch
 
-    if (!subjects) {
+    if (!subjects && subjectsErrorMessage === "") {
       dispatch(fetchSubjects());
     }
-    if (!departments) {
+    if (!departments && departmentErrorMessage === "") {
       dispatch(fetchDepartments());
     }
-  })
+  }, [dispatch, subjects, departments, subjectsErrorMessage, departmentErrorMessage])
 
   const handleCreateSubject = async () => {
     if (!confirm("Are you sure you want to create this subject?")) return;
@@ -60,7 +59,6 @@ function ManageSubject() {
       name: name,
       credit: Number(credit),
       departmentID: department,
-      teacher: user.attributes.name as string,
     }));
 
     setShowCreateModal(false);
@@ -219,7 +217,7 @@ function ManageSubject() {
             </Button>
           </div>
           <span className="h-4 text-right text-xs text-red-500 mr-1 mb-1">
-            {errorMessage}
+            {subjectsErrorMessage}
           </span>
         </div>
       </div>

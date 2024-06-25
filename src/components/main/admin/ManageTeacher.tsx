@@ -23,18 +23,19 @@ function ManageTeacher() {
   const [email, setEmail] = useState('');
   const [department, setDepartment] = useState('');
 
-  const errorMessage = useAppSelector(state => state.teachers.error);
+  const teachersErrorMessage = useAppSelector(state => state.teachers.error);
+  const departmentErrorMessage = useAppSelector(state => state.departments.error);
 
   const [showCreateModal, setShowCreateModal] = useState(false);
 
   useEffect(() => { // initial fetch
-    if (!teachers && errorMessage === "") {
+    if (!teachers && teachersErrorMessage === "") {
       dispatch(fetchTeachers());
     }
-    if (!departments) {
+    if (!departments && departmentErrorMessage === "") {
       dispatch(fetchDepartments());
     }
-  })
+  }, [dispatch, teachers, departments, teachersErrorMessage, departmentErrorMessage])
 
   useEffect(() => { // on close modal reset input state
     if (showCreateModal) return;
@@ -149,7 +150,7 @@ function ManageTeacher() {
             </Button>
           </div>
           <span className="h-4 text-right text-xs text-red-500 mr-1 mb-1">
-            {errorMessage}
+            {teachersErrorMessage}
           </span>
         </div>
       </div>

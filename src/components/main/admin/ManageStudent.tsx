@@ -14,16 +14,17 @@ function ManageStudent() {
   const students = useAppSelector(state => state.students.data);
   const departments = useAppSelector(state => state.departments.data);
 
-  const errorMessage = useAppSelector(state => state.students.error);
+  const studentsErrorMessage = useAppSelector(state => state.students.error);
+  const departmentErrorMessage = useAppSelector(state => state.departments.error);
 
   useEffect(() => { // initial fetch
-    if (!students && errorMessage === "") {
+    if (!students && studentsErrorMessage === "") {
       dispatch(fetchStudents());
     }
-    if (!departments) {
+    if (!departments && departmentErrorMessage === "") {
       dispatch(fetchDepartments());
     }
-  }, [dispatch, students, departments])
+  }, [dispatch, students, departments, studentsErrorMessage, departmentErrorMessage])
 
   const header = (
     <tr>
@@ -72,7 +73,7 @@ function ManageStudent() {
             </Button>
           </div>
           <span className="h-4 text-right text-xs text-red-500 mr-1 mb-1">
-            {errorMessage}
+            {studentsErrorMessage}
           </span>
         </div>
       </div>

@@ -34,10 +34,10 @@ function ManageFaculty() {
   const [showUpdateModal, setShowUpdateModal] = useState(false);
 
   useEffect(() => { // initial fetch
-    if (!faculties) {
+    if (!faculties && errorMessage === "") {
       dispatch(fetchFaculties());
     }
-  })
+  }, [dispatch, faculties, errorMessage])
 
   useEffect(() => { // on close modal reset input state
     if (showCreateModal || showUpdateModal) return;

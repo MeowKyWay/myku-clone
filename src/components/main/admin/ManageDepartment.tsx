@@ -37,13 +37,13 @@ function ManageDepartment() {
   const [showUpdateModal, setShowUpdateModal] = useState(false);
 
   useEffect(() => { //initial fetch
-    if (!departments) { //Only fetch if not already fetched
+    if (!departments && departmentErrorMessage === '') { //Only fetch if not already fetched
       dispatch(fetchDepartments());
     }
-    if (!faculties) {
+    if (!faculties && facultyErrorMessage === '') {
       dispatch(fetchFaculties());
     }
-  }, [dispatch, departments, faculties])
+  }, [dispatch, departments, faculties, departmentErrorMessage, facultyErrorMessage])
 
   useEffect(() => { //On close modal reset input state
     if (showCreateModal || showUpdateModal) return;

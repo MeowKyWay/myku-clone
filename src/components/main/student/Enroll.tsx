@@ -12,14 +12,16 @@ function Enroll() {
     const dispatch = useAppDispatch()
 
     const subjects = useAppSelector(state => state.subjects.data);
+    
+    const errorMessage = useAppSelector(state => state.subjects.error);
 
     const [search, setSearch] = useState("");
     const [filterEligible, setFilterEligible] = useState(false);
 
     useEffect(() => {
-        if (subjects) return;
-        dispatch(fetchSubjects());
-    })
+        if (!subjects && errorMessage === '')
+            dispatch(fetchSubjects());
+    }, [dispatch, subjects, errorMessage])
 
     const renderSubjects = subjects?.filter(
         subject => {
