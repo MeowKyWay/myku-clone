@@ -95,6 +95,34 @@ body {
   border-color: #02a96b;
 }
 
+.switch {
+  display: flex;
+  flex-direction: row;
+  transition: all 0.1s;
+  cursor: pointer;
+  align-items: center;
+}
+
+.switch\:inactive {
+  background-color: #dfdfdf;
+}
+
+.switch\:active {
+  background-color: #07bc77;
+}
+
+.switch-circle {
+  transition: all 0.1s;
+}
+
+.switch\:inactive .switch-circle {
+  transform: translateX(0);
+}
+
+.switch\:active .switch-circle {
+  transform: translateX(100%);
+}
+
 input[type=number]::-webkit-inner-spin-button,
 input[type=number]::-webkit-outer-spin-button {
   -webkit-appearance: none;

@@ -3,7 +3,9 @@ import { generateClient } from "aws-amplify/api";
 import { FacultyType } from "../../types/DatabaseType";
 import { createFaculty, deleteFaculty, updateFaculty } from "../../graphql/mutations";
 import { listFaculties } from "../../graphql/queries";
-import axios from "axios";
+import ObjectUtils from "../../utility/ObjectUtils";
+import { Lambda } from "@aws-sdk/client-lambda";
+import AuthUtils from "../../utility/AuthUtils";
 
 const client = generateClient();
 
@@ -20,8 +22,20 @@ export const fetchFaculties = createAsyncThunk<FacultyType[]>(
 export const fetchFacultiesPublic = createAsyncThunk<FacultyType[]>(
     "fetchFacultiesPublic",
     async (): Promise<FacultyType[]> => {
-        const response = await axios.get('https://63tw46cuod.execute-api.ap-southeast-1.amazonaws.com/default/listFaculties');
-        return response.data;
+
+        const lambda = new Lambda({
+            credentials: (await AuthUtils.getCredentials()),
+            region: 'ap-southeast-1',
+        });
+
+        const response = await lambda.invoke({
+            FunctionName: 'arn:aws:lambda:ap-southeast-1:891377257682:function:listFaculties',
+            InvocationType: 'RequestResponse',
+        });
+
+        const faculties = ObjectUtils.lambdaDecode(response);
+
+        return faculties as FacultyType[];
     }
 )
 

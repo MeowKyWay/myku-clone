@@ -7,7 +7,7 @@ function TeacherNavigation() {
         <div className="flex flex-col size-full gap-1">
             <NavigationButton
                 icon={<MdHomeWork />}
-                label="หมู่เรียนของฉัน"
+                label="หมู่เรียน"
                 to={TeacherRoutePath.SECTION}>
             </NavigationButton>
         </div>

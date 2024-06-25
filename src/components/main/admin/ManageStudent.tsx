@@ -17,7 +17,7 @@ function ManageStudent() {
   const errorMessage = useAppSelector(state => state.students.error);
 
   useEffect(() => { // initial fetch
-    if (!students) {
+    if (!students && errorMessage === "") {
       dispatch(fetchStudents());
     }
     if (!departments) {

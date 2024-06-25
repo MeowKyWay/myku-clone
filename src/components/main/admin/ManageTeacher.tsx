@@ -28,7 +28,7 @@ function ManageTeacher() {
   const [showCreateModal, setShowCreateModal] = useState(false);
 
   useEffect(() => { // initial fetch
-    if (!teachers) {
+    if (!teachers && errorMessage === "") {
       dispatch(fetchTeachers());
     }
     if (!departments) {

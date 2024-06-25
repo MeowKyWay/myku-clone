@@ -12,7 +12,7 @@ type AuthorizationToken
     id: ID!
     token: String!
     group: String! #specify the group token
-}
+  }
 
 type Faculty
   @model
@@ -27,7 +27,7 @@ type Faculty
   name: String!
 
   departments: [Department] @hasMany(indexName: "faculty", fields: ["id"]) #faculty has many departments
-}
+  }
 
 type Department
   @model
@@ -47,7 +47,7 @@ type Department
   subjects: [Subject] @hasMany(indexName: "department", fields: ["id"]) #department has many subjects
 
   eligibleSubjects: [SectionEligibleDepartment] @hasMany(indexName: "department", fields: ["id"]) #department has many eligibles
-}
+  }
 
 type Subject
   @model
@@ -72,17 +72,17 @@ type Subject
       { allow: groups, groups: ["Teacher"], operations: [update] }
       { allow: private, operations: [read] }
       ])
-}
+  }
 
 type Section
   @model
   @aws_cognito_user_pools
   @auth(
-  rules: [
-    { allow: groups, groups: ["Admin", "Teacher"] }
-    { allow: private, operations: [read] }
-  ]
-) {
+    rules: [
+      { allow: groups, groups: ["Admin", "Teacher"] }
+      { allow: private, operations: [read] }
+    ]
+  ) {
   id: ID!
   name: String!
   capacity: Int!
@@ -93,7 +93,9 @@ type Section
   subject: Subject @belongsTo(fields: ["subjectID"])
 
   eligibleDepartments: [SectionEligibleDepartment] @hasMany(indexName: "section", fields: ["id"]) #section has many eligibles
-}
+
+  students: [StudentSection] @hasMany(indexName: "section", fields: ["id"]) #section has many students
+  }
 
 type SectionEligibleDepartment
   @model
@@ -111,4 +113,21 @@ type SectionEligibleDepartment
 
     departmentID: ID! @index(name: "department") #department has many eligibles
     department: Department @belongsTo(fields: ["departmentID"])
+  }
+
+type StudentSection
+  @model
+  @aws_cognito_user_pools
+  @auth(
+    rules: [
+      { allow: groups, groups: ["Admin", "Teacher"] }
+      { allow: private, operations: [read] }
+    ]
+  ) {
+  id: ID!
+
+  studentID: ID!
+
+  sectionID: ID! @index(name: "section") #section has many students
+  section: Section @belongsTo(fields: ["sectionID"])
   }

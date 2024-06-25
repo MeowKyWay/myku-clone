@@ -22,6 +22,7 @@ function Register() {
 
     const faculties = useAppSelector(state => state.register.faculties);
     const departments = useAppSelector(state => state.register.departments);
+    const registerError = useAppSelector(state => state.register.error);
 
     const [name, setName] = useState("");
     const [studentID, setStudentID] = useState('');
@@ -33,11 +34,11 @@ function Register() {
     const [errorMessage, setErrorMessage] = useState('');
 
     useEffect(() => {
-        if (!faculties)
+        if (!faculties && registerError === '')
             dispatch(fetchFacultiesPublic());
-        if (!departments)
+        if (!departments && registerError === '')
             dispatch(fetchDepartmentsPublic());
-    }, [dispatch, faculties, departments])
+    }, [dispatch, faculties, departments, registerError])
 
     const handleRegister = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();

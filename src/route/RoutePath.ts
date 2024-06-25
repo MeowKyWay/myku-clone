@@ -9,3 +9,8 @@ export enum AdminRoutePath {
 export enum TeacherRoutePath {
     SECTION = '/std/teacher/sections',
 }
+
+export enum StudentRoutePath {
+    ENROLL = '/std/enroll',
+    ENROLL_RESULT = '/std/enroll-result',
+}

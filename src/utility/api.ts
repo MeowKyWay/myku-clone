@@ -1,8 +1,8 @@
-import axios from "axios";
 import awsconfig from "../aws-exports";
 import { UserGroup } from "../store/slices/userSlice";
 import AuthUtils from "./AuthUtils";
 import ObjectUtils from "./ObjectUtils";
+import { Lambda } from "@aws-sdk/client-lambda";
 
 export interface ListUserInGroupOutput {
     Attributes: {
@@ -21,54 +21,54 @@ export interface ListUserInGroupOutput {
 
 export async function listUserInGroup(groups: UserGroup) {
 
-    const authorizationToken = await AuthUtils.getAuthToken();
+    const lambda = new Lambda({
+        credentials: (await AuthUtils.getCredentials()),
+        region: 'ap-southeast-1',
+    });
 
-    const body = {
-        UserPoolId: awsconfig.aws_user_pools_id,
-        GroupName: groups,
-    }
+    const response = await lambda.invoke({
+        FunctionName: 'arn:aws:lambda:ap-southeast-1:891377257682:function:listUserInGroup',
+        InvocationType: 'RequestResponse',
+        Payload: JSON.stringify({
+            UserPoolId: awsconfig.aws_user_pools_id,
+            GroupName: groups,
+        }),
+    });
 
-    const header = {
-        'Content-Type': 'application/json',
-        'authorizationToken': authorizationToken,
-    }
+    const users = ObjectUtils.lambdaDecode(response).Users;
 
-    const response = await axios.post('https://63tw46cuod.execute-api.ap-southeast-1.amazonaws.com/default/listUserInGroup',
-        body,
-        { headers: header },
-    );
+    const usersWithAttributes = ObjectUtils.convertAttributesObjectArray(users);
 
-    const users = ObjectUtils.convertAttributesObjectArray(response.data.Users)
-
-    return users as ListUserInGroupOutput[];
+    return usersWithAttributes as ListUserInGroupOutput[];
 }
 
-export async function createUser({name, email, groups, departmentID}: {
+export async function createUser({ name, email, groups, departmentID }: {
     name: string,
     email: string,
     groups: UserGroup,
     departmentID: string,
 }) {
-    const authorizationToken = await AuthUtils.getAuthToken();
 
-    const body = {
-        UserPoolId: awsconfig.aws_user_pools_id,
-        Region: awsconfig.aws_project_region,
-        Name: name,
-        Email: email,
-        GroupName: groups,
-        DepartmentId: departmentID,
-    }
+    const lambda = new Lambda({
+        credentials: (await AuthUtils.getCredentials()),
+        region: 'ap-southeast-1',
+    });
 
-    const header = {
-        'Content-Type': 'application/json',
-        'authorizationToken': authorizationToken,
-    }
+    const response = await lambda.invoke({
+        FunctionName: 'arn:aws:lambda:ap-southeast-1:891377257682:function:adminCreateUser',
+        InvocationType: 'RequestResponse',
+        Payload: JSON.stringify({
+            UserPoolId: awsconfig.aws_user_pools_id,
+            Name: name,
+            Email: email,
+            GroupName: groups,
+            DepartmentId: departmentID,
+        }),
+    });
 
-    const response = await axios.post('https://63tw46cuod.execute-api.ap-southeast-1.amazonaws.com/default/adminCreateUser',
-        body,
-        { headers: header },
-    );
+    const lambdaResponse = ObjectUtils.lambdaDecode(response);
 
-    return response.data;
+    const user = ObjectUtils.convertAttributesArray(lambdaResponse.createUserResponse.User)
+
+    return user;
 }

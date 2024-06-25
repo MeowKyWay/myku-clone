@@ -207,6 +207,10 @@ export const getSection = /* GraphQL */ `query GetSection($id: ID!) {
       nextToken
       __typename
     }
+    students {
+      nextToken
+      __typename
+    }
     createdAt
     updatedAt
     __typename
@@ -297,6 +301,52 @@ export const listSectionEligibleDepartments = /* GraphQL */ `query ListSectionEl
 ` as GeneratedQuery<
   APITypes.ListSectionEligibleDepartmentsQueryVariables,
   APITypes.ListSectionEligibleDepartmentsQuery
+>;
+export const getStudentSection = /* GraphQL */ `query GetStudentSection($id: ID!) {
+  getStudentSection(id: $id) {
+    id
+    studentID
+    sectionID
+    section {
+      id
+      name
+      capacity
+      teacher
+      subjectID
+      createdAt
+      updatedAt
+      __typename
+    }
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedQuery<
+  APITypes.GetStudentSectionQueryVariables,
+  APITypes.GetStudentSectionQuery
+>;
+export const listStudentSections = /* GraphQL */ `query ListStudentSections(
+  $filter: ModelStudentSectionFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  listStudentSections(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+      studentID
+      sectionID
+      createdAt
+      updatedAt
+      __typename
+    }
+    nextToken
+    __typename
+  }
+}
+` as GeneratedQuery<
+  APITypes.ListStudentSectionsQueryVariables,
+  APITypes.ListStudentSectionsQuery
 >;
 export const departmentsByFacultyID = /* GraphQL */ `query DepartmentsByFacultyID(
   $facultyID: ID!
@@ -450,4 +500,34 @@ export const sectionEligibleDepartmentsByDepartmentID = /* GraphQL */ `query Sec
 ` as GeneratedQuery<
   APITypes.SectionEligibleDepartmentsByDepartmentIDQueryVariables,
   APITypes.SectionEligibleDepartmentsByDepartmentIDQuery
+>;
+export const studentSectionsBySectionID = /* GraphQL */ `query StudentSectionsBySectionID(
+  $sectionID: ID!
+  $sortDirection: ModelSortDirection
+  $filter: ModelStudentSectionFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  studentSectionsBySectionID(
+    sectionID: $sectionID
+    sortDirection: $sortDirection
+    filter: $filter
+    limit: $limit
+    nextToken: $nextToken
+  ) {
+    items {
+      id
+      studentID
+      sectionID
+      createdAt
+      updatedAt
+      __typename
+    }
+    nextToken
+    __typename
+  }
+}
+` as GeneratedQuery<
+  APITypes.StudentSectionsBySectionIDQueryVariables,
+  APITypes.StudentSectionsBySectionIDQuery
 >;

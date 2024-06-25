@@ -3,7 +3,9 @@ import { generateClient } from "aws-amplify/api";
 import { DepartmentType } from "../../types/DatabaseType";
 import { listDepartmentsWithFaculty } from "../../custom_graphql/customQueries";
 import { createDepartment, deleteDepartment, updateDepartment } from "../../graphql/mutations";
-import axios from "axios";
+import { Lambda } from "@aws-sdk/client-lambda";
+import ObjectUtils from "../../utility/ObjectUtils";
+import AuthUtils from "../../utility/AuthUtils";
 
 const client = generateClient();
 
@@ -20,15 +22,25 @@ export const fetchDepartments = createAsyncThunk<DepartmentType[]>(
 export const fetchDepartmentsPublic = createAsyncThunk<DepartmentType[]>(
     "fetchDepartmentsPublic",
     async (): Promise<DepartmentType[]> => {
-        const response = await axios.get('https://63tw46cuod.execute-api.ap-southeast-1.amazonaws.com/default/listDepartment');
+        const lambda = new Lambda({
+            credentials: (await AuthUtils.getCredentials()),
+            region: 'ap-southeast-1',
+        });
 
-        return response.data;
+        const response = await lambda.invoke({
+            FunctionName: 'arn:aws:lambda:ap-southeast-1:891377257682:function:listDepartments',
+            InvocationType: 'RequestResponse',
+        });
+
+        const departments = ObjectUtils.lambdaDecode(response);
+
+        return departments as DepartmentType[];
     }
 )
 
-export const addDepartment = createAsyncThunk<DepartmentType, {name: string, facultyID: string}>(
+export const addDepartment = createAsyncThunk<DepartmentType, { name: string, facultyID: string }>(
     "addDepartment",
-    async ({name, facultyID}: {name: string, facultyID: string}): Promise<DepartmentType> => {
+    async ({ name, facultyID }: { name: string, facultyID: string }): Promise<DepartmentType> => {
         const response = await client.graphql({
             query: createDepartment,
             variables: {
@@ -58,9 +70,9 @@ export const removeDepartment = createAsyncThunk<string, string>(
     }
 )
 
-export const putDepartment = createAsyncThunk<DepartmentType, {id: string, name: string, facultyID: string}>(
+export const putDepartment = createAsyncThunk<DepartmentType, { id: string, name: string, facultyID: string }>(
     "putDepartment",
-    async ({id, name, facultyID}: {id: string, name: string, facultyID: string}): Promise<DepartmentType> => {
+    async ({ id, name, facultyID }: { id: string, name: string, facultyID: string }): Promise<DepartmentType> => {
         const response = await client.graphql({
             query: updateDepartment,
             variables: {

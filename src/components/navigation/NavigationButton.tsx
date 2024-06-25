@@ -19,7 +19,7 @@ function NavigationButton({ icon, label, to }: {
                 text-white 
                 w-full h-11.25 pl-6.75
                 overflow-hidden transition-all
-                ${location.pathname.startsWith(to) ? 'bg-green' : 'bg-transparent'}
+                ${location.pathname.startsWith(to + '/') || location.pathname === to ? 'bg-green' : 'bg-transparent'}
                 `
             }>
                 <div className={`${navigationBarState ? 'mr-4' : 'mr-6.75'} transition-all`}>
