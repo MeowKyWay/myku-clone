@@ -6,8 +6,8 @@ function EnrollResult() {
 
   const dispatch = useAppDispatch();
 
-  const studentSections = useAppSelector((state) => state.studentSections.data);
-  const studentSectionsErrorMessage = useAppSelector((state) => state.studentSections.error);
+  const studentSections = useAppSelector((state) => state.user.sections);
+  const studentSectionsErrorMessage = useAppSelector((state) => state.user.error);
 
   useEffect(() => {
     if (!studentSections && studentSectionsErrorMessage === "") {
@@ -18,7 +18,6 @@ function EnrollResult() {
   const renderStudentSections = studentSections?.map((section) => (
     <div key={section.id}>
       <h1>{section.sectionID}</h1>
-      <h2>{section.studentID}</h2>
     </div>
   ));
 

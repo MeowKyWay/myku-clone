@@ -21,7 +21,6 @@ export const fetchStudentSections = createAsyncThunk<StudentSectionType[]>(
                 }
             }
         })
-        console.log(response);
 
         return response.data.listStudentSections.items;
 

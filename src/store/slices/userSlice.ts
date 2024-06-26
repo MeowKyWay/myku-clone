@@ -1,6 +1,7 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { FetchUserAttributesOutput } from "aws-amplify/auth";
-import { SectionType } from "../../types/DatabaseType";
+import { SectionType, StudentSectionType } from "../../types/DatabaseType";
+import { addStudentSection, fetchStudentSections } from "../thunks/studentSectionsThunk";
 
 export enum UserGroup {
     ADMIN = 'Admin',
@@ -20,8 +21,11 @@ const userSlice = createSlice({
         currentUser: {
             groups: '' as UserGroup,
             attributes: {} as FetchUserAttributesOutput,
-            sections: [] as SectionType[],
         } as CurrentUserType,
+
+        sections: null as StudentSectionType[] | null,
+        isLoading: false,
+        error: '',
     },
     reducers: {
         setUser(state, action: PayloadAction<CurrentUserType>) {
@@ -48,7 +52,41 @@ const userSlice = createSlice({
                 sections: [] as SectionType[],
             };
         }
-    }
+    },
+    extraReducers(builder) {
+        builder.addCase(fetchStudentSections.pending, (state) => {
+            state.isLoading = true;
+            state.error = '';
+        });
+        builder.addCase(fetchStudentSections.fulfilled, (state, action: PayloadAction<StudentSectionType[]>) => {
+            state.sections = action.payload;
+            state.isLoading = false;
+        });
+        builder.addCase(fetchStudentSections.rejected, (state, action) => {
+            state.isLoading = false;
+            if (action.error.message)
+                state.error = action.error.message;
+            else
+                state.error = 'error';
+        });
+
+        builder.addCase(addStudentSection.pending, (state) => {
+            state.isLoading = true;
+            state.error = '';
+        });
+        builder.addCase(addStudentSection.fulfilled, (state, action: PayloadAction<StudentSectionType>) => {
+            if (!state.sections) return;
+            state.sections.push(action.payload);
+            state.isLoading = false;
+        });
+        builder.addCase(addStudentSection.rejected, (state, action) => {
+            state.isLoading = false;
+            if (action.error.message)
+                state.error = action.error.message;
+            else 
+                state.error = 'error';
+        });
+    },
 })
 
 export const { setUser, logout } = userSlice.actions;
