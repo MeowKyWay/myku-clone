@@ -332,6 +332,10 @@ export const createSection = /* GraphQL */ `mutation CreateSection(
       nextToken
       __typename
     }
+    studentEnrollment {
+      nextToken
+      __typename
+    }
     createdAt
     updatedAt
     __typename
@@ -368,6 +372,10 @@ export const updateSection = /* GraphQL */ `mutation UpdateSection(
       nextToken
       __typename
     }
+    studentEnrollment {
+      nextToken
+      __typename
+    }
     createdAt
     updatedAt
     __typename
@@ -401,6 +409,10 @@ export const deleteSection = /* GraphQL */ `mutation DeleteSection(
       __typename
     }
     students {
+      nextToken
+      __typename
+    }
+    studentEnrollment {
       nextToken
       __typename
     }
@@ -598,4 +610,88 @@ export const deleteStudentSection = /* GraphQL */ `mutation DeleteStudentSection
 ` as GeneratedMutation<
   APITypes.DeleteStudentSectionMutationVariables,
   APITypes.DeleteStudentSectionMutation
+>;
+export const createStudentEnrollment = /* GraphQL */ `mutation CreateStudentEnrollment(
+  $input: CreateStudentEnrollmentInput!
+  $condition: ModelStudentEnrollmentConditionInput
+) {
+  createStudentEnrollment(input: $input, condition: $condition) {
+    id
+    studentID
+    sectionID
+    section {
+      id
+      name
+      capacity
+      teacher
+      subjectID
+      createdAt
+      updatedAt
+      __typename
+    }
+    status
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedMutation<
+  APITypes.CreateStudentEnrollmentMutationVariables,
+  APITypes.CreateStudentEnrollmentMutation
+>;
+export const updateStudentEnrollment = /* GraphQL */ `mutation UpdateStudentEnrollment(
+  $input: UpdateStudentEnrollmentInput!
+  $condition: ModelStudentEnrollmentConditionInput
+) {
+  updateStudentEnrollment(input: $input, condition: $condition) {
+    id
+    studentID
+    sectionID
+    section {
+      id
+      name
+      capacity
+      teacher
+      subjectID
+      createdAt
+      updatedAt
+      __typename
+    }
+    status
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedMutation<
+  APITypes.UpdateStudentEnrollmentMutationVariables,
+  APITypes.UpdateStudentEnrollmentMutation
+>;
+export const deleteStudentEnrollment = /* GraphQL */ `mutation DeleteStudentEnrollment(
+  $input: DeleteStudentEnrollmentInput!
+  $condition: ModelStudentEnrollmentConditionInput
+) {
+  deleteStudentEnrollment(input: $input, condition: $condition) {
+    id
+    studentID
+    sectionID
+    section {
+      id
+      name
+      capacity
+      teacher
+      subjectID
+      createdAt
+      updatedAt
+      __typename
+    }
+    status
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedMutation<
+  APITypes.DeleteStudentEnrollmentMutationVariables,
+  APITypes.DeleteStudentEnrollmentMutation
 >;

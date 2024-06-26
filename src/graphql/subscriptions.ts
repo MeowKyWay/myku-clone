@@ -305,6 +305,10 @@ export const onCreateSection = /* GraphQL */ `subscription OnCreateSection($filt
       nextToken
       __typename
     }
+    studentEnrollment {
+      nextToken
+      __typename
+    }
     createdAt
     updatedAt
     __typename
@@ -338,6 +342,10 @@ export const onUpdateSection = /* GraphQL */ `subscription OnUpdateSection($filt
       nextToken
       __typename
     }
+    studentEnrollment {
+      nextToken
+      __typename
+    }
     createdAt
     updatedAt
     __typename
@@ -368,6 +376,10 @@ export const onDeleteSection = /* GraphQL */ `subscription OnDeleteSection($filt
       __typename
     }
     students {
+      nextToken
+      __typename
+    }
+    studentEnrollment {
       nextToken
       __typename
     }
@@ -559,4 +571,85 @@ export const onDeleteStudentSection = /* GraphQL */ `subscription OnDeleteStuden
 ` as GeneratedSubscription<
   APITypes.OnDeleteStudentSectionSubscriptionVariables,
   APITypes.OnDeleteStudentSectionSubscription
+>;
+export const onCreateStudentEnrollment = /* GraphQL */ `subscription OnCreateStudentEnrollment(
+  $filter: ModelSubscriptionStudentEnrollmentFilterInput
+) {
+  onCreateStudentEnrollment(filter: $filter) {
+    id
+    studentID
+    sectionID
+    section {
+      id
+      name
+      capacity
+      teacher
+      subjectID
+      createdAt
+      updatedAt
+      __typename
+    }
+    status
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedSubscription<
+  APITypes.OnCreateStudentEnrollmentSubscriptionVariables,
+  APITypes.OnCreateStudentEnrollmentSubscription
+>;
+export const onUpdateStudentEnrollment = /* GraphQL */ `subscription OnUpdateStudentEnrollment(
+  $filter: ModelSubscriptionStudentEnrollmentFilterInput
+) {
+  onUpdateStudentEnrollment(filter: $filter) {
+    id
+    studentID
+    sectionID
+    section {
+      id
+      name
+      capacity
+      teacher
+      subjectID
+      createdAt
+      updatedAt
+      __typename
+    }
+    status
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedSubscription<
+  APITypes.OnUpdateStudentEnrollmentSubscriptionVariables,
+  APITypes.OnUpdateStudentEnrollmentSubscription
+>;
+export const onDeleteStudentEnrollment = /* GraphQL */ `subscription OnDeleteStudentEnrollment(
+  $filter: ModelSubscriptionStudentEnrollmentFilterInput
+) {
+  onDeleteStudentEnrollment(filter: $filter) {
+    id
+    studentID
+    sectionID
+    section {
+      id
+      name
+      capacity
+      teacher
+      subjectID
+      createdAt
+      updatedAt
+      __typename
+    }
+    status
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedSubscription<
+  APITypes.OnDeleteStudentEnrollmentSubscriptionVariables,
+  APITypes.OnDeleteStudentEnrollmentSubscription
 >;

@@ -58,3 +58,10 @@ export interface SectionEligibleDepartmentType {
         name: string;
     } | null;
 }
+
+export interface StudentSectionType {
+    id: string;
+    studentID: string;
+    sectionID: string;
+    section?: SectionType | null;
+}

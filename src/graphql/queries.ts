@@ -211,6 +211,10 @@ export const getSection = /* GraphQL */ `query GetSection($id: ID!) {
       nextToken
       __typename
     }
+    studentEnrollment {
+      nextToken
+      __typename
+    }
     createdAt
     updatedAt
     __typename
@@ -347,6 +351,58 @@ export const listStudentSections = /* GraphQL */ `query ListStudentSections(
 ` as GeneratedQuery<
   APITypes.ListStudentSectionsQueryVariables,
   APITypes.ListStudentSectionsQuery
+>;
+export const getStudentEnrollment = /* GraphQL */ `query GetStudentEnrollment($id: ID!) {
+  getStudentEnrollment(id: $id) {
+    id
+    studentID
+    sectionID
+    section {
+      id
+      name
+      capacity
+      teacher
+      subjectID
+      createdAt
+      updatedAt
+      __typename
+    }
+    status
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedQuery<
+  APITypes.GetStudentEnrollmentQueryVariables,
+  APITypes.GetStudentEnrollmentQuery
+>;
+export const listStudentEnrollments = /* GraphQL */ `query ListStudentEnrollments(
+  $filter: ModelStudentEnrollmentFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  listStudentEnrollments(
+    filter: $filter
+    limit: $limit
+    nextToken: $nextToken
+  ) {
+    items {
+      id
+      studentID
+      sectionID
+      status
+      createdAt
+      updatedAt
+      __typename
+    }
+    nextToken
+    __typename
+  }
+}
+` as GeneratedQuery<
+  APITypes.ListStudentEnrollmentsQueryVariables,
+  APITypes.ListStudentEnrollmentsQuery
 >;
 export const departmentsByFacultyID = /* GraphQL */ `query DepartmentsByFacultyID(
   $facultyID: ID!
@@ -530,4 +586,35 @@ export const studentSectionsBySectionID = /* GraphQL */ `query StudentSectionsBy
 ` as GeneratedQuery<
   APITypes.StudentSectionsBySectionIDQueryVariables,
   APITypes.StudentSectionsBySectionIDQuery
+>;
+export const studentEnrollmentsBySectionID = /* GraphQL */ `query StudentEnrollmentsBySectionID(
+  $sectionID: ID!
+  $sortDirection: ModelSortDirection
+  $filter: ModelStudentEnrollmentFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  studentEnrollmentsBySectionID(
+    sectionID: $sectionID
+    sortDirection: $sortDirection
+    filter: $filter
+    limit: $limit
+    nextToken: $nextToken
+  ) {
+    items {
+      id
+      studentID
+      sectionID
+      status
+      createdAt
+      updatedAt
+      __typename
+    }
+    nextToken
+    __typename
+  }
+}
+` as GeneratedQuery<
+  APITypes.StudentEnrollmentsBySectionIDQueryVariables,
+  APITypes.StudentEnrollmentsBySectionIDQuery
 >;

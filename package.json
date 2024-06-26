@@ -12,6 +12,7 @@
   "dependencies": {
     "@aws-amplify/ui-react": "^6.1.12",
     "@aws-sdk/client-lambda": "^3.596.0",
+    "@aws-sdk/client-sqs": "^3.600.0",
     "@reduxjs/toolkit": "^2.2.5",
     "@types/moment": "^2.13.0",
     "@types/moment-timezone": "^0.5.30",

@@ -4,9 +4,12 @@ import { MdExpandMore } from "react-icons/md";
 import { SectionType, SubjectType } from "../../../types/DatabaseType";
 import Button from "../../Button";
 import { ButtonType } from "../../../types/ButtonType";
-import { useAppSelector } from "../../../hooks";
+import { useAppDispatch, useAppSelector } from "../../../hooks";
+import { addStudentSection } from "../../../store/thunks/studentSectionsThunk";
 
 function SubjectRow({ subject, filterEligible }: { subject: SubjectType, filterEligible: boolean }) {
+
+    const dispatch = useAppDispatch();
 
     const [isExpanded, setIsExpanded] = useState(false)
 
@@ -24,13 +27,19 @@ function SubjectRow({ subject, filterEligible }: { subject: SubjectType, filterE
             subjectSections = eligibleSections || []
     }
 
+    const handleEnroll = async (sectionID: string) => {
+        const res = dispatch(addStudentSection({ sectionID: sectionID }));
+
+        console.log(res);
+    }
+
     const renderSections = subjectSections.map(section => {
         let eligible = true
         if (section.eligibleDepartments?.items.map(
             eligibleDepartment => eligibleDepartment.department?.id
         ).indexOf(user.attributes["custom:departmentID"]) === -1) eligible = false;
         return (
-            <div className="flex flex-row py-4 pr-20 border-box border-t border-gray-200">
+            <div key={section.id} className="flex flex-row py-4 pr-20 border-box border-t border-gray-200">
                 <span className="w-20 text-sm">{"หมู่ " + section.name}</span>
                 <span className="text-xs font-light mr-2">สาขาที่มีสิทธิ์ : </span>
                 <div className="flex flex-col w-80">
@@ -45,7 +54,7 @@ function SubjectRow({ subject, filterEligible }: { subject: SubjectType, filterE
                 <Button
                     type={eligible ? ButtonType.PRIMARY : ButtonType.WARNING}
                     className="h-8 w-40"
-                    onClick={() => { }}
+                    onClick={() => handleEnroll(section.id)}
                     disabled={!eligible}
                 >
                     {eligible ? "ลงทะเบียน" : "ไม่ผ่านเงื่อนไข"}

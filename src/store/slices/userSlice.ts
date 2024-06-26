@@ -1,5 +1,6 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { FetchUserAttributesOutput } from "aws-amplify/auth";
+import { SectionType } from "../../types/DatabaseType";
 
 export enum UserGroup {
     ADMIN = 'Admin',
@@ -10,6 +11,7 @@ export enum UserGroup {
 export interface CurrentUserType {
     groups: UserGroup;
     attributes: FetchUserAttributesOutput;
+    sections: SectionType[];
 }
 
 const userSlice = createSlice({
@@ -18,6 +20,7 @@ const userSlice = createSlice({
         currentUser: {
             groups: '' as UserGroup,
             attributes: {} as FetchUserAttributesOutput,
+            sections: [] as SectionType[],
         } as CurrentUserType,
     },
     reducers: {
@@ -42,6 +45,7 @@ const userSlice = createSlice({
             state.currentUser = {
                 groups: '' as UserGroup,
                 attributes: {},
+                sections: [] as SectionType[],
             };
         }
     }

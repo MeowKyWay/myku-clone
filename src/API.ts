@@ -152,6 +152,7 @@ export type Section = {
   subject?: Subject | null,
   eligibleDepartments?: ModelSectionEligibleDepartmentConnection | null,
   students?: ModelStudentSectionConnection | null,
+  studentEnrollment?: ModelStudentEnrollmentConnection | null,
   createdAt: string,
   updatedAt: string,
 };
@@ -185,6 +186,23 @@ export type StudentSection = {
   studentID: string,
   sectionID: string,
   section?: Section | null,
+  createdAt: string,
+  updatedAt: string,
+};
+
+export type ModelStudentEnrollmentConnection = {
+  __typename: "ModelStudentEnrollmentConnection",
+  items:  Array<StudentEnrollment | null >,
+  nextToken?: string | null,
+};
+
+export type StudentEnrollment = {
+  __typename: "StudentEnrollment",
+  id: string,
+  studentID: string,
+  sectionID: string,
+  section?: Section | null,
+  status: string,
   createdAt: string,
   updatedAt: string,
 };
@@ -365,6 +383,35 @@ export type DeleteStudentSectionInput = {
   id: string,
 };
 
+export type CreateStudentEnrollmentInput = {
+  id?: string | null,
+  studentID: string,
+  sectionID: string,
+  status: string,
+};
+
+export type ModelStudentEnrollmentConditionInput = {
+  studentID?: ModelIDInput | null,
+  sectionID?: ModelIDInput | null,
+  status?: ModelStringInput | null,
+  and?: Array< ModelStudentEnrollmentConditionInput | null > | null,
+  or?: Array< ModelStudentEnrollmentConditionInput | null > | null,
+  not?: ModelStudentEnrollmentConditionInput | null,
+  createdAt?: ModelStringInput | null,
+  updatedAt?: ModelStringInput | null,
+};
+
+export type UpdateStudentEnrollmentInput = {
+  id: string,
+  studentID?: string | null,
+  sectionID?: string | null,
+  status?: string | null,
+};
+
+export type DeleteStudentEnrollmentInput = {
+  id: string,
+};
+
 export type ModelAuthorizationTokenFilterInput = {
   id?: ModelIDInput | null,
   token?: ModelStringInput | null,
@@ -454,6 +501,18 @@ export type ModelStudentSectionFilterInput = {
   and?: Array< ModelStudentSectionFilterInput | null > | null,
   or?: Array< ModelStudentSectionFilterInput | null > | null,
   not?: ModelStudentSectionFilterInput | null,
+};
+
+export type ModelStudentEnrollmentFilterInput = {
+  id?: ModelIDInput | null,
+  studentID?: ModelIDInput | null,
+  sectionID?: ModelIDInput | null,
+  status?: ModelStringInput | null,
+  createdAt?: ModelStringInput | null,
+  updatedAt?: ModelStringInput | null,
+  and?: Array< ModelStudentEnrollmentFilterInput | null > | null,
+  or?: Array< ModelStudentEnrollmentFilterInput | null > | null,
+  not?: ModelStudentEnrollmentFilterInput | null,
 };
 
 export enum ModelSortDirection {
@@ -573,6 +632,17 @@ export type ModelSubscriptionStudentSectionFilterInput = {
   updatedAt?: ModelSubscriptionStringInput | null,
   and?: Array< ModelSubscriptionStudentSectionFilterInput | null > | null,
   or?: Array< ModelSubscriptionStudentSectionFilterInput | null > | null,
+};
+
+export type ModelSubscriptionStudentEnrollmentFilterInput = {
+  id?: ModelSubscriptionIDInput | null,
+  studentID?: ModelSubscriptionIDInput | null,
+  sectionID?: ModelSubscriptionIDInput | null,
+  status?: ModelSubscriptionStringInput | null,
+  createdAt?: ModelSubscriptionStringInput | null,
+  updatedAt?: ModelSubscriptionStringInput | null,
+  and?: Array< ModelSubscriptionStudentEnrollmentFilterInput | null > | null,
+  or?: Array< ModelSubscriptionStudentEnrollmentFilterInput | null > | null,
 };
 
 export type CreateAuthorizationTokenMutationVariables = {
@@ -890,6 +960,10 @@ export type CreateSectionMutation = {
       __typename: "ModelStudentSectionConnection",
       nextToken?: string | null,
     } | null,
+    studentEnrollment?:  {
+      __typename: "ModelStudentEnrollmentConnection",
+      nextToken?: string | null,
+    } | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -925,6 +999,10 @@ export type UpdateSectionMutation = {
       __typename: "ModelStudentSectionConnection",
       nextToken?: string | null,
     } | null,
+    studentEnrollment?:  {
+      __typename: "ModelStudentEnrollmentConnection",
+      nextToken?: string | null,
+    } | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -958,6 +1036,10 @@ export type DeleteSectionMutation = {
     } | null,
     students?:  {
       __typename: "ModelStudentSectionConnection",
+      nextToken?: string | null,
+    } | null,
+    studentEnrollment?:  {
+      __typename: "ModelStudentEnrollmentConnection",
       nextToken?: string | null,
     } | null,
     createdAt: string,
@@ -1140,6 +1222,87 @@ export type DeleteStudentSectionMutation = {
       createdAt: string,
       updatedAt: string,
     } | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type CreateStudentEnrollmentMutationVariables = {
+  input: CreateStudentEnrollmentInput,
+  condition?: ModelStudentEnrollmentConditionInput | null,
+};
+
+export type CreateStudentEnrollmentMutation = {
+  createStudentEnrollment?:  {
+    __typename: "StudentEnrollment",
+    id: string,
+    studentID: string,
+    sectionID: string,
+    section?:  {
+      __typename: "Section",
+      id: string,
+      name: string,
+      capacity: number,
+      teacher: string,
+      subjectID: string,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    status: string,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type UpdateStudentEnrollmentMutationVariables = {
+  input: UpdateStudentEnrollmentInput,
+  condition?: ModelStudentEnrollmentConditionInput | null,
+};
+
+export type UpdateStudentEnrollmentMutation = {
+  updateStudentEnrollment?:  {
+    __typename: "StudentEnrollment",
+    id: string,
+    studentID: string,
+    sectionID: string,
+    section?:  {
+      __typename: "Section",
+      id: string,
+      name: string,
+      capacity: number,
+      teacher: string,
+      subjectID: string,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    status: string,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type DeleteStudentEnrollmentMutationVariables = {
+  input: DeleteStudentEnrollmentInput,
+  condition?: ModelStudentEnrollmentConditionInput | null,
+};
+
+export type DeleteStudentEnrollmentMutation = {
+  deleteStudentEnrollment?:  {
+    __typename: "StudentEnrollment",
+    id: string,
+    studentID: string,
+    sectionID: string,
+    section?:  {
+      __typename: "Section",
+      id: string,
+      name: string,
+      capacity: number,
+      teacher: string,
+      subjectID: string,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    status: string,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -1349,6 +1512,10 @@ export type GetSectionQuery = {
       __typename: "ModelStudentSectionConnection",
       nextToken?: string | null,
     } | null,
+    studentEnrollment?:  {
+      __typename: "ModelStudentEnrollmentConnection",
+      nextToken?: string | null,
+    } | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -1470,6 +1637,54 @@ export type ListStudentSectionsQuery = {
       id: string,
       studentID: string,
       sectionID: string,
+      createdAt: string,
+      updatedAt: string,
+    } | null >,
+    nextToken?: string | null,
+  } | null,
+};
+
+export type GetStudentEnrollmentQueryVariables = {
+  id: string,
+};
+
+export type GetStudentEnrollmentQuery = {
+  getStudentEnrollment?:  {
+    __typename: "StudentEnrollment",
+    id: string,
+    studentID: string,
+    sectionID: string,
+    section?:  {
+      __typename: "Section",
+      id: string,
+      name: string,
+      capacity: number,
+      teacher: string,
+      subjectID: string,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    status: string,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type ListStudentEnrollmentsQueryVariables = {
+  filter?: ModelStudentEnrollmentFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListStudentEnrollmentsQuery = {
+  listStudentEnrollments?:  {
+    __typename: "ModelStudentEnrollmentConnection",
+    items:  Array< {
+      __typename: "StudentEnrollment",
+      id: string,
+      studentID: string,
+      sectionID: string,
+      status: string,
       createdAt: string,
       updatedAt: string,
     } | null >,
@@ -1611,6 +1826,30 @@ export type StudentSectionsBySectionIDQuery = {
       id: string,
       studentID: string,
       sectionID: string,
+      createdAt: string,
+      updatedAt: string,
+    } | null >,
+    nextToken?: string | null,
+  } | null,
+};
+
+export type StudentEnrollmentsBySectionIDQueryVariables = {
+  sectionID: string,
+  sortDirection?: ModelSortDirection | null,
+  filter?: ModelStudentEnrollmentFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type StudentEnrollmentsBySectionIDQuery = {
+  studentEnrollmentsBySectionID?:  {
+    __typename: "ModelStudentEnrollmentConnection",
+    items:  Array< {
+      __typename: "StudentEnrollment",
+      id: string,
+      studentID: string,
+      sectionID: string,
+      status: string,
       createdAt: string,
       updatedAt: string,
     } | null >,
@@ -1920,6 +2159,10 @@ export type OnCreateSectionSubscription = {
       __typename: "ModelStudentSectionConnection",
       nextToken?: string | null,
     } | null,
+    studentEnrollment?:  {
+      __typename: "ModelStudentEnrollmentConnection",
+      nextToken?: string | null,
+    } | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -1954,6 +2197,10 @@ export type OnUpdateSectionSubscription = {
       __typename: "ModelStudentSectionConnection",
       nextToken?: string | null,
     } | null,
+    studentEnrollment?:  {
+      __typename: "ModelStudentEnrollmentConnection",
+      nextToken?: string | null,
+    } | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -1986,6 +2233,10 @@ export type OnDeleteSectionSubscription = {
     } | null,
     students?:  {
       __typename: "ModelStudentSectionConnection",
+      nextToken?: string | null,
+    } | null,
+    studentEnrollment?:  {
+      __typename: "ModelStudentEnrollmentConnection",
       nextToken?: string | null,
     } | null,
     createdAt: string,
@@ -2162,6 +2413,84 @@ export type OnDeleteStudentSectionSubscription = {
       createdAt: string,
       updatedAt: string,
     } | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnCreateStudentEnrollmentSubscriptionVariables = {
+  filter?: ModelSubscriptionStudentEnrollmentFilterInput | null,
+};
+
+export type OnCreateStudentEnrollmentSubscription = {
+  onCreateStudentEnrollment?:  {
+    __typename: "StudentEnrollment",
+    id: string,
+    studentID: string,
+    sectionID: string,
+    section?:  {
+      __typename: "Section",
+      id: string,
+      name: string,
+      capacity: number,
+      teacher: string,
+      subjectID: string,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    status: string,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnUpdateStudentEnrollmentSubscriptionVariables = {
+  filter?: ModelSubscriptionStudentEnrollmentFilterInput | null,
+};
+
+export type OnUpdateStudentEnrollmentSubscription = {
+  onUpdateStudentEnrollment?:  {
+    __typename: "StudentEnrollment",
+    id: string,
+    studentID: string,
+    sectionID: string,
+    section?:  {
+      __typename: "Section",
+      id: string,
+      name: string,
+      capacity: number,
+      teacher: string,
+      subjectID: string,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    status: string,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnDeleteStudentEnrollmentSubscriptionVariables = {
+  filter?: ModelSubscriptionStudentEnrollmentFilterInput | null,
+};
+
+export type OnDeleteStudentEnrollmentSubscription = {
+  onDeleteStudentEnrollment?:  {
+    __typename: "StudentEnrollment",
+    id: string,
+    studentID: string,
+    sectionID: string,
+    section?:  {
+      __typename: "Section",
+      id: string,
+      name: string,
+      capacity: number,
+      teacher: string,
+      subjectID: string,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    status: string,
     createdAt: string,
     updatedAt: string,
   } | null,

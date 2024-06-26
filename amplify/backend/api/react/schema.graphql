@@ -95,6 +95,7 @@ type Section
   eligibleDepartments: [SectionEligibleDepartment] @hasMany(indexName: "section", fields: ["id"]) #section has many eligibles
 
   students: [StudentSection] @hasMany(indexName: "section", fields: ["id"]) #section has many students
+  studentEnrollment: [StudentEnrollment] @hasMany(indexName: "section", fields: ["id"]) #section has many enrollments
   }
 
 type SectionEligibleDepartment
@@ -130,4 +131,23 @@ type StudentSection
 
   sectionID: ID! @index(name: "section") #section has many students
   section: Section @belongsTo(fields: ["sectionID"])
+  }
+
+type StudentEnrollment
+  @model
+  @aws_cognito_user_pools
+  @auth(
+    rules: [
+      { allow: groups, groups: ["Admin", "Teacher"] }
+      { allow: private, operations: [read] }
+    ]
+  ) {
+  id: ID!
+
+  studentID: ID!
+
+  sectionID: ID! @index(name: "section") #section has many students
+  section: Section @belongsTo(fields: ["sectionID"])
+
+  status: String!
   }

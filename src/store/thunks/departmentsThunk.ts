@@ -28,7 +28,7 @@ export const fetchDepartmentsPublic = createAsyncThunk<DepartmentType[]>(
         });
 
         const response = await lambda.invoke({
-            FunctionName: 'arn:aws:lambda:ap-southeast-1:891377257682:function:listDepartments',
+            FunctionName: 'arn:aws:lambda:ap-southeast-1:891377257682:function:listDepartment',
             InvocationType: 'RequestResponse',
         });
 
