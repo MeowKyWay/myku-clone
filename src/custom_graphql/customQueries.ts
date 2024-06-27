@@ -238,40 +238,44 @@ export const listMyEnrollments = /* GraphQL */ `query ListStudentEnrollments(
   CustomAPITypes.ListMyEnrollmentsQuery
 >;
 
-export const listSectionStudents = /* GraphQL */ `query ListStudentSections(
-  $filter: ModelStudentSectionFilterInput
-  $limit: Int
-  $nextToken: String
-) {
-  listStudentSections(filter: $filter, limit: $limit, nextToken: $nextToken) {
-    items {
+export const getSectionWithStudent = /* GraphQL */ `query GetSection($id: ID!) {
+  getSection(id: $id) {
+    id
+    name
+    capacity
+    teacher
+    subjectID
+    subject {
       id
-      studentID
       name
-    }
-  }
-}
-` as GeneratedQuery<
-  APITypes.ListStudentEnrollmentsQueryVariables,
-  CustomAPITypes.ListSectionStudents
->;
-
-export const ListSectionEnrollments = /* GraphQL */ `query ListStudentEnrollments(
-  $filter: ModelStudentEnrollmentFilterInput
-  $limit: Int
-  $nextToken: String
-) {
-  listStudentSections(filter: $filter, limit: $limit, nextToken: $nextToken) {
-    items {
-      id
-      studentID
-      name
-      status
+      credit
+      departmentID
       createdAt
+      updatedAt
+      __typename
     }
+    students {
+      items {
+        studentID
+        name
+      }
+
+      __typename
+    }
+    studentEnrollments {
+      items {
+        studentID
+        name
+        status
+      }
+      __typename
+    }
+    createdAt
+    updatedAt
+    __typename
   }
 }
 ` as GeneratedQuery<
-  APITypes.ListStudentEnrollmentsQueryVariables,
-  CustomAPITypes.ListSectionEnrollment
+  APITypes.GetSectionQueryVariables,
+  CustomAPITypes.GetSectionWithStudentQuery
 >;

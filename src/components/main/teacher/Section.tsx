@@ -9,7 +9,7 @@ import InputModal from "../../InputModal";
 import { TbRefresh } from "react-icons/tb";
 import { useAppDispatch, useAppSelector } from "../../../hooks";
 import { DepartmentType, SectionType, SubjectType } from "../../../types/DatabaseType";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { addSection, fetchSections, putSection, removeSection } from "../../../store/thunks/sectionsThunk";
 import { fetchSubjects } from "../../../store/thunks/subjectsThunk";
 import { TeacherRoutePath } from "../../../route/RoutePath";
@@ -122,12 +122,11 @@ function Section() {
   const header = (
     <tr>
       <th style={{ width: "2%" }}>no.</th>
-      <th style={{ width: "26%" }}>subject</th>
+      <th style={{ width: "33%" }}>subject</th>
       <th style={{ width: "5%" }}>section</th>
       <th style={{ width: "31%" }}>eligible departments</th>
       <th style={{ width: "7%" }}>capacity</th>
       <th style={{ width: "7%" }}>student</th>
-      <th style={{ width: "7%" }}>schedue</th>
       <th style={{ width: "15%" }}>action</th>
     </tr>
   );
@@ -165,8 +164,9 @@ function Section() {
           >Add</Button>
         </td>
         <td className="text-center">{section.capacity}</td>
-        <td className="text-center">View</td>
-        <td className="text-center">View</td>
+        <td className="text-center">
+          <Link to={TeacherRoutePath.SECTION_STUDENT + "/" + section.id} className="text-blue-500">View</Link>
+        </td>
         <td>
           <div className="text-center">
             <Button

@@ -332,7 +332,7 @@ export const createSection = /* GraphQL */ `mutation CreateSection(
       nextToken
       __typename
     }
-    studentEnrollment {
+    studentEnrollments {
       nextToken
       __typename
     }
@@ -372,7 +372,7 @@ export const updateSection = /* GraphQL */ `mutation UpdateSection(
       nextToken
       __typename
     }
-    studentEnrollment {
+    studentEnrollments {
       nextToken
       __typename
     }
@@ -412,7 +412,7 @@ export const deleteSection = /* GraphQL */ `mutation DeleteSection(
       nextToken
       __typename
     }
-    studentEnrollment {
+    studentEnrollments {
       nextToken
       __typename
     }

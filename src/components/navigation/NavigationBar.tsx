@@ -18,10 +18,14 @@ function NavigationBar() {
             onMouseEnter={() => dispatch(setNavigationBarState(true))}
             onMouseLeave={() => dispatch(setNavigationBarState(false))}
         >
-            <div className={`h-full ${navibationBarState? 'w-62.5' :  'w-17.5'} bg-gray transition-all overflow-hidden`}>
-                {user.groups === UserGroup.ADMIN && <AdminNavigation />}
-                {user.groups === UserGroup.TEACHER && <TeacherNavigation />}
-                {user.groups === UserGroup.STUDENT && <StudentNavigation />}
+            <div className={`h-full ${navibationBarState ? 'w-62.5' : 'w-17.5'} bg-gray transition-all overflow-hidden`}>
+                <div className="flex flex-col">
+                    <div className="rounded-full h-10 w-10 bg-white ml-3.75 my-4"></div>
+                    {user.groups === UserGroup.ADMIN && <AdminNavigation />}
+                    {user.groups === UserGroup.TEACHER && <TeacherNavigation />}
+                    {user.groups === UserGroup.STUDENT && <StudentNavigation />}
+                </div>
+
             </div>
         </div>
     )

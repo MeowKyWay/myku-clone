@@ -211,7 +211,7 @@ export const getSection = /* GraphQL */ `query GetSection($id: ID!) {
       nextToken
       __typename
     }
-    studentEnrollment {
+    studentEnrollments {
       nextToken
       __typename
     }

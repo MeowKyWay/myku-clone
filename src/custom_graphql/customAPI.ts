@@ -124,28 +124,34 @@ export type ListMyEnrollmentsQuery = {
     } | null,
 };
 
-export type ListSectionStudents = {
-    listStudentSections?: {
+export type GetSectionWithStudentQuery = {
+    getSection?:  {
+      __typename: "Section",
+      id: string,
+      name: string,
+      capacity: number,
+      teacher: string,
+      subjectID: string,
+      subject?:  {
+        __typename: "Subject",
+        id: string,
+        name: string,
+        credit: number,
+        departmentID: string,
+        createdAt: string,
+        updatedAt: string,
+      } | null,
+      students?:  {
+        studentID: string,
+        name: string,
         __typename: "ModelStudentSectionConnection",
-        items: Array<{
-            __typename: "StudentSection",
-            id: string,
-            studentID: string,
-            name: string,
-        }>
-    }
-}
-
-export type ListSectionEnrollment = {
-    listStudentEnrollments?: {
+      } | null,
+      studentEnrollments?:  {
+        studentID: string,
+        name: string,
         __typename: "ModelStudentEnrollmentConnection",
-        items: Array<{
-            __typename: "StudentEnrollment",
-            id: string,
-            studentID: string,
-            name: string,
-            status: string,
-            createdAt: string,
-        }>
-    }
-}
+      } | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+  };

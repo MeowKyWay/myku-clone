@@ -50,7 +50,7 @@ export interface SectionType {
         items: StudentSectionType[];
     } | null;
 
-    enrollments?: {
+    studentEnrollments?: {
         items: StudentEnrollmentType[];
     } | null;
 }
@@ -85,4 +85,6 @@ export interface StudentEnrollmentType {
     section?: SectionType | null;
 
     status: string;
+
+    createAt?: string;
 }

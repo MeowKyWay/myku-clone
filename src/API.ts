@@ -152,7 +152,7 @@ export type Section = {
   subject?: Subject | null,
   eligibleDepartments?: ModelSectionEligibleDepartmentConnection | null,
   students?: ModelStudentSectionConnection | null,
-  studentEnrollment?: ModelStudentEnrollmentConnection | null,
+  studentEnrollments?: ModelStudentEnrollmentConnection | null,
   createdAt: string,
   updatedAt: string,
 };
@@ -972,7 +972,7 @@ export type CreateSectionMutation = {
       __typename: "ModelStudentSectionConnection",
       nextToken?: string | null,
     } | null,
-    studentEnrollment?:  {
+    studentEnrollments?:  {
       __typename: "ModelStudentEnrollmentConnection",
       nextToken?: string | null,
     } | null,
@@ -1011,7 +1011,7 @@ export type UpdateSectionMutation = {
       __typename: "ModelStudentSectionConnection",
       nextToken?: string | null,
     } | null,
-    studentEnrollment?:  {
+    studentEnrollments?:  {
       __typename: "ModelStudentEnrollmentConnection",
       nextToken?: string | null,
     } | null,
@@ -1050,7 +1050,7 @@ export type DeleteSectionMutation = {
       __typename: "ModelStudentSectionConnection",
       nextToken?: string | null,
     } | null,
-    studentEnrollment?:  {
+    studentEnrollments?:  {
       __typename: "ModelStudentEnrollmentConnection",
       nextToken?: string | null,
     } | null,
@@ -1530,7 +1530,7 @@ export type GetSectionQuery = {
       __typename: "ModelStudentSectionConnection",
       nextToken?: string | null,
     } | null,
-    studentEnrollment?:  {
+    studentEnrollments?:  {
       __typename: "ModelStudentEnrollmentConnection",
       nextToken?: string | null,
     } | null,
@@ -2183,7 +2183,7 @@ export type OnCreateSectionSubscription = {
       __typename: "ModelStudentSectionConnection",
       nextToken?: string | null,
     } | null,
-    studentEnrollment?:  {
+    studentEnrollments?:  {
       __typename: "ModelStudentEnrollmentConnection",
       nextToken?: string | null,
     } | null,
@@ -2221,7 +2221,7 @@ export type OnUpdateSectionSubscription = {
       __typename: "ModelStudentSectionConnection",
       nextToken?: string | null,
     } | null,
-    studentEnrollment?:  {
+    studentEnrollments?:  {
       __typename: "ModelStudentEnrollmentConnection",
       nextToken?: string | null,
     } | null,
@@ -2259,7 +2259,7 @@ export type OnDeleteSectionSubscription = {
       __typename: "ModelStudentSectionConnection",
       nextToken?: string | null,
     } | null,
-    studentEnrollment?:  {
+    studentEnrollments?:  {
       __typename: "ModelStudentEnrollmentConnection",
       nextToken?: string | null,
     } | null,

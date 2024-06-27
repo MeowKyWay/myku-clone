@@ -1,6 +1,7 @@
 import { RouteObject } from "react-router-dom";
 import { TeacherRoutePath } from "./RoutePath";
 import Section from "../components/main/teacher/Section";
+import SectionStudent from "../components/main/teacher/SectionStudent";
 
 function TeacherRoute() {
     return (
@@ -16,6 +17,10 @@ function TeacherRoute() {
             {
                 path: TeacherRoutePath.SECTION + "/:filter",
                 element: <Section />
+            },
+            {
+                path: TeacherRoutePath.SECTION_STUDENT + "/:sectionID",
+                element: <SectionStudent />
             }
         ] as RouteObject[]
     )

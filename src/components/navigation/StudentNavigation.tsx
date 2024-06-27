@@ -1,4 +1,4 @@
-import { FaUniversity } from "react-icons/fa";
+import { FaBook, FaUniversity } from "react-icons/fa";
 import NavigationButton from "./NavigationButton";
 import { StudentRoutePath } from "../../route/RoutePath";
 
@@ -11,7 +11,7 @@ function StudentNavigation() {
                 to={StudentRoutePath.ENROLL}>
             </NavigationButton>
             <NavigationButton
-                icon={<FaUniversity />}
+                icon={<FaBook />}
                 label="ผลการลงทะเบียน"
                 to={StudentRoutePath.ENROLL_RESULT}>
             </NavigationButton>

@@ -59,6 +59,7 @@ export const addStudentEnrollment = createAsyncThunk<StudentEnrollmentType, stri
                 input: {
                     id: user.attributes.sub + ":" + sectionID,
                     studentID: user.attributes.sub as string,
+                    name: user.attributes.name as string,
                     sectionID: sectionID,
                     status: "Pending",
                 }

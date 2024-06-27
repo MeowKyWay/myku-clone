@@ -8,6 +8,7 @@ export enum AdminRoutePath {
 
 export enum TeacherRoutePath {
     SECTION = '/std/teacher/sections',
+    SECTION_STUDENT = '/std/teacher/students',
 }
 
 export enum StudentRoutePath {

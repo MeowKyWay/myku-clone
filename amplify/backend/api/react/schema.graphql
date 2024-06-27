@@ -95,7 +95,7 @@ type Section
   eligibleDepartments: [SectionEligibleDepartment] @hasMany(indexName: "section", fields: ["id"]) #section has many eligibles
 
   students: [StudentSection] @hasMany(indexName: "section", fields: ["id"]) #section has many students
-  studentEnrollment: [StudentEnrollment] @hasMany(indexName: "section", fields: ["id"]) #section has many enrollments
+  studentEnrollments: [StudentEnrollment] @hasMany(indexName: "section", fields: ["id"]) #section has many enrollments
   }
 
 type SectionEligibleDepartment

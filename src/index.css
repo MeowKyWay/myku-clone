@@ -67,6 +67,10 @@ body {
   min-width: 37.5rem;
 }
 
+.ml-3\.75 {
+  margin-left: 0.9375rem;
+}
+
 .mr-6\.75 {
   margin-right: 1.6875rem;
 }

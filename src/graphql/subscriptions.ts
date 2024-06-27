@@ -305,7 +305,7 @@ export const onCreateSection = /* GraphQL */ `subscription OnCreateSection($filt
       nextToken
       __typename
     }
-    studentEnrollment {
+    studentEnrollments {
       nextToken
       __typename
     }
@@ -342,7 +342,7 @@ export const onUpdateSection = /* GraphQL */ `subscription OnUpdateSection($filt
       nextToken
       __typename
     }
-    studentEnrollment {
+    studentEnrollments {
       nextToken
       __typename
     }
@@ -379,7 +379,7 @@ export const onDeleteSection = /* GraphQL */ `subscription OnDeleteSection($filt
       nextToken
       __typename
     }
-    studentEnrollment {
+    studentEnrollments {
       nextToken
       __typename
     }
