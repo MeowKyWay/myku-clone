@@ -174,3 +174,31 @@ export const listSectionsWithSubjectEligibleDepartment = /* GraphQL */ `query Li
   APITypes.ListSectionsQueryVariables,
   CustomAPITypes.ListSectionsWithSubjectEligibleDepartmentsQuery
 >;
+
+export const listMySections = /* GraphQL */ `query ListStudentSections(
+  $filter: ModelStudentSectionFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  listStudentSections(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+      studentID
+      sectionID
+      section {
+        id
+        name
+        capacity
+        teacher
+        subject {
+          id
+          name
+        }
+      }
+    }
+    nextToken
+  }
+}
+` as GeneratedQuery<
+  APITypes.ListStudentSectionsQueryVariables,
+  CustomAPITypes.ListMySectionsQuery>;

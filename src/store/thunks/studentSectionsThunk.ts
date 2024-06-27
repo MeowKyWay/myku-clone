@@ -1,18 +1,19 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { generateClient } from "aws-amplify/api";
-import { StudentSectionType } from "../../types/DatabaseType";
+import { SectionType, StudentSectionType } from "../../types/DatabaseType";
 import { listStudentSections } from "../../graphql/queries";
 import AuthUtils from "../../utility/AuthUtils";
 import { SQS, SendMessageCommand, SendMessageCommandInput } from "@aws-sdk/client-sqs";
 import awsconfig from "../../aws-exports";
+import { listMySections } from "../../custom_graphql/customQueries";
 
 const client = generateClient();
 
-export const fetchMySections = createAsyncThunk<StudentSectionType[]>(
+export const fetchMySections = createAsyncThunk<SectionType[]>(
     "fetchStudentSections",
-    async (): Promise<StudentSectionType[]> => {
+    async (): Promise<SectionType[]> => {
         const response = await client.graphql({
-            query: listStudentSections,
+            query: listMySections,
             variables: {
                 filter: {
                     studentID: {
@@ -22,7 +23,7 @@ export const fetchMySections = createAsyncThunk<StudentSectionType[]>(
             }
         })
 
-        return response.data.listStudentSections.items;
+        return response.data.listStudentSections.items.map(studentSection => studentSection.section as SectionType);
 
     }
 )

@@ -74,3 +74,24 @@ export type ListSectionsWithSubjectEligibleDepartmentsQuery = {
         nextToken?: string | null,
     } | null,
 };
+
+export type ListMySectionsQuery = {
+    listStudentSections?:  {
+      __typename: "ModelStudentSectionConnection",
+      items:  Array< {
+        id: string,
+        studentID: string,
+        section?: {
+            id: string,
+            name: string,
+            capacity: number,
+            teacher: string,
+            subject?: {
+                id: string,
+                name: string,
+            } | null,
+        }
+      } | null >,
+      nextToken?: string | null,
+    } | null,
+  };
