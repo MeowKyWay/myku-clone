@@ -2,7 +2,7 @@ import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { FetchUserAttributesOutput } from "aws-amplify/auth";
 import { SectionType, StudentEnrollmentType } from "../../types/DatabaseType";
 import { fetchMySections } from "../thunks/studentSectionsThunk";
-import { addStudentEnrollment, fetchMyEnrollment } from "../thunks/studentEnrollmentsThunk";
+import { fetchMyEnrollment } from "../thunks/studentEnrollmentsThunk";
 
 export enum UserGroup {
     ADMIN = 'Admin',
@@ -28,7 +28,8 @@ const userSlice = createSlice({
         } as CurrentUserType,
 
         isLoading: false,
-        error: '',
+        sectionsError: '',
+        enrollmentsError: '',
     },
     reducers: {
         setUser(state, action: PayloadAction<CurrentUserType>) {
@@ -61,7 +62,7 @@ const userSlice = createSlice({
         //Sections
         builder.addCase(fetchMySections.pending, (state) => {
             state.isLoading = true;
-            state.error = '';
+            state.sectionsError = '';
         });
         builder.addCase(fetchMySections.fulfilled, (state, action: PayloadAction<SectionType[]>) => {
             state.currentUser.sections = action.payload;
@@ -70,15 +71,15 @@ const userSlice = createSlice({
         builder.addCase(fetchMySections.rejected, (state, action) => {
             state.isLoading = false;
             if (action.error.message)
-                state.error = action.error.message;
+                state.sectionsError = action.error.message;
             else
-                state.error = 'error';
+                state.sectionsError = 'error';
         });
 
         //Enrollments
         builder.addCase(fetchMyEnrollment.pending, (state) => {
             state.isLoading = true;
-            state.error = '';
+            state.enrollmentsError = '';
         });
         builder.addCase(fetchMyEnrollment.fulfilled, (state, action: PayloadAction<StudentEnrollmentType[]>) => {
             state.currentUser.enrollments = action.payload;
@@ -87,26 +88,9 @@ const userSlice = createSlice({
         builder.addCase(fetchMyEnrollment.rejected, (state, action) => {
             state.isLoading = false;
             if (action.error.message)
-                state.error = action.error.message;
+                state.enrollmentsError = action.error.message;
             else
-                state.error = 'error';
-        });
-
-        builder.addCase(addStudentEnrollment.pending, (state) => {
-            state.isLoading = true;
-            state.error = '';
-        });
-        builder.addCase(addStudentEnrollment.fulfilled, (state, action: PayloadAction<StudentEnrollmentType>) => {
-            if (!state.currentUser.enrollments) return;
-            state.currentUser.enrollments.push(action.payload);
-            state.isLoading = false;
-        });
-        builder.addCase(addStudentEnrollment.rejected, (state, action) => {
-            state.isLoading = false;
-            if (action.error.message)
-                state.error = action.error.message;
-            else
-                state.error = 'error';
+                state.enrollmentsError = 'error';
         });
     },
 })

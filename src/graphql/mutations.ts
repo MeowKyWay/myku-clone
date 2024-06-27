@@ -537,6 +537,7 @@ export const createStudentSection = /* GraphQL */ `mutation CreateStudentSection
   createStudentSection(input: $input, condition: $condition) {
     id
     studentID
+    name
     sectionID
     section {
       id
@@ -564,6 +565,7 @@ export const updateStudentSection = /* GraphQL */ `mutation UpdateStudentSection
   updateStudentSection(input: $input, condition: $condition) {
     id
     studentID
+    name
     sectionID
     section {
       id
@@ -591,6 +593,7 @@ export const deleteStudentSection = /* GraphQL */ `mutation DeleteStudentSection
   deleteStudentSection(input: $input, condition: $condition) {
     id
     studentID
+    name
     sectionID
     section {
       id
@@ -618,6 +621,7 @@ export const createStudentEnrollment = /* GraphQL */ `mutation CreateStudentEnro
   createStudentEnrollment(input: $input, condition: $condition) {
     id
     studentID
+    name
     sectionID
     section {
       id
@@ -646,6 +650,7 @@ export const updateStudentEnrollment = /* GraphQL */ `mutation UpdateStudentEnro
   updateStudentEnrollment(input: $input, condition: $condition) {
     id
     studentID
+    name
     sectionID
     section {
       id
@@ -674,6 +679,7 @@ export const deleteStudentEnrollment = /* GraphQL */ `mutation DeleteStudentEnro
   deleteStudentEnrollment(input: $input, condition: $condition) {
     id
     studentID
+    name
     sectionID
     section {
       id

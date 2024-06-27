@@ -6,6 +6,7 @@ import Button from "../../Button";
 import { ButtonType } from "../../../types/ButtonType";
 import { useAppDispatch, useAppSelector } from "../../../hooks";
 import { addStudentSection } from "../../../store/thunks/studentSectionsThunk";
+import { addStudentEnrollment } from "../../../store/thunks/studentEnrollmentsThunk";
 
 function SubjectRow({ subject, filterEligible }: { subject: SubjectType, filterEligible: boolean }) {
 
@@ -28,9 +29,10 @@ function SubjectRow({ subject, filterEligible }: { subject: SubjectType, filterE
     }
 
     const handleEnroll = async (sectionID: string) => {
-        const res = dispatch(addStudentSection({ sectionID: sectionID }));
-
-        console.log(res);
+        if (!confirm("คุณต้องการลงทะเบียนหรือไม่")) return;
+        await dispatch(addStudentEnrollment(sectionID));
+        await dispatch(addStudentSection({ sectionID: sectionID }));
+        confirm("ส่งคำขอลงทะเบียนสำเร็จ ติดตามผลได้ที่หน้าผลการลงทะเบียน");
     }
 
     const renderSections = subjectSections.map(section => {

@@ -184,6 +184,7 @@ export type StudentSection = {
   __typename: "StudentSection",
   id: string,
   studentID: string,
+  name: string,
   sectionID: string,
   section?: Section | null,
   createdAt: string,
@@ -200,6 +201,7 @@ export type StudentEnrollment = {
   __typename: "StudentEnrollment",
   id: string,
   studentID: string,
+  name: string,
   sectionID: string,
   section?: Section | null,
   status: string,
@@ -360,11 +362,13 @@ export type DeleteSectionEligibleDepartmentInput = {
 export type CreateStudentSectionInput = {
   id?: string | null,
   studentID: string,
+  name: string,
   sectionID: string,
 };
 
 export type ModelStudentSectionConditionInput = {
   studentID?: ModelIDInput | null,
+  name?: ModelStringInput | null,
   sectionID?: ModelIDInput | null,
   and?: Array< ModelStudentSectionConditionInput | null > | null,
   or?: Array< ModelStudentSectionConditionInput | null > | null,
@@ -376,6 +380,7 @@ export type ModelStudentSectionConditionInput = {
 export type UpdateStudentSectionInput = {
   id: string,
   studentID?: string | null,
+  name?: string | null,
   sectionID?: string | null,
 };
 
@@ -386,12 +391,14 @@ export type DeleteStudentSectionInput = {
 export type CreateStudentEnrollmentInput = {
   id?: string | null,
   studentID: string,
+  name: string,
   sectionID: string,
   status: string,
 };
 
 export type ModelStudentEnrollmentConditionInput = {
   studentID?: ModelIDInput | null,
+  name?: ModelStringInput | null,
   sectionID?: ModelIDInput | null,
   status?: ModelStringInput | null,
   and?: Array< ModelStudentEnrollmentConditionInput | null > | null,
@@ -404,6 +411,7 @@ export type ModelStudentEnrollmentConditionInput = {
 export type UpdateStudentEnrollmentInput = {
   id: string,
   studentID?: string | null,
+  name?: string | null,
   sectionID?: string | null,
   status?: string | null,
 };
@@ -495,6 +503,7 @@ export type ModelSectionEligibleDepartmentFilterInput = {
 export type ModelStudentSectionFilterInput = {
   id?: ModelIDInput | null,
   studentID?: ModelIDInput | null,
+  name?: ModelStringInput | null,
   sectionID?: ModelIDInput | null,
   createdAt?: ModelStringInput | null,
   updatedAt?: ModelStringInput | null,
@@ -506,6 +515,7 @@ export type ModelStudentSectionFilterInput = {
 export type ModelStudentEnrollmentFilterInput = {
   id?: ModelIDInput | null,
   studentID?: ModelIDInput | null,
+  name?: ModelStringInput | null,
   sectionID?: ModelIDInput | null,
   status?: ModelStringInput | null,
   createdAt?: ModelStringInput | null,
@@ -627,6 +637,7 @@ export type ModelSubscriptionSectionEligibleDepartmentFilterInput = {
 export type ModelSubscriptionStudentSectionFilterInput = {
   id?: ModelSubscriptionIDInput | null,
   studentID?: ModelSubscriptionIDInput | null,
+  name?: ModelSubscriptionStringInput | null,
   sectionID?: ModelSubscriptionIDInput | null,
   createdAt?: ModelSubscriptionStringInput | null,
   updatedAt?: ModelSubscriptionStringInput | null,
@@ -637,6 +648,7 @@ export type ModelSubscriptionStudentSectionFilterInput = {
 export type ModelSubscriptionStudentEnrollmentFilterInput = {
   id?: ModelSubscriptionIDInput | null,
   studentID?: ModelSubscriptionIDInput | null,
+  name?: ModelSubscriptionStringInput | null,
   sectionID?: ModelSubscriptionIDInput | null,
   status?: ModelSubscriptionStringInput | null,
   createdAt?: ModelSubscriptionStringInput | null,
@@ -1159,6 +1171,7 @@ export type CreateStudentSectionMutation = {
     __typename: "StudentSection",
     id: string,
     studentID: string,
+    name: string,
     sectionID: string,
     section?:  {
       __typename: "Section",
@@ -1185,6 +1198,7 @@ export type UpdateStudentSectionMutation = {
     __typename: "StudentSection",
     id: string,
     studentID: string,
+    name: string,
     sectionID: string,
     section?:  {
       __typename: "Section",
@@ -1211,6 +1225,7 @@ export type DeleteStudentSectionMutation = {
     __typename: "StudentSection",
     id: string,
     studentID: string,
+    name: string,
     sectionID: string,
     section?:  {
       __typename: "Section",
@@ -1237,6 +1252,7 @@ export type CreateStudentEnrollmentMutation = {
     __typename: "StudentEnrollment",
     id: string,
     studentID: string,
+    name: string,
     sectionID: string,
     section?:  {
       __typename: "Section",
@@ -1264,6 +1280,7 @@ export type UpdateStudentEnrollmentMutation = {
     __typename: "StudentEnrollment",
     id: string,
     studentID: string,
+    name: string,
     sectionID: string,
     section?:  {
       __typename: "Section",
@@ -1291,6 +1308,7 @@ export type DeleteStudentEnrollmentMutation = {
     __typename: "StudentEnrollment",
     id: string,
     studentID: string,
+    name: string,
     sectionID: string,
     section?:  {
       __typename: "Section",
@@ -1607,6 +1625,7 @@ export type GetStudentSectionQuery = {
     __typename: "StudentSection",
     id: string,
     studentID: string,
+    name: string,
     sectionID: string,
     section?:  {
       __typename: "Section",
@@ -1636,6 +1655,7 @@ export type ListStudentSectionsQuery = {
       __typename: "StudentSection",
       id: string,
       studentID: string,
+      name: string,
       sectionID: string,
       createdAt: string,
       updatedAt: string,
@@ -1653,6 +1673,7 @@ export type GetStudentEnrollmentQuery = {
     __typename: "StudentEnrollment",
     id: string,
     studentID: string,
+    name: string,
     sectionID: string,
     section?:  {
       __typename: "Section",
@@ -1683,6 +1704,7 @@ export type ListStudentEnrollmentsQuery = {
       __typename: "StudentEnrollment",
       id: string,
       studentID: string,
+      name: string,
       sectionID: string,
       status: string,
       createdAt: string,
@@ -1825,6 +1847,7 @@ export type StudentSectionsBySectionIDQuery = {
       __typename: "StudentSection",
       id: string,
       studentID: string,
+      name: string,
       sectionID: string,
       createdAt: string,
       updatedAt: string,
@@ -1848,6 +1871,7 @@ export type StudentEnrollmentsBySectionIDQuery = {
       __typename: "StudentEnrollment",
       id: string,
       studentID: string,
+      name: string,
       sectionID: string,
       status: string,
       createdAt: string,
@@ -2352,6 +2376,7 @@ export type OnCreateStudentSectionSubscription = {
     __typename: "StudentSection",
     id: string,
     studentID: string,
+    name: string,
     sectionID: string,
     section?:  {
       __typename: "Section",
@@ -2377,6 +2402,7 @@ export type OnUpdateStudentSectionSubscription = {
     __typename: "StudentSection",
     id: string,
     studentID: string,
+    name: string,
     sectionID: string,
     section?:  {
       __typename: "Section",
@@ -2402,6 +2428,7 @@ export type OnDeleteStudentSectionSubscription = {
     __typename: "StudentSection",
     id: string,
     studentID: string,
+    name: string,
     sectionID: string,
     section?:  {
       __typename: "Section",
@@ -2427,6 +2454,7 @@ export type OnCreateStudentEnrollmentSubscription = {
     __typename: "StudentEnrollment",
     id: string,
     studentID: string,
+    name: string,
     sectionID: string,
     section?:  {
       __typename: "Section",
@@ -2453,6 +2481,7 @@ export type OnUpdateStudentEnrollmentSubscription = {
     __typename: "StudentEnrollment",
     id: string,
     studentID: string,
+    name: string,
     sectionID: string,
     section?:  {
       __typename: "Section",
@@ -2479,6 +2508,7 @@ export type OnDeleteStudentEnrollmentSubscription = {
     __typename: "StudentEnrollment",
     id: string,
     studentID: string,
+    name: string,
     sectionID: string,
     section?:  {
       __typename: "Section",

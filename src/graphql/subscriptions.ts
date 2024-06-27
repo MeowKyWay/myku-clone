@@ -500,6 +500,7 @@ export const onCreateStudentSection = /* GraphQL */ `subscription OnCreateStuden
   onCreateStudentSection(filter: $filter) {
     id
     studentID
+    name
     sectionID
     section {
       id
@@ -526,6 +527,7 @@ export const onUpdateStudentSection = /* GraphQL */ `subscription OnUpdateStuden
   onUpdateStudentSection(filter: $filter) {
     id
     studentID
+    name
     sectionID
     section {
       id
@@ -552,6 +554,7 @@ export const onDeleteStudentSection = /* GraphQL */ `subscription OnDeleteStuden
   onDeleteStudentSection(filter: $filter) {
     id
     studentID
+    name
     sectionID
     section {
       id
@@ -578,6 +581,7 @@ export const onCreateStudentEnrollment = /* GraphQL */ `subscription OnCreateStu
   onCreateStudentEnrollment(filter: $filter) {
     id
     studentID
+    name
     sectionID
     section {
       id
@@ -605,6 +609,7 @@ export const onUpdateStudentEnrollment = /* GraphQL */ `subscription OnUpdateStu
   onUpdateStudentEnrollment(filter: $filter) {
     id
     studentID
+    name
     sectionID
     section {
       id
@@ -632,6 +637,7 @@ export const onDeleteStudentEnrollment = /* GraphQL */ `subscription OnDeleteStu
   onDeleteStudentEnrollment(filter: $filter) {
     id
     studentID
+    name
     sectionID
     section {
       id

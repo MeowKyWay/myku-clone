@@ -12,7 +12,7 @@ function Enroll() {
     const dispatch = useAppDispatch()
 
     const subjects = useAppSelector(state => state.subjects.data);
-    
+
     const errorMessage = useAppSelector(state => state.subjects.error);
 
     const [search, setSearch] = useState("");

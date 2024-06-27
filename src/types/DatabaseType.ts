@@ -70,6 +70,8 @@ export interface SectionEligibleDepartmentType {
 export interface StudentSectionType {
     id: string;
     studentID: string;
+    name?: string;
+
     sectionID: string;
     section?: SectionType | null;
 }
@@ -77,6 +79,8 @@ export interface StudentSectionType {
 export interface StudentEnrollmentType {
     id: string;
     studentID: string;
+    name?: string;
+
     sectionID: string;
     section?: SectionType | null;
 

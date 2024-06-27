@@ -310,6 +310,7 @@ export const getStudentSection = /* GraphQL */ `query GetStudentSection($id: ID!
   getStudentSection(id: $id) {
     id
     studentID
+    name
     sectionID
     section {
       id
@@ -339,6 +340,7 @@ export const listStudentSections = /* GraphQL */ `query ListStudentSections(
     items {
       id
       studentID
+      name
       sectionID
       createdAt
       updatedAt
@@ -356,6 +358,7 @@ export const getStudentEnrollment = /* GraphQL */ `query GetStudentEnrollment($i
   getStudentEnrollment(id: $id) {
     id
     studentID
+    name
     sectionID
     section {
       id
@@ -390,6 +393,7 @@ export const listStudentEnrollments = /* GraphQL */ `query ListStudentEnrollment
     items {
       id
       studentID
+      name
       sectionID
       status
       createdAt
@@ -574,6 +578,7 @@ export const studentSectionsBySectionID = /* GraphQL */ `query StudentSectionsBy
     items {
       id
       studentID
+      name
       sectionID
       createdAt
       updatedAt
@@ -604,6 +609,7 @@ export const studentEnrollmentsBySectionID = /* GraphQL */ `query StudentEnrollm
     items {
       id
       studentID
+      name
       sectionID
       status
       createdAt

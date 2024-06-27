@@ -63,6 +63,7 @@ export const addStudentSection = createAsyncThunk<StudentSectionType, { sectionI
             QueueUrl: "https://sqs.ap-southeast-1.amazonaws.com/891377257682/enrollQueue.fifo", // required
             MessageBody: JSON.stringify({
                 StudentID: user.attributes.sub,
+                Name: user.attributes.name,
                 SectionID: sectionID,
             }), // required
             MessageGroupId: "enroll", // required

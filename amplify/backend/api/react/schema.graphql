@@ -128,6 +128,7 @@ type StudentSection
   id: ID!
 
   studentID: ID!
+  name: String!
 
   sectionID: ID! @index(name: "section") #section has many students
   section: Section @belongsTo(fields: ["sectionID"])
@@ -139,12 +140,14 @@ type StudentEnrollment
   @auth(
     rules: [
       { allow: groups, groups: ["Admin", "Teacher"] }
+      { allow: groups, groups: ["Student"], operations: [create] }
       { allow: private, operations: [read] }
     ]
   ) {
   id: ID!
 
   studentID: ID!
+  name: String!
 
   sectionID: ID! @index(name: "section") #section has many students
   section: Section @belongsTo(fields: ["sectionID"])

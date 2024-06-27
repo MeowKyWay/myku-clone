@@ -20,7 +20,7 @@ export type ListSubjectsWithSectionsQuery = {
                     capacity: number,
                     teacher: string,
                     subjectID: string,
-                    
+
                     eligibleDepartments?: {
                         items: Array<{
                             __typename: "SectionEligibleDepartment",
@@ -76,22 +76,76 @@ export type ListSectionsWithSubjectEligibleDepartmentsQuery = {
 };
 
 export type ListMySectionsQuery = {
-    listStudentSections?:  {
-      __typename: "ModelStudentSectionConnection",
-      items:  Array< {
-        id: string,
-        studentID: string,
-        section?: {
+    listStudentSections?: {
+        __typename: "ModelStudentSectionConnection",
+        items: Array<{
             id: string,
-            name: string,
-            capacity: number,
-            teacher: string,
-            subject?: {
+            studentID: string,
+            section?: {
                 id: string,
                 name: string,
-            } | null,
-        }
-      } | null >,
-      nextToken?: string | null,
+                capacity: number,
+                teacher: string,
+                subject?: {
+                    id: string,
+                    name: string,
+                    credit: number,
+                } | null,
+            }
+        } | null>,
+        nextToken?: string | null,
     } | null,
-  };
+};
+
+export type ListMyEnrollmentsQuery = {
+    listStudentEnrollments?: {
+        __typename: "ModelStudentEnrollmentConnection",
+        items: Array<{
+            __typename: "StudentEnrollment",
+            id: string,
+            studentID: string,
+            sectionID: string,
+            status: string,
+            section?: {
+                id: string,
+                name: string,
+                capacity: number,
+                teacher: string,
+                subjectID: string,
+                subject?: {
+                    id: string,
+                    name: string,
+                    credit: number,
+                    departmentID: string,
+                } | null,
+            }
+        } | null>,
+        nextToken?: string | null,
+    } | null,
+};
+
+export type ListSectionStudents = {
+    listStudentSections?: {
+        __typename: "ModelStudentSectionConnection",
+        items: Array<{
+            __typename: "StudentSection",
+            id: string,
+            studentID: string,
+            name: string,
+        }>
+    }
+}
+
+export type ListSectionEnrollment = {
+    listStudentEnrollments?: {
+        __typename: "ModelStudentEnrollmentConnection",
+        items: Array<{
+            __typename: "StudentEnrollment",
+            id: string,
+            studentID: string,
+            name: string,
+            status: string,
+            createdAt: string,
+        }>
+    }
+}

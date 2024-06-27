@@ -4,6 +4,7 @@ import { StudentEnrollmentType } from "../../types/DatabaseType";
 import { createStudentEnrollment, updateStudentEnrollment } from "../../graphql/mutations";
 import { listStudentEnrollments } from "../../graphql/queries";
 import AuthUtils from "../../utility/AuthUtils";
+import { listMyEnrollments } from "../../custom_graphql/customQueries";
 
 const client = generateClient();
 
@@ -11,7 +12,7 @@ export const fetchMyEnrollment = createAsyncThunk<StudentEnrollmentType[]>(
     "fetchMyEnrollment",
     async (): Promise<StudentEnrollmentType[]> => {
         const response = await client.graphql({
-            query: listStudentEnrollments,
+            query: listMyEnrollments,
             variables: {
                 filter: {
                     studentID: {
@@ -49,13 +50,17 @@ export const fetchSectionStudentEnrollment = createAsyncThunk<{data: StudentEnro
 export const addStudentEnrollment = createAsyncThunk<StudentEnrollmentType, string>(
     "addStudentEnrollment",
     async (sectionID: string): Promise<StudentEnrollmentType> => {
+
+        const user = await AuthUtils.getCurrentUser();
+
         const response = await client.graphql({
             query: createStudentEnrollment,
             variables: {
                 input: {
-                    studentID: (await AuthUtils.getCurrentUser()).attributes.sub as string,
+                    id: user.attributes.sub + ":" + sectionID,
+                    studentID: user.attributes.sub as string,
                     sectionID: sectionID,
-                    status: "pending",
+                    status: "Pending",
                 }
             }
         })

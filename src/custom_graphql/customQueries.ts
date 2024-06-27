@@ -193,6 +193,7 @@ export const listMySections = /* GraphQL */ `query ListStudentSections(
         subject {
           id
           name
+          credit
         }
       }
     }
@@ -201,4 +202,76 @@ export const listMySections = /* GraphQL */ `query ListStudentSections(
 }
 ` as GeneratedQuery<
   APITypes.ListStudentSectionsQueryVariables,
-  CustomAPITypes.ListMySectionsQuery>;
+  CustomAPITypes.ListMySectionsQuery
+>;
+
+export const listMyEnrollments = /* GraphQL */ `query ListStudentEnrollments(
+  $filter: ModelStudentEnrollmentFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  listStudentEnrollments(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+      studentID
+      sectionID
+      status
+      section {
+        id
+        name
+        capacity
+        teacher
+        subjectID
+        subject {
+          id
+          name
+          credit
+          departmentID
+        }
+      }
+    }
+    nextToken
+  }
+}
+` as GeneratedQuery<
+  APITypes.ListStudentEnrollmentsQueryVariables,
+  CustomAPITypes.ListMyEnrollmentsQuery
+>;
+
+export const listSectionStudents = /* GraphQL */ `query ListStudentSections(
+  $filter: ModelStudentSectionFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  listStudentSections(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+      studentID
+      name
+    }
+  }
+}
+` as GeneratedQuery<
+  APITypes.ListStudentEnrollmentsQueryVariables,
+  CustomAPITypes.ListSectionStudents
+>;
+
+export const ListSectionEnrollments = /* GraphQL */ `query ListStudentEnrollments(
+  $filter: ModelStudentEnrollmentFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  listStudentSections(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+      studentID
+      name
+      status
+      createdAt
+    }
+  }
+}
+` as GeneratedQuery<
+  APITypes.ListStudentEnrollmentsQueryVariables,
+  CustomAPITypes.ListSectionEnrollment
+>;
