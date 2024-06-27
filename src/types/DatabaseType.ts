@@ -65,3 +65,12 @@ export interface StudentSectionType {
     sectionID: string;
     section?: SectionType | null;
 }
+
+export interface StudentEnrollmentType {
+    id: string;
+    studentID: string;
+    sectionID: string;
+    section?: SectionType | null;
+
+    status: string;
+}
