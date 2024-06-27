@@ -8,7 +8,7 @@ import awsconfig from "../../aws-exports";
 
 const client = generateClient();
 
-export const fetchStudentSections = createAsyncThunk<StudentSectionType[]>(
+export const fetchMySections = createAsyncThunk<StudentSectionType[]>(
     "fetchStudentSections",
     async (): Promise<StudentSectionType[]> => {
         const response = await client.graphql({
@@ -24,6 +24,27 @@ export const fetchStudentSections = createAsyncThunk<StudentSectionType[]>(
 
         return response.data.listStudentSections.items;
 
+    }
+)
+
+export const fetchSectionStudents = createAsyncThunk<{data: StudentSectionType[], sectionID: string}, string>(
+    "fetchSectionStudents",
+    async (sectionID: string): Promise<{data: StudentSectionType[], sectionID: string}> => {
+        const response = await client.graphql({
+            query: listStudentSections,
+            variables: {
+                filter: {
+                    sectionID: {
+                        eq: sectionID,
+                    }
+                }
+            }
+        })
+
+        return {
+            data: response.data.listStudentSections.items, 
+            sectionID: sectionID,
+        };
     }
 )
 

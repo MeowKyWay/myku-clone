@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../../hooks";
-import { fetchStudentSections } from "../../../store/thunks/studentSectionsThunk";
+import { fetchMySections } from "../../../store/thunks/studentSectionsThunk";
 
 function EnrollResult() {
 
@@ -11,7 +11,7 @@ function EnrollResult() {
 
   useEffect(() => {
     if (!studentSections && studentSectionsErrorMessage === "") {
-      dispatch(fetchStudentSections());
+      dispatch(fetchMySections());
     }
   }, [studentSections, studentSectionsErrorMessage, dispatch]);
 

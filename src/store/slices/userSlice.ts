@@ -1,7 +1,7 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { FetchUserAttributesOutput } from "aws-amplify/auth";
 import { SectionType, StudentSectionType } from "../../types/DatabaseType";
-import { addStudentSection, fetchStudentSections } from "../thunks/studentSectionsThunk";
+import { addStudentSection, fetchMySections } from "../thunks/studentSectionsThunk";
 
 export enum UserGroup {
     ADMIN = 'Admin',
@@ -54,15 +54,15 @@ const userSlice = createSlice({
         }
     },
     extraReducers(builder) {
-        builder.addCase(fetchStudentSections.pending, (state) => {
+        builder.addCase(fetchMySections.pending, (state) => {
             state.isLoading = true;
             state.error = '';
         });
-        builder.addCase(fetchStudentSections.fulfilled, (state, action: PayloadAction<StudentSectionType[]>) => {
+        builder.addCase(fetchMySections.fulfilled, (state, action: PayloadAction<StudentSectionType[]>) => {
             state.sections = action.payload;
             state.isLoading = false;
         });
-        builder.addCase(fetchStudentSections.rejected, (state, action) => {
+        builder.addCase(fetchMySections.rejected, (state, action) => {
             state.isLoading = false;
             if (action.error.message)
                 state.error = action.error.message;

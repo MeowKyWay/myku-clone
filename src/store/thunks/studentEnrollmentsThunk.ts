@@ -25,9 +25,9 @@ export const fetchMyEnrollment = createAsyncThunk<StudentEnrollmentType[]>(
     }
 )
 
-export const fetchSectionStudentEnrollment = createAsyncThunk<StudentEnrollmentType[], string>(
+export const fetchSectionStudentEnrollment = createAsyncThunk<{data: StudentEnrollmentType[], sectionID: string}, string>(
     "fetchSectionStudentEnrollment",
-    async (sectionID: string): Promise<StudentEnrollmentType[]> => {
+    async (sectionID: string): Promise<{data: StudentEnrollmentType[], sectionID: string}> => {
         const response = await client.graphql({
             query: listStudentEnrollments,
             variables: {
@@ -39,7 +39,10 @@ export const fetchSectionStudentEnrollment = createAsyncThunk<StudentEnrollmentT
             }
         })
 
-        return response.data.listStudentEnrollments.items;
+        return {
+            data: response.data.listStudentEnrollments.items,
+            sectionID: sectionID,
+        };
     }
 )
 

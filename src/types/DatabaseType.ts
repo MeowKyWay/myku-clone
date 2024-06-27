@@ -45,6 +45,14 @@ export interface SectionType {
     eligibleDepartments?: {
         items: SectionEligibleDepartmentType[];
     } | null;
+
+    students?: {
+        items: StudentSectionType[];
+    } | null;
+
+    enrollments?: {
+        items: StudentEnrollmentType[];
+    } | null;
 }
 
 export interface SectionEligibleDepartmentType {

@@ -1,7 +1,9 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { SectionEligibleDepartmentType, SectionType } from "../../types/DatabaseType";
+import { SectionEligibleDepartmentType, SectionType, StudentEnrollmentType, StudentSectionType } from "../../types/DatabaseType";
 import { addSection, fetchSections, putSection, removeSection } from "../thunks/sectionsThunk";
 import { addSectionEligibleDepartment, removeSectionEligibleDepartment } from "../thunks/sectionEligibleDepartmentThunk";
+import { fetchMySections, fetchSectionStudents } from "../thunks/studentSectionsThunk";
+import { fetchSectionStudentEnrollment } from "../thunks/studentEnrollmentsThunk";
 
 const sectionsSlice = createSlice({
     name: 'sections',
@@ -136,6 +138,48 @@ const sectionsSlice = createSlice({
             } else {
                 state.error = 'error';
             }
+        });
+
+        //Students
+        builder.addCase(fetchMySections.pending, (state) => {
+            state.isLoading = true;
+            state.error = '';
+        });
+        builder.addCase(fetchSectionStudents.fulfilled, (state, action: PayloadAction<{data: StudentSectionType[], sectionID: string}>) => {
+            if (!state.data) return;
+            const index = state.data.findIndex(section => section.id === action.payload.sectionID);
+            if (index !== -1) {
+                state.data[index].students = { items: action.payload.data };
+            }
+            state.isLoading = false;
+        });
+        builder.addCase(fetchMySections.rejected, (state, action) => {
+            state.isLoading = false;
+            if (action.error.message)
+                state.error = action.error.message;
+            else
+                state.error = 'error';
+        });
+
+        //Enrollments
+        builder.addCase(fetchSectionStudentEnrollment.pending, (state) => {
+            state.isLoading = true;
+            state.error = '';
+        });
+        builder.addCase(fetchSectionStudentEnrollment.fulfilled, (state, action: PayloadAction<{data: StudentEnrollmentType[], sectionID: string}>) => {
+            if (!state.data) return;
+            const index = state.data.findIndex(section => section.id === action.payload.sectionID);
+            if (index !== -1) {
+                state.data[index].enrollments = { items: action.payload.data };
+            }
+            state.isLoading = false;
+        });
+        builder.addCase(fetchSectionStudentEnrollment.rejected, (state, action) => {
+            state.isLoading = false;
+            if (action.error.message)
+                state.error = action.error.message;
+            else
+                state.error = 'error';
         });
     },
 })
