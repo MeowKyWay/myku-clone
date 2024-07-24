@@ -6,22 +6,27 @@ import SubjectRow from "./SubjectRow";
 import { useAppDispatch, useAppSelector } from "../../../hooks";
 import { fetchSubjects } from "../../../store/thunks/subjectsThunk";
 import Switch from "../../Switch";
+import { fetchMyEnrollment } from "../../../store/thunks/studentEnrollmentsThunk";
 
 function Enroll() {
 
     const dispatch = useAppDispatch()
 
     const subjects = useAppSelector(state => state.subjects.data);
+    const enrollments = useAppSelector(state => state.user.currentUser.enrollments);
 
-    const errorMessage = useAppSelector(state => state.subjects.error);
+    const subjectErrorMessage = useAppSelector(state => state.subjects.error);
+    const enrollmentErrorMessage = useAppSelector(state => state.user.enrollmentsError);
 
     const [search, setSearch] = useState("");
     const [filterEligible, setFilterEligible] = useState(false);
 
     useEffect(() => {
-        if (!subjects && errorMessage === '')
+        if (!subjects && subjectErrorMessage === '')
             dispatch(fetchSubjects());
-    }, [dispatch, subjects, errorMessage])
+        if (!enrollments && enrollmentErrorMessage === '')
+            dispatch(fetchMyEnrollment());
+    }, [dispatch, subjects, subjectErrorMessage, enrollments, enrollmentErrorMessage]);
 
     const renderSubjects = subjects?.filter(
         subject => {

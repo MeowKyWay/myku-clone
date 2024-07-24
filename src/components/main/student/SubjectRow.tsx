@@ -15,6 +15,7 @@ function SubjectRow({ subject, filterEligible }: { subject: SubjectType, filterE
     const [isExpanded, setIsExpanded] = useState(false)
 
     const user = useAppSelector(state => state.user.currentUser)
+    const enrollments = useAppSelector(state => state.user.currentUser.enrollments);
 
     let subjectSections = subject.sections?.items as SectionType[];
 
@@ -37,9 +38,14 @@ function SubjectRow({ subject, filterEligible }: { subject: SubjectType, filterE
 
     const renderSections = subjectSections.map(section => {
         let eligible = true
+        let alreadyEnrolled = false
         if (section.eligibleDepartments?.items.map(
             eligibleDepartment => eligibleDepartment.department?.id
         ).indexOf(user.attributes["custom:departmentID"]) === -1) eligible = false;
+        if (enrollments?.find(enrollment => enrollment.section?.subjectID === section.subjectID)) {
+            alreadyEnrolled = true;
+            eligible = false;
+        }
         return (
             <div key={section.id} className="flex flex-row py-4 pr-20 border-box border-t border-gray-200">
                 <span className="w-20 text-sm">{"หมู่ " + section.name}</span>
@@ -59,7 +65,7 @@ function SubjectRow({ subject, filterEligible }: { subject: SubjectType, filterE
                     onClick={() => handleEnroll(section.id)}
                     disabled={!eligible}
                 >
-                    {eligible ? "ลงทะเบียน" : "ไม่ผ่านเงื่อนไข"}
+                    {alreadyEnrolled ? "ลงทะเบียนแล้ว" : eligible ? "ลงทะเบียน" : "ไม่ผ่านเงื่อนไข"}
                 </Button>
             </div>
         )

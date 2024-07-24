@@ -22,6 +22,7 @@ export const fetchMyEnrollment = createAsyncThunk<StudentEnrollmentType[]>(
             }
         })
 
+        // console.log(response.data.listStudentEnrollments.items);
         return response.data.listStudentEnrollments.items;
     }
 )

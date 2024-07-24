@@ -47,11 +47,11 @@ function Register() {
 
         if (password !== confirmPassword) {
             setErrorMessage('รหัสผ่านไม่ตรงกัน');
-            return errorMessage;
+            return;
         }
         if (!studentID || !email || !password || !confirmPassword || !faculty || !department) {
             setErrorMessage('กรุณากรอกข้อมูลให้ครบถ้วน');
-            return errorMessage;
+            return;
         }
         try {
             await signUp({

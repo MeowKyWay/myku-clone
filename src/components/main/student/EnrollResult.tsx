@@ -5,6 +5,9 @@ import { fetchMySections } from "../../../store/thunks/studentSectionsThunk";
 import Time from "../../../utility/Time";
 import RadioButton from "../../RadioButton";
 import EnrollList from "./EnrollList";
+import Button from "../../Button";
+import { ButtonType } from "../../../types/ButtonType";
+import { TbRefresh } from "react-icons/tb";
 
 function EnrollResult() {
 
@@ -70,6 +73,9 @@ function EnrollResult() {
             <RadioButton label="รอพิจารณา" value={radioPending} onClick={setRadioPending} activateColor="#ffd951" />
             <RadioButton label="ไม่เห็นชอบ" value={radioReject} onClick={setRadioReject} activateColor="#d9534f" />
             <RadioButton label="ทั้งหมด" value={radioAll} onClick={setRadioAll} activateColor="#5ec1d4" />
+            <Button type={ButtonType.TERTIARY} onClick={() => dispatch(fetchMyEnrollment())}>
+              <TbRefresh className="m-auto" />
+            </Button>
           </div>
           {(radioSuccess || radioAll) &&
             <EnrollList

@@ -20,7 +20,13 @@ function NavigationBar() {
         >
             <div className={`h-full ${navibationBarState ? 'w-62.5' : 'w-17.5'} bg-gray transition-all overflow-hidden`}>
                 <div className="flex flex-col">
-                    <div className="rounded-full h-10 w-10 bg-white ml-3.75 my-4"></div>
+                    <div className="flex flex-row items-center gap-4">
+                        <div className="rounded-full h-10 w-10 bg-white ml-3.75 my-4"></div>
+                        { navibationBarState &&
+                            <span className="text-white">{user.attributes.name}</span>
+                        }
+                    </div>
+                    
                     {user.groups === UserGroup.ADMIN && <AdminNavigation />}
                     {user.groups === UserGroup.TEACHER && <TeacherNavigation />}
                     {user.groups === UserGroup.STUDENT && <StudentNavigation />}
